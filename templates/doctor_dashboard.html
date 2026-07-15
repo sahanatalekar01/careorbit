@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit - Doctor Dashboard 🩺</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            color: white;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Card Styling */
+        .stat-card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+        }
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Alerts & Tables */
+        .emergency-alert {
+            background-color: #ffe5e5;
+            border-left: 5px solid #dc3545;
+            color: #b02a37;
+            border-radius: 8px;
+        }
+        .table-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+        }
+        .table thead {
+            background-color: #f8f9fa;
+        }
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation (Pillars 4, 5, 6 Overview) -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
+            <div class="sidebar-brand d-flex align-items-center mb-4">
+                <i class="fa-solid fa-house-medical me-2"></i>
+                <span>CareOrbit</span>
+            </div>
+            <hr class="text-white-50">
+            <ul class="nav flex-column gap-1">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-truck-medical me-2"></i> Emergency cases</a>
+                </li>
+                <li class="nav-item mt-5">
+                    <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to Home</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Panel -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+                <div>
+                    <h1 class="h2 fw-bold text-dark">Doctor Dashboard 🩺</h1>
+                    <p class="text-muted">Welcome back, <span class="text-primary fw-semibold">Dr. Shruti</span></p>
+                </div>
+                <!-- Pillar 4: Emergency Cases Banner -->
+                <div class="emergency-alert p-3 d-flex align-items-center shadow-sm">
+                    <i class="fa-solid fa-triangle-exclamation fa-xl me-3 animate-pulse"></i>
+                    <div>
+                        <strong class="d-block">Emergency Alert</strong>
+                        <span class="small">2 severe cases are pending review.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Metric Cards (Pillar 4 Quick View) -->
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-medium">Today's Visits</span>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">14</h3>
+                            </div>
+                            <div class="stat-icon bg-primary-subtle text-primary">
+                                <i class="fa-solid fa-user-injured fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-medium">Completed</span>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">9</h3>
+                            </div>
+                            <div class="stat-icon bg-success-subtle text-success">
+                                <i class="fa-solid fa-circle-check fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-medium">Pending Approvals</span>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">5</h3>
+                            </div>
+                            <div class="stat-icon bg-warning-subtle text-warning">
+                                <i class="fa-solid fa-clock fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Interactive Component: Patient Appointment Queue -->
+            <div class="card table-card shadow-sm mb-4">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-calendar-alt text-primary me-2"></i>Today's Appointment Schedule</h5>
+                    <button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus me-1"></i> Add Patient</button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Time</th>
+                                    <th>Patient Name</th>
+                                    <th>Gender / Age</th>
+                                    <th>Symptom Assessment</th>
+                                    <th>Status</th>
+                                    <th class="text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-semibold text-primary">09:30 AM</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar me-2 bg-light rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
+                                                <i class="fa-solid fa-user text-secondary"></i>
+                                            </div>
+                                            <div>
+                                                <span class="d-block fw-bold text-dark">Prachi singh</span>
+                                                <span class="text-muted small">ID: #PT-8941</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Female, 28 yrs</td>
+                                    <td><span class="badge bg-danger-subtle text-danger p-2"><i class="fa-solid fa-microchip me-1"></i>High Risk Fever</span></td>
+                                    <td><span class="badge bg-warning text-dark p-2">Waiting</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-primary">Examine</button>
+                                        <button class="btn btn-sm btn-outline-secondary ms-1"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 fw-semibold text-primary">10:15 AM</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar me-2 bg-light rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
+                                                <i class="fa-solid fa-user text-secondary"></i>
+                                            </div>
+                                            <div>
+                                                <span class="d-block fw-bold text-dark">Saurabh pawar</span>
+                                                <span class="text-muted small">ID: #PT-2291</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Male, 34 yrs</td>
+                                    <td><span class="badge bg-success-subtle text-success p-2">Routine Checkup</span></td>
+                                    <td><span class="badge bg-success p-2">Completed</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-secondary" disabled>Examined</button>
+                                        <button class="btn btn-sm btn-outline-secondary ms-1"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

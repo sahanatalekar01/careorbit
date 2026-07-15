@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit - Admin Settings & Alerts</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+        }
+
+        /* Standardized Blue Sidebar Styling */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            color: white;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Card Styling */
+        .admin-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
+            <div class="sidebar-brand d-flex align-items-center mb-4">
+                <i class="fa-solid fa-house-medical me-2"></i>
+                <span>CareOrbit Admin</span>
+            </div>
+            <hr class="text-white-50">
+            <ul class="nav flex-column gap-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Core Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user-management"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fa-solid fa-gear me-2"></i> System Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
+                </li>
+                <li class="nav-item mt-5">
+                    <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to App</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+                <div>
+                    <h1 class="h2 fw-bold text-dark">Notifications & Settings</h1>
+                    <p class="text-muted">Broadcast global alerts, manage feature variables, and adjust administrative rules.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Left Column: Notifications & Broadcast Alert Dispatch -->
+                <div class="col-lg-6">
+                    <div class="card admin-card p-4 shadow-sm h-100">
+                        <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-bullhorn text-primary me-2"></i>System-Wide Broadcast</h5>
+                        <p class="text-muted small">Dispatch real-time emergency banners or structural alerts to all connected portal nodes.</p>
+                        
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-secondary">Target Audience</label>
+                                <select class="form-select">
+                                    <option>All Users (Doctors, Pharmacy, Laboratory, Patients)</option>
+                                    <option>Medical & Lab Personnel Only</option>
+                                    <option>Patients Only</option>
+                                    <option>Internal Administrators</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-secondary">Alert Severity</label>
+                                <div class="d-flex gap-2">
+                                    <input type="radio" class="btn-check" name="severity" id="sevInfo" checked>
+                                    <label class="btn btn-outline-info flex-grow-1 btn-sm" for="sevInfo">Information</label>
+
+                                    <input type="radio" class="btn-check" name="severity" id="sevWarn">
+                                    <label class="btn btn-outline-warning flex-grow-1 btn-sm" for="sevWarn">Warning</label>
+
+                                    <input type="radio" class="btn-check" name="severity" id="sevCrit">
+                                    <label class="btn btn-outline-danger flex-grow-1 btn-sm" for="sevCrit">Critical Maintenance</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-secondary">Notification Message</label>
+                                <textarea class="form-control" rows="4" placeholder="e.g., Core database cluster undergoing structural security patch updates tonight at 02:00 IST. Expect intermittent downtime."></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100 fw-bold"><i class="fa-solid fa-paper-plane me-2"></i>Send Broadcast Notification</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: Settings and Environment Toggles -->
+                <div class="col-lg-6">
+                    <div class="card admin-card p-4 shadow-sm h-100">
+                        <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-sliders text-primary me-2"></i>System Variable Controls</h5>
+                        
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-secondary small text-uppercase tracking-wider">Features Toggles</h6>
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                                    <div>
+                                        <strong class="d-block text-dark small">Ambulance GPS Telemetry Stream</strong>
+                                        <span class="text-muted text-xs d-block" style="font-size: 0.75rem;">Enable web-socket polling for vehicles</span>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" checked>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                                    <div>
+                                        <strong class="d-block text-dark small">Instant Prescription Dispensing API</strong>
+                                        <span class="text-muted text-xs d-block" style="font-size: 0.75rem;">Sync Doctor Panel to Pharmacy Stock immediately</span>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" checked>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                                    <div>
+                                        <strong class="d-block text-dark small">Audit Logging (Deep Profile Mode)</strong>
+                                        <span class="text-muted text-xs d-block" style="font-size: 0.75rem;">Log every network request and read action to disk</span>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h6 class="fw-bold text-secondary small text-uppercase tracking-wider">System Administration Access</h6>
+                            <div class="mb-3 mt-2">
+                                <label class="form-label small fw-semibold text-muted">Admin Account Signature Name</label>
+                                <input type="text" class="form-control form-control-sm" value="System Admin (Root)" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Core API Timeout Threshold (ms)</label>
+                                <input type="number" class="form-control form-control-sm" value="5000">
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm w-100 fw-medium">Save Infrastructure Variables</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

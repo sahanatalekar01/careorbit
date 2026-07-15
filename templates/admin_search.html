@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit - Admin Global Search</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+        }
+
+        /* Standardized Blue Sidebar Styling */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            color: white;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Card Styling */
+        .admin-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
+            <div class="sidebar-brand d-flex align-items-center mb-4">
+                <i class="fa-solid fa-house-medical me-2"></i>
+                <span>CareOrbit Admin</span>
+            </div>
+            <hr class="text-white-50">
+            <ul class="nav flex-column gap-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Core Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user-management"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fa-solid fa-magnifying-glass me-2"></i> Global Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-settings"><i class="fa-solid fa-gear me-2"></i> System Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
+                </li>
+                <li class="nav-item mt-5">
+                    <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to App</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+                <div>
+                    <h1 class="h2 fw-bold text-dark">Ecosystem Search Registry</h1>
+                    <p class="text-muted">Perform real-time queries across databases, patients, clinical records, and node statuses.</p>
+                </div>
+            </div>
+
+            <!-- Deep Search Bar Card -->
+            <div class="card admin-card p-4 shadow-sm mb-4">
+                <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-database text-primary me-2"></i>Cross-Module Database Query</h5>
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                                <input type="text" class="form-control bg-light border-start-0" placeholder="Search by name, ID, medicine, vehicle number, etc...">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select bg-light">
+                                <option selected>All Registries</option>
+                                <option>User Accounts</option>
+                                <option>Prescriptions</option>
+                                <option>Laboratory Tests</option>
+                                <option>Ambulance Fleet</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-primary w-100 fw-bold"><i class="fa-solid fa-filter me-2"></i>Execute Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Dynamic Search Results Section -->
+            <div class="card admin-card shadow-sm">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-list text-primary me-2"></i>Search Results Index</h5>
+                    <span class="badge bg-primary-subtle text-primary py-2 px-3">3 Records Found</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Entity ID</th>
+                                    <th>Entity Domain</th>
+                                    <th>Identifier Name</th>
+                                    <th>Associated Doctor/Status</th>
+                                    <th class="text-end pe-4">Record Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-bold text-primary">#LAB-7740</td>
+                                    <td><span class="badge bg-warning-subtle text-warning">Laboratory</span></td>
+                                    <td>
+                                        <strong class="d-block text-dark">Prachi Singh</strong>
+                                        <span class="text-muted small">Complete Blood Count (CBC)</span>
+                                    </td>
+                                    <td>Dr. Shruti</td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye me-1"></i> View Log</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 fw-bold text-primary">#RX-5291</td>
+                                    <td><span class="badge bg-success-subtle text-success">Pharmacy</span></td>
+                                    <td>
+                                        <strong class="d-block text-dark">Saurabh Pawar</strong>
+                                        <span class="text-muted small">Lipitor 20mg</span>
+                                    </td>
+                                    <td>Dr. Shruti</td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye me-1"></i> View Log</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 fw-bold text-primary">#AMB-01</td>
+                                    <td><span class="badge bg-danger-subtle text-danger">Ambulance</span></td>
+                                    <td>
+                                        <strong class="d-block text-dark">ALS Emergency Unit</strong>
+                                        <span class="text-muted small">Crew: Para. Rahul</span>
+                                    </td>
+                                    <td><span class="badge bg-danger text-white">Responding</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye me-1"></i> View Log</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

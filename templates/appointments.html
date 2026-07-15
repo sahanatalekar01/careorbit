@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit - Appointment Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            color: white;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Card Styling */
+        .appointment-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .appointment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
+        }
+        
+        /* Metric Badges */
+        .metric-card {
+            border: none;
+            border-radius: 12px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
+            <div class="sidebar-brand d-flex align-items-center mb-4">
+                <i class="fa-solid fa-house-medical me-2"></i>
+                <span>CareOrbit</span>
+            </div>
+            <hr class="text-white-50">
+            <ul class="nav flex-column gap-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="/doctor-dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/patient-records"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-truck-medical me-2"></i> Emergency cases</a>
+                </li>
+                <li class="nav-item mt-5">
+                    <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to Home</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+                <div>
+                    <h1 class="h2 fw-bold text-dark">Appointment Management</h1>
+                    <p class="text-muted">Review, approve, or reschedule your incoming patient slots.</p>
+                </div>
+            </div>
+
+            <!-- Quick Overview Metrics -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="card metric-card p-3 shadow-sm text-center">
+                        <span class="text-muted small fw-medium d-block">Pending Approval</span>
+                        <h4 class="fw-bold text-warning mt-1 mb-0">3 Requests</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card metric-card p-3 shadow-sm text-center">
+                        <span class="text-muted small fw-medium d-block">Confirmed Today</span>
+                        <h4 class="fw-bold text-success mt-1 mb-0">8 Bookings</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointment List -->
+            <div class="card appointment-card shadow-sm">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Active Schedule Requests</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Requested Time</th>
+                                    <th>Patient</th>
+                                    <th>Symptom Summary</th>
+                                    <th>Status</th>
+                                    <th class="text-end pe-4">Decision</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Request 1: Prachi Singh -->
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="fw-bold text-dark">Today, 09:30 AM</div>
+                                        <span class="text-muted small">Slot: #AS-301</span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-dark">Prachi Singh</div>
+                                        <span class="text-muted small">F, 28 Yrs</span>
+                                    </td>
+                                    <td><span class="text-secondary">High Fever & Chills</span></td>
+                                    <td><span class="badge bg-warning-subtle text-warning p-2">Pending</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-success px-3 me-1"><i class="fa-solid fa-check me-1"></i> Accept</button>
+                                        <button class="btn btn-sm btn-outline-danger px-3"><i class="fa-solid fa-xmark"></i> Decline</button>
+                                    </td>
+                                </tr>
+                                <!-- Request 2: Saurabh Pawar -->
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="fw-bold text-dark">Today, 10:15 AM</div>
+                                        <span class="text-muted small">Slot: #AS-302</span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-dark">Saurabh Pawar</div>
+                                        <span class="text-muted small">M, 34 Yrs</span>
+                                    </td>
+                                    <td><span class="text-secondary">Routine Body Scan</span></td>
+                                    <td><span class="badge bg-success-subtle text-success p-2">Confirmed</span></td>
+                                    <td class="text-end pe-4">
+                                        <span class="text-success small fw-semibold"><i class="fa-solid fa-circle-check me-1"></i> Scheduled</span>
+                                    </td>
+                                </tr>
+                                <!-- Request 3: Rohan Gupta -->
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="fw-bold text-dark">Tomorrow, 02:00 PM</div>
+                                        <span class="text-muted small">Slot: #AS-315</span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-dark">Rohan Gupta</div>
+                                        <span class="text-muted small">M, 45 Yrs</span>
+                                    </td>
+                                    <td><span class="text-secondary">Persistent Headache</span></td>
+                                    <td><span class="badge bg-warning-subtle text-warning p-2">Pending</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-success px-3 me-1"><i class="fa-solid fa-check me-1"></i> Accept</button>
+                                        <button class="btn btn-sm btn-outline-danger px-3"><i class="fa-solid fa-xmark"></i> Decline</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
