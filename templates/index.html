@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="#">🩺 CareOrbit</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+
+            <div class="d-flex gap-2">
+                <a href="#" class="btn btn-outline-primary">Patient Login</a>
+                <a href="#" class="btn btn-primary">Doctor Login</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-primary">Welcome to CareOrbit</h1>
+                <p class="lead">
+                    Smart Healthcare Management System that connects patients,
+                    doctors, hospitals and healthcare services through one platform.
+                </p>
+
+                <a href="#" class="btn btn-primary btn-lg me-2">Get Started</a>
+                <a href="#about" class="btn btn-outline-primary btn-lg">Learn More</a>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <img src="{{ url_for('static', filename='images/hero.png') }}"
+                     class="img-fluid"
+                     alt="Healthcare">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">About CareOrbit</h2>
+        <p class="lead">
+            CareOrbit is a healthcare management platform designed to simplify
+            patient care by providing AI-powered symptom checking, appointment
+            management, medical records, doctor dashboards, and healthcare services
+            in one secure website.
+        </p>
+    </div>
+</section>
+
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Our Features</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>🤖 AI Symptom Checker</h4>
+                        <p>Analyze symptoms and provide priority suggestions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>👨‍⚕️ Doctor Dashboard</h4>
+                        <p>Doctors can manage patients and review reports.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>📅 Appointments</h4>
+                        <p>Schedule and manage appointments efficiently.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>📄 Medical Reports</h4>
+                        <p>Store and access reports securely.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>🏥 Healthcare Services</h4>
+                        <p>Hospital, Pharmacy, Laboratory and Ambulance modules.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h4>🔒 Secure Records</h4>
+                        <p>Maintain patient information securely using SQLite.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Why Choose CareOrbit?</h2>
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <h5>⚡ Fast</h5>
+                <p>Quick healthcare management.</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5>🔒 Secure</h5>
+                <p>Safe patient information.</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5>📱 Responsive</h5>
+                <p>Works on mobile and desktop.</p>
+            </div>
+
+            <div class="col-md-3">
+                <h5>💙 Easy</h5>
+                <p>Simple and user-friendly interface.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-4">Contact Us</h2>
+
+        <p>Email : support@careorbit.com</p>
+        <p>Phone : +91 9876543210</p>
+        <p>Location : India</p>
+    </div>
+</section>
+
+<footer class="bg-primary text-white text-center py-3">
+    <p class="mb-0">© 2026 CareOrbit | Smart Healthcare Management System</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
