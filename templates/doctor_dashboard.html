@@ -146,7 +146,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <span class="text-muted small fw-medium">Today's Visits</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">14</h3>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">{{todays_visits}}</h3>
                             </div>
                             <div class="stat-icon bg-primary-subtle text-primary">
                                 <i class="fa-solid fa-user-injured fa-xl"></i>
@@ -160,7 +160,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <span class="text-muted small fw-medium">Completed</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">9</h3>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">{{completed_visits}}</h3>
                             </div>
                             <div class="stat-icon bg-success-subtle text-success">
                                 <i class="fa-solid fa-circle-check fa-xl"></i>
@@ -174,7 +174,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
                                 <span class="text-muted small fw-medium">Pending Approvals</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">5</h3>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">{{pending_visits}}</h3>
                             </div>
                             <div class="stat-icon bg-warning-subtle text-warning">
                                 <i class="fa-solid fa-clock fa-xl"></i>
@@ -204,49 +204,48 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="ps-4 fw-semibold text-primary">09:30 AM</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar me-2 bg-light rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
-                                                <i class="fa-solid fa-user text-secondary"></i>
-                                            </div>
-                                            <div>
-                                                <span class="d-block fw-bold text-dark">Prachi singh</span>
-                                                <span class="text-muted small">ID: #PT-8941</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Female, 28 yrs</td>
-                                    <td><span class="badge bg-danger-subtle text-danger p-2"><i class="fa-solid fa-microchip me-1"></i>High Risk Fever</span></td>
-                                    <td><span class="badge bg-warning text-dark p-2">Waiting</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-primary">Examine</button>
-                                        <button class="btn btn-sm btn-outline-secondary ms-1"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="ps-4 fw-semibold text-primary">10:15 AM</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar me-2 bg-light rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
-                                                <i class="fa-solid fa-user text-secondary"></i>
-                                            </div>
-                                            <div>
-                                                <span class="d-block fw-bold text-dark">Saurabh pawar</span>
-                                                <span class="text-muted small">ID: #PT-2291</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Male, 34 yrs</td>
-                                    <td><span class="badge bg-success-subtle text-success p-2">Routine Checkup</span></td>
-                                    <td><span class="badge bg-success p-2">Completed</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Examined</button>
-                                        <button class="btn btn-sm btn-outline-secondary ms-1"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
+    {% for patient in patients %}
+    <tr>
+        <td class="ps-4 fw-semibold text-primary">{{ patient.time }}</td>
+        <td>
+            <div class="d-flex align-items-center">
+                <div class="avatar me-2 bg-light rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
+                    <i class="fa-solid fa-user text-secondary"></i>
+                </div>
+                <div>
+                    <span class="d-block fw-bold text-dark">{{ patient.patient_name }}</span>
+                    <span class="text-muted small">ID: #PT-{{ patient.id }}</span>
+                </div>
+            </div>
+        </td>
+        <td>{{ patient.gender }}, {{ patient.age }} yrs</td>
+        <td>
+            <span class="badge bg-danger-subtle text-danger p-2">
+                <i class="fa-solid fa-microchip me-1"></i>{{ patient.symptoms }}
+            </span>
+        </td>
+        <td>
+            {% if patient.status == 'Completed' %}
+                <span class="badge bg-success-subtle text-success p-2">Completed</span>
+            {% else %}
+                <span class="badge bg-warning text-dark p-2">Pending</span>
+            {% endif %}
+        </td>
+        <td class="text-end pe-4">
+    {% if patient.status != 'Completed' %}
+        <!-- Only show the Examine button if the appointment is NOT completed -->
+        <a href="/patient-record/{{ patient.id }}" class="btn btn-sm btn-primary">Examine</a>
+    {% endif %}
+    
+    <!-- Always show the View button so the doctor can review history -->
+    <a href="/patient-record/{{ patient.id }}" class="btn btn-sm btn-outline-secondary">
+        <i class="fa-solid fa-file-medical"></i> View
+    </a>
+</td>
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
                         </table>
                     </div>
                 </div>

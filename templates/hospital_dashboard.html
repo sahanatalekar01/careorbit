@@ -105,7 +105,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Bed Occupancy</span>
-                                <h3 class="fw-bold text-primary mt-1 mb-0">84%</h3>
+                                <h3 class="fw-bold text-primary mt-1 mb-0">{{ bed_occupancy }}%</h3>
                                 <span class="text-success small"><i class="fa-solid fa-check me-1"></i> 26 Beds Free</span>
                             </div>
                             <div class="bg-primary-subtle p-3 rounded-circle text-primary">
@@ -119,7 +119,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">ICU Capacity</span>
-                                <h3 class="fw-bold text-danger mt-1 mb-0">92%</h3>
+                                <h3 class="fw-bold text-danger mt-1 mb-0">{{icu_capacity}}%</h3>
                                 <span class="text-danger small"><i class="fa-solid fa-triangle-exclamation me-1"></i> 2 Units Left</span>
                             </div>
                             <div class="bg-danger-subtle p-3 rounded-circle text-danger">
@@ -178,29 +178,23 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-dark">Ward A (General)</td>
-                                            <td>General Medicine</td>
-                                            <td>50</td>
-                                            <td>42</td>
-                                            <td><span class="badge bg-success-subtle text-success p-2">Normal</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-dark">Ward B (Paediatrics)</td>
-                                            <td>Special Care</td>
-                                            <td>20</td>
-                                            <td>18</td>
-                                            <td><span class="badge bg-warning-subtle text-warning p-2">Near Full</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-dark">Emergency Wing ICU</td>
-                                            <td>Intensive Care</td>
-                                            <td>25</td>
-                                            <td>23</td>
-                                            <td><span class="badge bg-danger-subtle text-danger p-2">Critical</span></td>
-                                        </tr>
-                                    </tbody>
+     {% for ward in wards %}
+     <tr>
+        <td class="ps-4 fw-bold text-dark">{{ ward.name }}</td>
+        <td>{{ ward.type }}</td>
+        <td>{{ ward.total_beds }}</td>
+        <td>{{ ward.occupied_beds }}</td>
+        <td>
+            {% if ward.occupied_beds >= ward.total_beds %}
+                <span class="badge bg-danger-subtle text-danger p-2">Full</span>
+            {% elif ward.total_beds - ward.occupied_beds <= 5 %}
+                <span class="badge bg-warning-subtle text-warning p-2">Near Full</span>
+            {% else %}
+                <span class="badge bg-success-subtle text-success p-2">Normal</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
                                 </table>
                             </div>
                         </div>

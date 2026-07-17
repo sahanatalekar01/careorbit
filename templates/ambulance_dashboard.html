@@ -114,7 +114,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Active Fleet Size</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">8 Units</h3>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">{{ total_fleet }} Units</h3>
                                 <span class="text-muted small">Emergency vehicles</span>
                             </div>
                             <div class="bg-primary-subtle p-3 rounded-circle text-primary">
@@ -128,7 +128,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">On Active Calls</span>
-                                <h3 class="fw-bold text-danger mt-1 mb-0">3 Dispatched</h3>
+                                <h3 class="fw-bold text-danger mt-1 mb-0">{{dispatch_count}} Dispatched</h3>
                                 <span class="text-danger small pulse-beacon"><i class="fa-solid fa-circle-radiation me-1"></i> Sirens active</span>
                             </div>
                             <div class="bg-danger-subtle p-3 rounded-circle text-danger">
@@ -142,7 +142,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Available Stations</span>
-                                <h3 class="fw-bold text-success mt-1 mb-0">5 Standby</h3>
+                                <h3 class="fw-bold text-success mt-1 mb-0">{{ available_ambulances}} standby</h3>
                                 <span class="text-success small"><i class="fa-solid fa-check me-1"></i> Ready for dispatch</span>
                             </div>
                             <div class="bg-success-subtle p-3 rounded-circle text-success">
@@ -186,29 +186,27 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-primary">#AMB-01</td>
-                                            <td>Advanced Life Support (ALS)</td>
-                                            <td>Para. Rahul, Driver Amit</td>
-                                            <td>En-route: Saurabh Pawar</td>
-                                            <td><span class="badge bg-danger text-white p-2">Responding (ETA 4m)</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-primary">#AMB-03</td>
-                                            <td>Basic Life Support (BLS)</td>
-                                            <td>Para. Priya, Driver Vinay</td>
-                                            <td>Sector 4 Central Plaza</td>
-                                            <td><span class="badge bg-warning-subtle text-warning p-2">Returning</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-primary">#AMB-05</td>
-                                            <td>Critical Care Transport (CCT)</td>
-                                            <td>Dr. Anand, Driver Suresh</td>
-                                            <td>Bay 2 Standby Station</td>
-                                            <td><span class="badge bg-success-subtle text-success p-2">Available</span></td>
-                                        </tr>
-                                    </tbody>
+        {% for amb in ambulances %}
+        <tr>
+            <td class="fw-bold text-primary">{{ amb.vehicle_number }}</td>
+            <td>Standard Van</td>
+            <td>{{ amb.driver_name }}</td>
+            <td>{{ amb.current_Location}}</td>
+            <td>
+                {% if amb.status == 'Available' %}
+                    <span class="badge bg-success-subtle text-success p-2">Available</span>
+                {% elif amb.status == 'On Mission' %}
+                    <span class="badge bg-danger-subtle text-danger p-2">On Mission</span>
+                {% else %}
+                    <span class="badge bg-secondary-subtle text-secondary p-2">Out of Service</span>
+                {% endif %}
+            </td>
+         </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="text-center text-muted py-4">No fleet vehicles currently tracked.</td>
+        </tr>
+        {% endfor %}
                                 </table>
                             </div>
                         </div>

@@ -7,6 +7,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
     role = db.Column(db.String(50), nullable=False) 
     department = db.Column(db.String(100), nullable=True)
     status = db.Column(db.String(50), default='Active')
@@ -18,13 +19,6 @@ class Prescription(db.Model):
     dosage = db.Column(db.String(100), nullable=False)
     doctor_name = db.Column(db.String(150), nullable=False)
     status = db.Column(db.String(50), default='Pending')
-
-class LabTest(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    patient_name = db.Column(db.String(150), nullable=False)
-    test_modality = db.Column(db.String(150), nullable=False)
-    requested_by = db.Column(db.String(150), nullable=False)
-    status = db.Column(db.String(50), default='Awaiting Sample')
 
 class AmbulanceUnit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,3 +35,34 @@ class Notification(db.Model):
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
     is_active = db.Column(db.Boolean, default=True)
+
+class Appointment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_name = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String(20), nullable=False)
+    symptoms = db.Column(db.String(200), nullable=False)
+    time = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(50), default="Pending")
+
+class Ward(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    type = db.Column(db.String(100), nullable=False)
+    total_beds = db.Column(db.Integer, nullable=False, default=0)
+    occupied_beds = db.Column(db.Integer, nullable=False, default=0)
+
+class Medicine(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(100), nullable=False)
+    stock = db.Column(db.Integer, nullable=False, default=0)
+    status = db.Column(db.String(50), nullable=False, default="In Stock") # In Stock, Low Stock, Out of Stock
+
+class LabTest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_name = db.Column(db.String(100), nullable=False)
+    test_name = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(100), nullable=False) # e.g., Hematology, Radiology, Pathology
+    status = db.Column(db.String(50), nullable=False, default="Pending") # Pending, Processing, Completed
+    date_requested = db.Column(db.String(50), nullable=False)

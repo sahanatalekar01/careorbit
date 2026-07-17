@@ -177,29 +177,27 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-primary">#LAB-7740</td>
-                                            <td>Prachi Singh</td>
-                                            <td>Complete Blood Count (CBC)</td>
-                                            <td>Dr. Shruti</td>
-                                            <td><span class="badge bg-danger text-white p-2 animate-pulse"><i class="fa-solid fa-fire me-1"></i> STAT / Processing</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-primary">#LAB-7741</td>
-                                            <td>Saurabh Pawar</td>
-                                            <td>Lipid Profile Panel</td>
-                                            <td>Dr. Shruti</td>
-                                            <td><span class="badge bg-warning-subtle text-warning p-2">Awaiting Sample</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 fw-bold text-primary">#LAB-7735</td>
-                                            <td>Rohan Gupta</td>
-                                            <td>MRI Brain Scan (Contrast)</td>
-                                            <td>Dr. Anand</td>
-                                            <td><span class="badge bg-success-subtle text-success p-2">Report Ready</span></td>
-                                        </tr>
-                                    </tbody>
+        {% for test in lab_tests %}
+        <tr>
+            <td class="ps-4 fw-bold text-primary">#LAB-77{{ test.id + 40 }}</td>
+            <td>{{ test.patient_name }}</td>
+            <td>{{ test.test_name }} <span class="badge bg-light text-muted small">{{ test.category }}</span></td>
+            <td>Dr. Shruti</td>
+            <td>
+                {% if test.status == 'Pending' %}
+                    <span class="badge bg-warning-subtle text-warning p-2">Awaiting Sample</span>
+                {% elif test.status == 'Processing' or test.status == 'STAT/Processing' %}
+                    <span class="badge bg-danger text-white p-2 animate-pulse">STAT / Processing</span>
+                {% else %}
+                    <span class="badge bg-success-subtle text-success p-2">Report Ready</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="text-center text-muted py-4">No active lab requests found in processing queue.</td>
+        </tr>
+        {% endfor %}
                                 </table>
                             </div>
                         </div>

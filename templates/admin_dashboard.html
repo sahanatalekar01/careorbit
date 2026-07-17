@@ -20,7 +20,7 @@
         /* Admin Dark Sidebar Styling */
         .sidebar {
             min-height: 100vh;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
             color: white;
             box-shadow: 4px 0 10px rgba(0,0,0,0.15);
         }
@@ -108,7 +108,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Total Registered Users</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">14,204</h3>
+                                <h3 class="fw-bold text-dark mt-1 mb-0">{{user_count}}</h3>
                                 <span class="text-success small"><i class="fa-solid fa-arrow-up me-1"></i> +12% this week</span>
                             </div>
                             <div class="bg-primary-subtle p-3 rounded-circle text-primary">
@@ -136,7 +136,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Database Status</span>
-                                <h3 class="fw-bold text-success mt-1 mb-0">99.98%</h3>
+                                <h3 class="fw-bold text-success mt-1 mb-0">{{completed_visits}} Completed</h3>
                                 <span class="text-muted small">Active replication online</span>
                             </div>
                             <div class="bg-success-subtle p-3 rounded-circle text-success">
@@ -181,29 +181,22 @@
                                             <th>Security Level</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="ps-4 text-muted small">Just now</td>
-                                            <td class="fw-bold text-dark">System Admin (Root)</td>
-                                            <td>Modified Global Variable</td>
-                                            <td>`/config/routes`</td>
-                                            <td><span class="badge bg-info-subtle text-info p-2">Config</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 text-muted small">5 mins ago</td>
-                                            <td class="fw-bold text-dark">Moderator_02</td>
-                                            <td>Verified Healthcare Professional</td>
-                                            <td>`Dr. Shruti (ID: 808)`</td>
-                                            <td><span class="badge bg-success-subtle text-success p-2">Approval</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4 text-muted small">12 mins ago</td>
-                                            <td class="fw-bold text-dark">SecOps Daemon</td>
-                                            <td>Database Migration Block Executed</td>
-                                            <td>`db_cluster_prod`</td>
-                                            <td><span class="badge bg-warning-subtle text-warning p-2">System</span></td>
-                                        </tr>
-                                    </tbody>
+               <tbody>
+                   {% for log in records %}
+                     <tr>
+                      <td class="ps-4 text-muted small">{{ log.timestamp }}</td>
+                      <td class="fw-bold text-dark">{{ log.admin_user }}</td>
+                      <td class="small">{{ log.event_scope }}</td>
+                      <td><code>{{ log.target_reference }}</code></td>
+                      <td>
+                        <span class="badge {% if log.security_level == 'Approval' %}bg-success-subtle text-success{% elif log.security_level == 'Config' %}bg-info-subtle text-info{% else %}bg-warning-subtle text-warning{% endif %}">
+                           {{ log.security_level }}
+                        </span>
+                      </td>
+                   </tr>
+                  {% endfor %}
+               </tbody>
+                                            
                                 </table>
                             </div>
                         </div>
