@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>System Nodes - CareOrbit</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background-color: #0d6efd; color: white; }
+        .sidebar a { color: white; text-decoration: none; padding: 10px; display: block; }
+        .sidebar a:hover { background-color: #0a58ca; }
+        .content-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar p-3">
+            <h4>CareOrbit</h4>
+            <hr>
+            <a href="/admin-dashboard"><i class="fas fa-gauge"></i> Dashboard</a>
+            <a href="/system-nodes" class="active bg-primary"><i class="fas fa-server"></i> System Nodes</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 p-5">
+            <div class="content-card">
+                <h1><i class="fas fa-server text-primary"></i> System Nodes Orchestration</h1>
+                <p class="text-muted">Monitoring live server performance and connection status.</p>
+                <hr>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card bg-light p-3">
+                            <h5>Node Alpha</h5>
+                            <p>Status: <span class="text-success">Active</span></p>
+                            <small>Latency: 12ms</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-light p-3">
+                            <h5>Node Beta</h5>
+                            <p>Status: <span class="text-success">Active</span></p>
+                            <small>Latency: 15ms</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

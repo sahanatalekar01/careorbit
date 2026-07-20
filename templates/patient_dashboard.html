@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - CareOrbit</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/">
+            🩺 CareOrbit
+        </a>
+
+        <div class="ms-auto">
+            <a href="/logout" class="btn btn-light">
+                Logout
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    <h2 class="text-primary mb-4">
+        Welcome, {{ patient_name }}!
+    </h2>
+
+    <!-- FIRST ROW -->
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+
+                <h4>📝 Submit Symptoms</h4>
+
+                <p>Describe your symptoms for AI analysis.</p>
+
+                <a href="/symptom-analysis" class="btn btn-primary">
+                    Open
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+
+                <h4>📷 Upload Medicine Image</h4>
+
+                <p>Upload medicine or prescription images.</p>
+
+                <a href="/symptom-analysis" class="btn btn-primary">
+                    Upload
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+
+                <h4>📊 View Results</h4>
+
+                <p>Check your AI health analysis.</p>
+
+                <a href="/patient-results" class="btn btn-primary">
+                    View
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SECOND ROW -->
+
+    <div class="row g-4 mt-3">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+
+                <h4>📅 Appointments</h4>
+
+                <p>Book and manage your appointments.</p>
+
+                <a href="/appointment" class="btn btn-success">
+                    Open
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+
+                <h4>📄 Medical Reports</h4>
+
+                <p>View your saved medical reports.</p>
+
+                <a href="/reports" class="btn btn-success">
+                    View
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+
+                <h4>❤️ Health Recommendations</h4>
+
+                <p>Get AI-based health guidance.</p>
+
+                <a href="/health-recommendation" class="btn btn-success">
+                    Open
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-5">
+
+    <h3 class="mb-3">
+        Recent Activity
+    </h3>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-primary">
+
+            <tr>
+                <th>Date</th>
+                <th>Symptoms</th>
+                <th>Status</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>--/--/----</td>
+                <td>No records yet</td>
+                <td>Pending</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

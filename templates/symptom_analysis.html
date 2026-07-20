@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit - AI Symptom Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .analysis-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .form-group input[type="file"] {
+            display: block;
+            margin-top: 5px;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+        #result-section {
+            margin-top: 30px;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            background-color: #f4fdf6;
+            display: none;
+        }
+        #error-section {
+            margin-top: 30px;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            background-color: #fdf3f4;
+            display: none;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="analysis-container">
+        <h2>AI Symptom Analyzer</h2>
+        <p>Describe your symptoms below. You can also upload an image of the affected area (e.g., rashes, cuts) for a visual diagnostic aid.</p>
+        
+        <form id="symptom-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="symptoms">Describe your symptoms:</label>
+                <textarea id="symptoms" name="symptoms" rows="5" placeholder="e.g. Mild headache, fever since yesterday, skin rash on arm" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Upload affected area image (Optional):</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            
+            <button type="submit" class="btn-submit" id="submit-btn">Analyze Symptoms</button>
+        </form>
+
+        <!-- Result Box -->
+        <div id="result-section">
+            <h3>Diagnostic Result</h3>
+            <p id="analysis-text"></p>
+            <p><small id="upload-info"></small></p>
+        </div>
+
+        <!-- Error Box -->
+        <div id="error-section">
+            <h3>Error</h3>
+            <p id="error-text"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('symptom-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submit-btn');
+            const resultSection = document.getElementById('result-section');
+            const errorSection = document.getElementById('error-section');
+            const analysisText = document.getElementById('analysis-text');
+            const uploadInfo = document.getElementById('upload-info');
+            const errorText = document.getElementById('error-text');
+
+            // Hide previous alerts
+            resultSection.style.display = 'none';
+            errorSection.style.display = 'none';
+            
+            // Disable button during network request
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Analyzing...';
+
+            const symptomsInput = document.getElementById('symptoms').value;
+            const fileInput = document.getElementById('image');
+
+            // Construct FormData payload to safely carry files
+            const formData = new FormData();
+            formData.append('symptoms', symptomsInput);
+            if (fileInput.files.length > 0) {
+                formData.append('image', fileInput.files[0]);
+            }
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                    // Note: Do NOT set Content-Type header manually when using FormData.
+                    // The browser will set it automatically with the correct multipart boundary.
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    analysisText.textContent = data.analysis_result;
+                    uploadInfo.textContent = `Image status: ${data.upload_status} ${data.image_filename ? '(' + data.image_filename + ')' : ''}`;
+                    resultSection.style.display = 'block';
+                } else {
+                    errorText.textContent = data.error || 'Something went wrong. Please try again.';
+                    errorSection.style.display = 'block';
+                }
+            } catch (err) {
+                errorText.textContent = 'Network or connection error. Please try again later.';
+                errorSection.style.display = 'block';
+                console.error(err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Analyze Symptoms';
+            }
+        });
+    </script>
+</body>
+</html>

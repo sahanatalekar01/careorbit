@@ -88,21 +88,30 @@
 
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-                <div>
-                    <h1 class="h2 fw-bold text-dark">User Access Control</h1>
-                    <p class="text-muted">Provision credentials, approve healthcare practitioner accounts, and set system roles.</p>
-                </div>
-                <button class="btn btn-primary shadow-sm"><i class="fa-solid fa-user-plus me-2"></i>Create System Account</button>
-            </div>
 
+    <!-- Flash Message Block -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+        <h1 class="h2 fw-bold text-dark">User Access Control</h1>
+        <!-- ... -->
+    </div>
             <!-- Main Interactive Table Card -->
             <div class="card admin-card shadow-sm mb-4">
                 <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-                    <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-users text-primary me-2"></i>Active Ecosystem Accounts</h5>
-                    <div class="input-group style-group w-25">
-                        <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                        <input type="text" class="form-control bg-light border-start-0 small" placeholder="Search entries...">
+                    <form action="{{ url_for('admin_search') }}" method="GET" class="input-group style-group w-25">
+    <span class="input-group-text bg-light border-end-0">
+        <i class="fa-solid fa-magnifying-glass text-muted"></i>
+    </span>
+    <input type="text" name="query" class="form-control bg-light border-start-0 small" placeholder="Search entries...">
+</form>
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -117,27 +126,44 @@
                                     <th class="text-end pe-4">System Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-primary-subtle text-primary p-2 rounded-circle me-3">
-                                                <i class="fa-solid fa-user-doctor"></i>
-                                            </div>
-                                            <div>
-                                                <strong class="d-block text-dark">Dr. Shruti</strong>
-                                                <span class="text-muted small">doctor@careorbit.com</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-info-subtle text-info">Medical Officer</span></td>
-                                    <td>Cardiology Wing</td>
-                                    <td><span class="badge bg-success-subtle text-success p-2">Active Node</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-user-pen"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-ban"></i></button>
-                                    </td>
-                                </tr>
+                            
+        {% for user in users %}
+<tr>
+    <!-- User Details Column -->
+    <td class="ps-4">
+        <div class="d-flex align-items-center">
+            <div class="bg-primary-subtle text-primary p-2 rounded-circle me-3">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <div>
+                <strong class="d-block text-dark">{{ user.username }}</strong>
+                <span class="text-muted small">{{ user.email }}</span>
+            </div>
+        </div>
+    </td>
+    
+    <!-- Role Column -->
+    <td><span class="badge bg-info-subtle text-info">{{ user.role }}</span></td>
+    
+    <!-- Department Column -->
+    <td>General Ward</td>
+    
+    <!-- Status Column -->
+    <td><span class="badge bg-success-subtle text-success p-2">Active</span></td>
+    
+    <!-- System Actions Column (Your new buttons!) -->
+    <td class="text-end pe-4">
+        <a href="/edit-user/{{ user.id }}" class="btn btn-sm btn-outline-secondary me-1">
+            <i class="fa-solid fa-user-pen"></i>
+        </a>
+        <a href="/delete-user/{{ user.id }}" class="btn btn-sm btn-outline-danger" 
+           onclick="return confirm('Are you sure?')">
+            <i class="fa-solid fa-trash"></i>
+        </a>
+    </td>
+</tr>
+{% endfor %}
+                                
                                 <tr>
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center">

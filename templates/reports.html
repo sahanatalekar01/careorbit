@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Reports - CareOrbit</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/patient-dashboard">
+            🩺 CareOrbit
+        </a>
+
+        <a href="/logout" class="btn btn-light">
+            Logout
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">My Medical Reports</h2>
+
+    {% if reports %}
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-primary">
+            <tr>
+                <th>Title</th>
+                <th>Details</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for report in reports %}
+
+            <tr>
+                <td>{{ report.report_title }}</td>
+                <td>{{ report.report_details }}</td>
+                <td>{{ report.report_date }}</td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        No medical reports available.
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

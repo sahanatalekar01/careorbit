@@ -70,16 +70,16 @@
             <hr class="text-secondary">
             <ul class="nav flex-column gap-1">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#"><i class="fa-solid fa-gauge-high me-2"></i> Core Overview</a>
+                    <a class="nav-link active" href="{{ url_for('admin_dashboard')}}"><i class="fa-solid fa-gauge-high me-2"></i> Core Overview</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
+                    <a class="nav-link" href="{{ url_for('user_management')}}"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-server me-2"></i> System Nodes</a>
+                    <a class="nav-link" href="{{url_for('system_nodes')}}"><i class="fa-solid fa-server me-2"></i> System Nodes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
+                    <a class="nav-link" href="{{url_for('audit_logs')}}"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
                 </li>
                 <li class="nav-item mt-5">
                     <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to App</a>
