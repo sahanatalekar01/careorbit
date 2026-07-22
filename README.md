@@ -90,5 +90,3 @@ Backend:
 Database:
 - SQLite
 - Flask-SQLAlchemy
-
-## 📂 Project Structure
