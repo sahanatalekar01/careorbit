@@ -44,7 +44,6 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
-
 # DATABASE INITIALIZATION
 db.init_app(app)
 
@@ -196,8 +195,19 @@ def appointment():
     appointments = Appointment.query.filter_by(patient_id=session["patient_id"]).all()
     return render_template("appointment.html", appointments=appointments)
 
+@app.route("/appointments/<int:patient_id>")
+def doctor_appointments(patient_id):
+    appointments = Appointment.query.filter_by(patient_id=patient_id).all()
+    patient = Patient.query.get_or_404(patient_id)
 
-@app.route("/book-appointment", methods=["POST"])
+    return render_template(
+        "appointments.html",
+        patient=patient,
+        appointments=appointments
+    )
+
+
+@app.route("/book-appointment", methods=["GET","POST"])
 def book_appointment():
     if "patient_id" not in session:
         return redirect(url_for("patient_login"))
@@ -239,11 +249,11 @@ def reports():
     return render_template("reports.html", reports=patient_reports)
 
 
-@app.route("/health-recommendation")
-def health_recommendation():
+@app.route("/health-recommendations")
+def health_recommendations():
     if "patient_id" not in session:
         return redirect(url_for("patient_login"))
-    return render_template("health_recommendation.html")
+    return render_template("health_recommendations.html")
 
 
 @app.route("/save-report", methods=["POST"])
@@ -328,6 +338,8 @@ def doctor_dashboard():
 @app.route("/patient-records")
 def patient_records():
     patients = Patient.query.all()
+    for p in patients:
+        print("ID:",p.id,"Name:",p.full_name)
     return render_template("patient_records.html", patients=patients)
 
 
@@ -379,7 +391,11 @@ def hospital_dashboard():
 
     occupancy = int((occupied_beds / total_beds) * 100) if total_beds > 0 else 0
     icu = Ward.query.filter(Ward.name.ilike("%icu%")).first()
-    icu_capacity = int((icu.occupied_beds / icu.total_beds) * 100) if icu and icu.total_beds and icu.total_beds > 0 else 0
+    icu_capacity = 0
+    if icu and icu.total_beds:
+        icu_capacity=int(
+            (icu.occupied_beds/icu.total_beds)*100
+        )
 
     return render_template(
         "hospital_dashboard.html",
@@ -479,6 +495,10 @@ def admin_search():
         results = []
     return render_template("user_management.html", users=results)
 
+@app.route("/admin-settings")
+def admin_settings():
+    return render_template("admin_settings.html")
+
 
 @app.route("/delete-user/<int:user_id>")
 def delete_user(user_id):
@@ -509,11 +529,27 @@ def appointments():
     return render_template("appointments.html")
 
 
-@app.route("/prescriptions")
+@app.route("/prescriptions", methods=["GET", "POST"])
 def prescriptions():
+
+    if request.method == "POST":
+
+        new_prescription = Prescription(
+            patient_name=request.form.get("patient_name"),
+            medicine_name=request.form.get("medicine_name"),
+            dosage=request.form.get("dosage"),
+            doctor_name=request.form.get("doctor_name"),
+            status="Pending"
+        )
+
+        db.session.add(new_prescription)
+        db.session.commit()
+
+        flash("Prescription saved successfully.", "success")
+        return redirect(url_for("prescriptions"))
+
     data = Prescription.query.all()
     return render_template("prescriptions.html", prescriptions=data)
-
 
 @app.route("/emergency-cases")
 def emergency_cases():

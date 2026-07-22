@@ -81,10 +81,18 @@ class Report(db.Model):
 # --- Merged Appointment Model ---
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=True)
+
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+
     patient_name = db.Column(db.String(100), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String(20), nullable=False)
     symptoms = db.Column(db.String(200), nullable=False)
+
+    doctor_name = db.Column(db.String(100), nullable=False)
+    appointment_date = db.Column(db.Date, nullable=False)
+    appointment_time = db.Column(db.String(50), nullable=False)
+
     time = db.Column(db.String(50), nullable=False)
     status = db.Column(db.String(50), default="Pending")
+

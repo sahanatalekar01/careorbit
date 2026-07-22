@@ -120,7 +120,16 @@
                             <div>
                                 <span class="text-muted small fw-medium d-block">ICU Capacity</span>
                                 <h3 class="fw-bold text-danger mt-1 mb-0">{{icu_capacity}}%</h3>
-                                <span class="text-danger small"><i class="fa-solid fa-triangle-exclamation me-1"></i>{{ icu_ward.total_beds - icu_ward.occupied_beds }} Units Left</span>
+                                {% if icu_ward %}
+<span class="text-danger small">
+    <i class="fa-solid fa-triangle-exclamation me-1"></i>
+    {{ icu_ward.total_beds - icu_ward.occupied_beds }} Units Left
+</span>
+{% else %}
+<span class="text-muted small">
+    ICU Ward Not Available
+</span>
+{% endif %}
                             </div>
                             <div class="bg-danger-subtle p-3 rounded-circle text-danger">
                                 <i class="fa-solid fa-square-h fs-4"></i>
@@ -169,32 +178,36 @@
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="ps-4">Ward Name</th>
-                                            <th>Type</th>
-                                            <th>Total Beds</th>
-                                            <th>Occupied</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-     {% for ward in wards %}
-     <tr>
-        <td class="ps-4 fw-bold text-dark">{{ ward.name }}</td>
-        <td>{{ ward.type }}</td>
-        <td>{{ ward.total_beds }}</td>
-        <td>{{ ward.occupied_beds }}</td>
-        <td>
-            {% if ward.occupied_beds >= ward.total_beds %}
-                <span class="badge bg-danger-subtle text-danger p-2">Full</span>
-            {% elif ward.total_beds - ward.occupied_beds <= 5 %}
-                <span class="badge bg-warning-subtle text-warning p-2">Near Full</span>
-            {% else %}
-                <span class="badge bg-success-subtle text-success p-2">Normal</span>
-            {% endif %}
-        </td>
+                                    
+    <thead>
+    <tr>
+        <th class="ps-4">Ward Name</th>
+        <th>Type</th>
+        <th>Total Beds</th>
+        <th>Occupied</th>
+        <th>Status</th>
     </tr>
-    {% endfor %}
+</thead>
+
+<tbody>
+{% for ward in wards %}
+<tr>
+    <td class="ps-4 fw-bold text-dark">{{ ward.name }}</td>
+    <td>{{ ward.type }}</td>
+    <td>{{ ward.total_beds }}</td>
+    <td>{{ ward.occupied_beds }}</td>
+    <td>
+        {% if ward.occupied_beds >= ward.total_beds %}
+            <span class="badge bg-danger-subtle text-danger p-2">Full</span>
+        {% elif ward.total_beds - ward.occupied_beds <= 5 %}
+            <span class="badge bg-warning-subtle text-warning p-2">Near Full</span>
+        {% else %}
+            <span class="badge bg-success-subtle text-success p-2">Normal</span>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</tbody>
                                 </table>
                             </div>
                         </div>

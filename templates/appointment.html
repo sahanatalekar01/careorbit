@@ -25,42 +25,50 @@
 <div class="container mt-5">
 
     <h2 class="mb-4">Book Appointment</h2>
+<form action="/book-appointment" method="POST">
 
-    <form action="/book-appointment" method="POST">
+    <div class="mb-3">
+        <label class="form-label">Doctor Name</label>
+        <input
+            type="text"
+            name="doctor_name"
+            class="form-control"
+            required>
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Doctor Name</label>
-            <input
-                type="text"
-                name="doctor_name"
-                class="form-control"
-                required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">Appointment Date</label>
+        <input
+            type="date"
+            name="appointment_date"
+            class="form-control"
+            required>
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Appointment Date</label>
-            <input
-                type="date"
-                name="appointment_date"
-                class="form-control"
-                required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">Appointment Time</label>
+        <input
+            type="time"
+            name="appointment_time"
+            class="form-control"
+            required>
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Appointment Time</label>
-            <input
-                type="time"
-                name="appointment_time"
-                class="form-control"
-                required>
-        </div>
+    <!-- ADD THIS HERE -->
+    <div class="mb-3">
+        <label class="form-label">Symptoms</label>
+        <textarea
+            name="symptoms"
+            class="form-control"
+            rows="3"
+            required></textarea>
+    </div>
 
-        <button class="btn btn-primary">
-            Book Appointment
-        </button>
+    <button class="btn btn-primary">
+        Book Appointment
+    </button>
 
-    </form>
-
+</form>
     <hr>
 
     <h3>Your Appointments</h3>
