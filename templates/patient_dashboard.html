@@ -1,167 +1,733 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Dashboard - CareOrbit</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Patient Dashboard | CareOrbit</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#eef5ff;
+
+}
+
+.navbar{
+
+background:linear-gradient(90deg,#0d6efd,#2d8cff);
+
+padding:14px 0;
+
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+}
+
+.navbar-brand{
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+.hero{
+
+margin-top:35px;
+
+background:linear-gradient(135deg,#0d6efd,#4b9bff);
+
+color:white;
+
+padding:45px;
+
+border-radius:22px;
+
+box-shadow:0 20px 40px rgba(13,110,253,.25);
+
+}
+
+.hero h2{
+
+font-weight:700;
+
+margin-bottom:10px;
+
+}
+
+.hero p{
+
+opacity:.95;
+
+font-size:17px;
+
+}
+
+.logout-btn{
+
+border-radius:40px;
+
+padding:10px 24px;
+
+font-weight:600;
+
+}
+
+.stats{
+
+margin-top:35px;
+
+}
+
+.stat-card{
+
+background:white;
+
+border-radius:18px;
+
+padding:28px;
+
+text-align:center;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+height:100%;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.stat-icon{
+
+width:65px;
+
+height:65px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin:auto;
+
+margin-bottom:18px;
+
+font-size:28px;
+
+color:white;
+
+}
+
+.icon-blue{
+
+background:#0d6efd;
+
+}
+
+.icon-green{
+
+background:#198754;
+
+}
+
+.icon-red{
+
+background:#dc3545;
+
+}
+
+.stat-card h3{
+
+font-weight:700;
+
+font-size:34px;
+
+margin-bottom:8px;
+
+}
+
+.stat-card p{
+
+color:#6c757d;
+
+margin:0;
+
+}
+
+.section-title{
+
+margin-top:55px;
+
+margin-bottom:25px;
+
+font-weight:700;
+
+color:#0d6efd;
+
+}
+
+.feature-card{
+
+background:white;
+
+border-radius:20px;
+
+padding:28px;
+
+text-align:center;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+height:100%;
+
+}
+
+.feature-card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 18px 35px rgba(13,110,253,.18);
+
+}
+
+.feature-icon{
+
+width:70px;
+
+height:70px;
+
+margin:auto;
+
+margin-bottom:20px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+border-radius:50%;
+
+background:#e9f3ff;
+
+color:#0d6efd;
+
+font-size:30px;
+
+}
+
+.feature-card h5{
+
+font-weight:700;
+
+margin-bottom:10px;
+
+}
+
+.feature-card p{
+
+color:#6c757d;
+
+min-height:52px;
+
+}
+
+.feature-card .btn{
+
+border-radius:30px;
+
+padding:10px 24px;
+
+font-weight:600;
+
+}
+
+.activity{
+
+margin-top:60px;
+
+margin-bottom:40px;
+
+background:white;
+
+border-radius:20px;
+
+padding:30px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.table{
+
+margin-top:20px;
+
+}
+
+.footer{
+
+text-align:center;
+
+padding:25px;
+
+color:#6c757d;
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark">
 
-        <a class="navbar-brand fw-bold" href="/">
-            🩺 CareOrbit
-        </a>
+<div class="container">
 
-        <div class="ms-auto">
-            <a href="/logout" class="btn btn-light">
-                Logout
-            </a>
-        </div>
+<a class="navbar-brand" href="/">
 
-    </div>
-</nav>
+🩺 CareOrbit
 
-<div class="container py-5">
+</a>
 
-    <h2 class="text-primary mb-4">
-        Welcome, {{ patient_name }}!
-    </h2>
+<a href="/logout" class="btn btn-light logout-btn">
 
-    <!-- FIRST ROW -->
+Logout
 
-    <div class="row g-4">
-
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center p-4">
-
-                <h4>📝 Submit Symptoms</h4>
-
-                <p>Describe your symptoms for AI analysis.</p>
-
-                <a href="/symptom-analysis" class="btn btn-primary">
-                    Open
-                </a>
-
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center p-4">
-
-                <h4>📷 Upload Medicine Image</h4>
-
-                <p>Upload medicine or prescription images.</p>
-
-                <a href="/symptom-analysis" class="btn btn-primary">
-                    Upload
-                </a>
-
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center p-4">
-
-                <h4>📊 View Results</h4>
-
-                <p>Check your AI health analysis.</p>
-
-                <a href="/patient-results" class="btn btn-primary">
-                    View
-                </a>
-
-            </div>
-        </div>
-
-    </div>
-
-    <!-- SECOND ROW -->
-
-    <div class="row g-4 mt-3">
-
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center p-4">
-
-                <h4>📅 Appointments</h4>
-
-                <p>Book and manage your appointments.</p>
-
-                <a href="/appointment" class="btn btn-success">
-                    Open
-                </a>
-
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center p-4">
-
-                <h4>📄 Medical Reports</h4>
-
-                <p>View your saved medical reports.</p>
-
-                <a href="/reports" class="btn btn-success">
-                    View
-                </a>
-
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm text-center p-4">
-
-                <h4>❤️ Health Recommendations</h4>
-
-                <p>Get AI-based health guidance.</p>
-
-                <a href="/health-recommendation" class="btn btn-success">
-                    Open
-                </a>
-
-            </div>
-        </div>
-
-    </div>
-
-    <hr class="my-5">
-
-    <h3 class="mb-3">
-        Recent Activity
-    </h3>
-
-    <table class="table table-bordered table-hover">
-
-        <thead class="table-primary">
-
-            <tr>
-                <th>Date</th>
-                <th>Symptoms</th>
-                <th>Status</th>
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <tr>
-                <td>--/--/----</td>
-                <td>No records yet</td>
-                <td>Pending</td>
-            </tr>
-
-        </tbody>
-
-    </table>
+</a>
 
 </div>
 
+</nav>
+
+<div class="container">
+
+<div class="hero">
+
+<h2>
+
+Welcome Back, {{ patient_name }} 👋
+
+</h2>
+
+<p>
+
+Manage your health records, analyze symptoms using AI, book appointments, and access medical reports from one secure dashboard.
+
+</p>
+
+</div>
+
+<div class="row stats g-4">
+
+<div class="col-md-4">
+
+<div class="stat-card">
+
+<div class="stat-icon icon-blue">
+
+<i class="bi bi-heart-pulse-fill"></i>
+
+</div>
+
+<h3>AI</h3>
+
+<p>Smart Health Analysis</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="stat-card">
+
+<div class="stat-icon icon-green">
+
+<i class="bi bi-calendar2-check-fill"></i>
+
+</div>
+
+<h3>24/7</h3>
+
+<p>Appointment Access</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="stat-card">
+
+<div class="stat-icon icon-red">
+
+<i class="bi bi-file-earmark-medical-fill"></i>
+
+</div>
+
+<h3>100%</h3>
+
+<p>Digital Medical Records</p>
+
+</div>
+
+</div>
+
+</div>
+
+<h3 class="section-title">
+
+Quick Access
+
+</h3>
+
+<div class="row g-4">
+<div class="col-md-6 col-lg-4">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-cpu-fill"></i>
+
+</div>
+
+<h5>AI Symptom Analysis</h5>
+
+<p>
+
+Describe your symptoms and receive an AI-assisted preliminary health assessment.
+
+</p>
+
+<a href="/symptom-analysis" class="btn btn-primary">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-md-6 col-lg-4">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-camera-fill"></i>
+
+</div>
+
+<h5>Upload Medical Image</h5>
+
+<p>
+
+Upload images of skin conditions, prescriptions, or affected areas for analysis.
+
+</p>
+
+<a href="/symptom-analysis" class="btn btn-primary">
+
+Upload
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-md-6 col-lg-4">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-file-earmark-medical-fill"></i>
+
+</div>
+
+<h5>AI Results</h5>
+
+<p>
+
+View your previous AI health analysis and recommendations.
+
+</p>
+
+<a href="/patient-results" class="btn btn-primary">
+
+View
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-md-6 col-lg-4">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-calendar2-check-fill"></i>
+
+</div>
+
+<h5>Appointments</h5>
+
+<p>
+
+Book appointments and manage your upcoming doctor visits.
+
+</p>
+
+<a href="/appointment" class="btn btn-success">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-md-6 col-lg-4">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-file-medical-fill"></i>
+
+</div>
+
+<h5>Medical Reports</h5>
+
+<p>
+
+Access your prescriptions, reports and complete medical history.
+
+</p>
+
+<a href="/reports" class="btn btn-success">
+
+View
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-md-6 col-lg-4">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-heart-pulse-fill"></i>
+
+</div>
+
+<h5>Health Recommendations</h5>
+
+<p>
+
+Receive AI-powered health tips and wellness recommendations.
+
+</p>
+
+<a href="/health-recommendation" class="btn btn-success">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="activity">
+
+<h3>
+
+Recent Activity
+
+</h3>
+
+<p class="text-muted">
+
+Your recent AI analyses and appointments will appear below.
+
+</p>
+<table class="table table-hover align-middle">
+
+<thead class="table-primary">
+
+<tr>
+
+<th>Date</th>
+
+<th>Activity</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>-- / -- / ----</td>
+
+<td>AI Symptom Analysis</td>
+
+<td>
+<span class="badge bg-secondary">
+No Records
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td>-- / -- / ----</td>
+
+<td>Appointment</td>
+
+<td>
+<span class="badge bg-warning text-dark">
+Pending
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td>-- / -- / ----</td>
+
+<td>Medical Report</td>
+
+<td>
+<span class="badge bg-info">
+Awaiting Upload
+</span>
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="row mt-5 g-4">
+
+<div class="col-lg-6">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-lightbulb-fill"></i>
+
+</div>
+
+<h5>Daily Health Tip</h5>
+
+<p>
+
+Stay hydrated, eat balanced meals, sleep 7–8 hours, and exercise regularly to maintain a healthy lifestyle.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-6">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+
+<i class="bi bi-shield-check"></i>
+
+</div>
+
+<h5>Your Data is Secure</h5>
+
+<p>
+
+CareOrbit protects your medical information using secure authentication and role-based access.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+<hr>
+
+<p>
+
+© 2026 <strong>CareOrbit</strong> • Smart Healthcare Management System
+
+</p>
+
+</div>
+
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
