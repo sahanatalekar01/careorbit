@@ -28,15 +28,15 @@
             <div class="sidebar-brand fw-bold mb-4"><i class="fa-solid fa-house-medical me-2"></i> CareOrbit</div>
             <ul class="nav flex-column">
                 <li class="nav-item"><a class="nav-link active" href="#"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="/doctor-dashboard"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a></li>
+                <li class="nav-item"><a class="nav-link" href="/patient-records"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a></li>
                 <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('doctor_dashboard')}}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+    <a class="nav-link" href="/appointments"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('doctor_dashboard')}}"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
+    <a class="nav-link" href="/prescriptions"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="{{url_for('doctor_dashboard')}}"><i class="fa-solid fa-truck-medical me-2"></i> Emergency cases</a>
+    <a class="nav-link" href="/emergency-cases"><i class="fa-solid fa-truck-medical me-2"></i> Emergency cases</a>
 </li>
                 <li class="nav-item mt-5"><a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to Home</a></li>
             </ul>
@@ -128,7 +128,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="text-end pe-4">
-                                    <a href="/patient-records/{{ appointment.id }}" class="btn btn-sm btn-primary">Examine</a>
+                                    <a href="/patient-records/{{ appointment.patient_id }}" class="btn btn-sm btn-primary">Examine</a>
                                 </td>
                             </tr>
                             {% else %}
