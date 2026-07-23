@@ -10,3 +10,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+//password show /Hide Function
+function togglePassword(id, icon) {
+
+    const passwordField = document.getElementById(id);
+    const eyeIcon = icon.querySelector("i");
+
+    if (passwordField.type === "password") {
+
+        passwordField.type = "text";
+        eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+
+    } else {
+
+        passwordField.type = "password";
+        eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+
+    }
+}

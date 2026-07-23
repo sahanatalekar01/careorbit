@@ -85,7 +85,7 @@
                     <a class="nav-link active" href="#"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
+                    <a class="nav-link" href="{{url_for('prescriptions')}}"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fa-solid fa-truck-medical me-2"></i> Emergency cases</a>
@@ -110,13 +110,13 @@
                 <div class="col-6 col-md-3">
                     <div class="card metric-card p-3 shadow-sm text-center">
                         <span class="text-muted small fw-medium d-block">Pending Approval</span>
-                        <h4 class="fw-bold text-warning mt-1 mb-0">3 Requests</h4>
+                        <h4 class="fw-bold text-warning mt-1 mb-0">{{pending_count}} Requests</h4>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="card metric-card p-3 shadow-sm text-center">
                         <span class="text-muted small fw-medium d-block">Confirmed Today</span>
-                        <h4 class="fw-bold text-success mt-1 mb-0">8 Bookings</h4>
+                        <h4 class="fw-bold text-success mt-1 mb-0">{{accepted_count}} Bookings</h4>
                     </div>
                 </div>
             </div>
@@ -138,58 +138,22 @@
                                     <th class="text-end pe-4">Decision</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Request 1: Prachi Singh -->
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="fw-bold text-dark">Today, 09:30 AM</div>
-                                        <span class="text-muted small">Slot: #AS-301</span>
-                                    </td>
-                                    <td>
-                                        <div class="fw-bold text-dark">Prachi Singh</div>
-                                        <span class="text-muted small">F, 28 Yrs</span>
-                                    </td>
-                                    <td><span class="text-secondary">High Fever & Chills</span></td>
-                                    <td><span class="badge bg-warning-subtle text-warning p-2">Pending</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-success px-3 me-1"><i class="fa-solid fa-check me-1"></i> Accept</button>
-                                        <button class="btn btn-sm btn-outline-danger px-3"><i class="fa-solid fa-xmark"></i> Decline</button>
-                                    </td>
-                                </tr>
-                                <!-- Request 2: Saurabh Pawar -->
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="fw-bold text-dark">Today, 10:15 AM</div>
-                                        <span class="text-muted small">Slot: #AS-302</span>
-                                    </td>
-                                    <td>
-                                        <div class="fw-bold text-dark">Saurabh Pawar</div>
-                                        <span class="text-muted small">M, 34 Yrs</span>
-                                    </td>
-                                    <td><span class="text-secondary">Routine Body Scan</span></td>
-                                    <td><span class="badge bg-success-subtle text-success p-2">Confirmed</span></td>
-                                    <td class="text-end pe-4">
-                                        <span class="text-success small fw-semibold"><i class="fa-solid fa-circle-check me-1"></i> Scheduled</span>
-                                    </td>
-                                </tr>
-                                <!-- Request 3: Rohan Gupta -->
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="fw-bold text-dark">Tomorrow, 02:00 PM</div>
-                                        <span class="text-muted small">Slot: #AS-315</span>
-                                    </td>
-                                    <td>
-                                        <div class="fw-bold text-dark">Rohan Gupta</div>
-                                        <span class="text-muted small">M, 45 Yrs</span>
-                                    </td>
-                                    <td><span class="text-secondary">Persistent Headache</span></td>
-                                    <td><span class="badge bg-warning-subtle text-warning p-2">Pending</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-success px-3 me-1"><i class="fa-solid fa-check me-1"></i> Accept</button>
-                                        <button class="btn btn-sm btn-outline-danger px-3"><i class="fa-solid fa-xmark"></i> Decline</button>
-                                    </td>
-                                </tr>
-                            </tbody>
+<tbody>
+
+    {% for appointment in appointments %}
+    <tr>
+        <td>{{ appointment.time }}</td>
+        <td>{{ appointment.patient_name }}</td>
+        <td>{{ appointment.symptoms }}</td>
+        <td>{{ appointment.status }}</td>
+        <td>
+            <button class="btn btn-success">Accept</button>
+            <button class="btn btn-danger">Reject</button>
+        </td>
+    </tr>
+    {% endfor %}
+
+</tbody>
                         </table>
                     </div>
                 </div>

@@ -279,19 +279,29 @@ def save_report():
 @app.route("/doctor-login", methods=["GET", "POST"])
 def doctor_login():
     if request.method == "POST":
-        email = request.form.get("email")
+
+        login = request.form.get("login")
         password = request.form.get("password")
 
-        user = User.query.filter_by(email=email).first()
-        if user and user.password == password and user.role.lower() == "doctor":
+        user = User.query.filter(
+            ((User.username == login) | (User.email == login))
+            & (User.role == "doctor")
+        ).first()
+
+        print("Login entered:", login)
+        print("User found:", user)
+
+        if user and user.password == password:
             session["logged_in"] = True
             session["user_id"] = user.id
             session["username"] = user.username
+            session["full_name"]= user.full_name
             session["role"] = user.role.lower()
-            flash(f"Welcome back, Dr. {user.username}!", "success")
+
+            flash(f"Welcome back, Dr. {user.full_name}!", "success")
             return redirect(url_for("doctor_dashboard"))
 
-        flash("Invalid email or password.", "danger")
+        flash("Invalid username/email or password.", "danger")
 
     return render_template("doctor_login.html")
 
@@ -321,16 +331,25 @@ def doctor_dashboard():
         flash("Please login as doctor.", "danger")
         return redirect(url_for("doctor_login"))
 
+    today = datetime.today().date()
+
     appointments_list = Appointment.query.all()
+
+    todays_count = Appointment.query.filter_by(
+        appointment_date=today
+    ).count()
+
     completed_visits = Appointment.query.filter_by(status="Completed").count()
+
     pending_visits = Appointment.query.filter_by(status="Pending").count()
 
     return render_template(
         "doctor_dashboard.html",
         appointments=appointments_list,
-        todays_count=len(appointments_list),
+        todays_count=todays_count,
         completed_count=completed_visits,
-        pending_count=pending_visits
+        pending_count=pending_visits,
+        doctor_name=session.get("full_name", "Doctor")
     )
 
 
@@ -348,16 +367,149 @@ def patient_record(patient_id):
     patient = Patient.query.get_or_404(patient_id)
     return render_template("patient_details.html", patient=patient)
 
+#Doctor register
+@app.route("/doctor-register", methods=["GET", "POST"])
+def doctor_register():
 
+    if request.method == "POST":
+
+        full_name = request.form["full_name"]
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
+
+        # Check password
+        if password != confirm_password:
+            flash("Passwords do not match.", "danger")
+            return redirect(url_for("doctor_register"))
+
+        # Check username
+        if User.query.filter_by(username=username).first():
+            flash("Username already exists.", "danger")
+            return redirect(url_for("doctor_register"))
+
+        # Check email
+        if User.query.filter_by(email=email).first():
+            flash("Email already registered.", "danger")
+            return redirect(url_for("doctor_register"))
+
+        # Create doctor
+        doctor = User(
+            full_name=full_name,
+            username=username,
+            email=email,
+            password=password,
+            role="doctor"
+        )
+
+        db.session.add(doctor)
+        db.session.commit()
+        print("Doctor Registered:")
+        print(doctor.username, doctor.email, doctor.role)
+
+        flash("Registration successful! Please login.", "success")
+        return redirect(url_for("doctor_login"))
+
+    return render_template("doctor_register.html")
+
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+
+        contact = request.form["contact"]
+
+        user = User.query.filter(
+            ((User.email == contact) | (User.username == contact))
+            & (User.role == "doctor")
+        ).first()
+
+        if user:
+            session["reset_user_id"] = user.id
+            return redirect(url_for("verify_otp"))
+
+        else:
+            return "Doctor account not found"
+
+    return render_template("forgot-password.html")
+
+@app.route("/verify-otp", methods=["GET", "POST"])
+def verify_otp():
+
+    if request.method == "POST":
+
+        otp = request.form["otp"]
+
+        # Demo OTP verification
+        if otp == "123456":
+
+            return redirect(url_for("reset_password"))
+
+        else:
+            return "Invalid OTP"
+
+    return render_template("verify_otp.html")
+
+@app.route("/reset-password", methods=["GET", "POST"])
+def reset_password():
+
+    if request.method == "POST":
+
+        new_password = request.form["new_password"]
+        confirm_password = request.form["confirm_password"]
+
+        if new_password != confirm_password:
+            return "Passwords do not match"
+
+        user_id = session.get("reset_user_id")
+
+        user = User.query.get(user_id)
+
+        user.password = new_password
+
+        db.session.commit()
+
+        return redirect(url_for("password_success"))
+
+    return render_template("reset_password.html")
+
+@app.route("/password-success")
+def password_success():
+
+    return render_template("password_success.html")
+
+@app.route("/prescriptions", methods=["GET", "POST"])
+def prescriptions():
+    if "role" not in session or session.get("role") != "doctor":
+        flash("Please login as doctor.", "danger")
+        return redirect(url_for("doctor_login"))
+
+    if request.method == "POST":
+        new_prescription = Prescription(
+            patient_name=request.form.get("patient_name"),
+            medicine_name=request.form.get("medicine_name"),
+            dosage=request.form.get("dosage"),
+            doctor_name=request.form.get("doctor_name"),
+            status="Pending"
+        )
+
+        db.session.add(new_prescription)
+        db.session.commit()
+
+        flash("Prescription saved successfully.", "success")
+        return redirect(url_for("prescriptions"))
+
+    data = Prescription.query.all()
+    return render_template("prescriptions.html", prescriptions=data)
 # PRESCRIPTION
 @app.route("/prescribe/<int:appointment_id>", methods=["POST"])
 def prescribe(appointment_id):
     appointment = Appointment.query.get_or_404(appointment_id)
-    prescription_text = request.form.get("prescription")
-    medicine_name = request.form.get("medicine_name") or prescription_text
+    prescriptions_text = request.form.get("prescriptions")
+    medicine_name = request.form.get("medicine_name") or prescriptions_text
 
-    if prescription_text:
-        appointment.prescription = prescription_text
+    if prescriptions_text:
+        appointment.prescription = prescriptions_text
         appointment.status = "Completed"
 
         patient_name = appointment.patient_name
@@ -381,6 +533,16 @@ def prescribe(appointment_id):
 
     return redirect(url_for("doctor_dashboard"))
 
+@app.route("/appointment-status/<int:appointment_id>/<status>", methods=["POST"])
+def update_appointment_status(appointment_id, status):
+    appointment = Appointment.query.get_or_404(appointment_id)
+
+    if status in ["Accepted", "Declined", "Completed", "Pending"]:
+        appointment.status = status
+        db.session.commit()
+        flash(f"Appointment marked as {status}.", "success")
+
+    return redirect(url_for("doctor_dashboard"))
 
 # HOSPITAL DASHBOARD
 @app.route("/hospital-dashboard")
@@ -526,30 +688,30 @@ def edit_user(user_id):
 # EXTRA PAGES
 @app.route("/appointments")
 def appointments():
-    return render_template("appointments.html")
+    if "role" not in session or session.get("role") != "doctor":
+        flash("Please login as doctor.", "danger")
+        return redirect(url_for("doctor_login"))
 
-
-@app.route("/prescriptions", methods=["GET", "POST"])
-def prescriptions():
-
-    if request.method == "POST":
-
-        new_prescription = Prescription(
-            patient_name=request.form.get("patient_name"),
-            medicine_name=request.form.get("medicine_name"),
-            dosage=request.form.get("dosage"),
-            doctor_name=request.form.get("doctor_name"),
-            status="Pending"
+    appointments = Appointment.query.all()
+    for a in appointments:
+        print(
+            a.patient_name,
+            a.age,
+            a.gender,
+            a.symptoms,
+            a.time,
+            a.status,
         )
 
-        db.session.add(new_prescription)
-        db.session.commit()
+    pending_count = Appointment.query.filter_by(status="Pending").count()
+    accepted_count = Appointment.query.filter_by(status="Accepted").count()
 
-        flash("Prescription saved successfully.", "success")
-        return redirect(url_for("prescriptions"))
-
-    data = Prescription.query.all()
-    return render_template("prescriptions.html", prescriptions=data)
+    return render_template(
+        "doctor_appointements.html",
+        appointments=appointments,
+        pending_count=pending_count,
+        accepted_count=accepted_count
+    )
 
 @app.route("/emergency-cases")
 def emergency_cases():
@@ -565,6 +727,14 @@ def system_nodes():
 def audit_logs():
     return render_template("audit_logs.html")
 
+@app.route("/doctor-logout")
+def doctor_logout():
+
+    session.clear()
+
+    flash("You have been logged out successfully.", "success")
+
+    return redirect(url_for("doctor_login"))
 
 # ERROR HANDLERS
 @app.errorhandler(404)

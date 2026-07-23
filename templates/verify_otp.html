@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify OTP - CareOrbit</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forgot_password.css') }}">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f9ff;
+}
+
+
+/* OTP Card */
+
+.forgot-container {
+
+    width: 380px;
+
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.15);
+
+}
+
+
+/* Logo */
+
+.forgot-container h2 {
+
+    color: #007bff;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+}
+
+
+.forgot-container h2 span {
+
+    color: #00b894;
+
+}
+
+
+/* Heading */
+
+.forgot-container h3 {
+
+    color: #333;
+
+    font-size: 22px;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* Description */
+
+.forgot-container p {
+
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+
+}
+
+
+/* Input */
+
+.input-box input {
+
+    width: 100%;
+
+    height: 45px;
+
+    padding: 10px 15px;
+
+    text-align: center;
+
+    letter-spacing: 5px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 18px;
+
+}
+
+
+.input-box input:focus {
+
+    border-color: #007bff;
+
+}
+
+
+/* Button */
+
+button {
+
+    width: 100%;
+
+    height: 45px;
+
+    margin-top: 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #007bff;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+button:hover {
+
+    background: #0056b3;
+
+}
+
+
+/* Back Link */
+
+.back-section {
+
+    margin-top: 20px;
+
+}
+
+
+.back-section a {
+
+    text-decoration: none;
+
+    color: #007bff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.back-section a:hover {
+
+    color: #0056b3;
+
+}
+    </style>
+
+</head>
+
+<body>
+
+<div class="forgot-container">
+
+    <h2>Care<span>Orbit</span></h2>
+
+    <h3>Verify OTP</h3>
+
+    <p>
+        Enter the OTP sent to your registered email or phone number.
+    </p>
+
+
+    <form method="POST" action="/verify-otp">
+
+        <div class="input-box">
+
+            <input 
+                type="text"
+                name="otp"
+                placeholder="Enter OTP"
+                maxlength="6"
+                required>
+
+        </div>
+
+
+        <button type="submit">
+            Verify OTP
+        </button>
+
+    </form>
+
+
+    <div class="back-section">
+
+        <a href="/forgot-password">
+            ← Change Email / Phone Number
+        </a>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
