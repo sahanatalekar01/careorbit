@@ -201,7 +201,7 @@ def doctor_appointments(patient_id):
     patient = Patient.query.get_or_404(patient_id)
 
     return render_template(
-        "appointments.html",
+        "doctor_dashboard.html",
         patient=patient,
         appointments=appointments
     )
@@ -574,17 +574,17 @@ def hospital_dashboard():
 @app.route("/pharmacy-dashboard")
 def pharmacy_dashboard():
     medicines = Medicine.query.all()
-    total_products = len(medicines)
+
+    total_stock = sum(m.stock for m in medicines if m.stock)
     low_stock = Medicine.query.filter(Medicine.stock <= 20).count()
-    total_stock_val = sum(m.stock for m in medicines if m.stock)
 
     return render_template(
         "pharmacy_dashboard.html",
         medicines=medicines,
-        total_products=total_products,
-        low_stock_count=low_stock,
+        total_stock=total_stock,
         pending_orders=12,
-        total_stock=total_stock_val
+        low_stock=low_stock,
+        dispensed_today=0
     )
 
 
@@ -601,6 +601,7 @@ def dispense_medication(appointment_id):
 @app.route("/laboratory-dashboard")
 def laboratory_dashboard():
     tests = LabTest.query.all()
+
     return render_template(
         "laboratory_dashboard.html",
         lab_tests=tests,
@@ -609,17 +610,17 @@ def laboratory_dashboard():
         processing_tests=LabTest.query.filter_by(status="Processing").count()
     )
 
-
 # AMBULANCE DASHBOARD
 @app.route("/ambulance-dashboard")
 def ambulance_dashboard():
     ambulances = AmbulanceUnit.query.all()
+
     return render_template(
         "ambulance_dashboard.html",
         ambulances=ambulances,
         total_fleet=len(ambulances),
-        available_units=AmbulanceUnit.query.filter_by(status="Available").count(),
-        on_mission=AmbulanceUnit.query.filter_by(status="On Mission").count()
+        dispatch_count=AmbulanceUnit.query.filter_by(status="On Mission").count(),
+        available_ambulances=AmbulanceUnit.query.filter_by(status="Available").count()
     )
 
 
