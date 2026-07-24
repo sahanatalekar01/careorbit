@@ -313,6 +313,7 @@ Error
 </div>
 
 </form>
+
 <script>
 document.getElementById("symptom-form").addEventListener("submit", async function(e){
 
@@ -323,8 +324,6 @@ document.getElementById("symptom-form").addEventListener("submit", async functio
     const resultSection = document.getElementById("result-section");
     const errorSection = document.getElementById("error-section");
 
-    const analysisText = document.getElementById("analysis-text");
-    const uploadInfo = document.getElementById("upload-info");
     const errorText = document.getElementById("error-text");
 
     resultSection.style.display = "none";
@@ -338,85 +337,45 @@ document.getElementById("symptom-form").addEventListener("submit", async functio
     try{
 
         const response = await fetch("/analyze",{
-
             method:"POST",
             body:formData
-
         });
 
         const data = await response.json();
 
         if(response.ok && data.status==="success"){
 
-            let badgeColor = "#198754";
+            // Save AI Result
+            localStorage.setItem("analysisResult", JSON.stringify(data));
 
-            if(data.risk==="Moderate")
-                badgeColor="#ffc107";
-
-            if(data.risk==="High")
-                badgeColor="#dc3545";
-
-            analysisText.innerHTML = `
-                <div style="margin-bottom:15px;">
-                    <span style="
-                        background:${badgeColor};
-                        color:white;
-                        padding:8px 18px;
-                        border-radius:30px;
-                        font-weight:600;">
-                        Risk Level : ${data.risk}
-                    </span>
-                </div>
-
-                <strong>Recommendation</strong>
-
-                <br><br>
-
-                ${data.recommendation}
-            `;
-
-            if(data.uploaded_image){
-
-                uploadInfo.innerHTML =
-                `<i class="bi bi-image-fill"></i>
-                Uploaded Image :
-                ${data.uploaded_image}`;
-
-            }else{
-
-                uploadInfo.innerHTML =
-                `<i class="bi bi-image"></i>
-                No image uploaded.`;
-
-            }
-
-            resultSection.style.display="block";
+            // Redirect to Patient Result page
+            window.location.href = "/patient-results";
+            return;
 
         }else{
 
             errorText.textContent =
-            data.message || "Unable to analyze symptoms.";
+                data.message || "Unable to analyze symptoms.";
 
-            errorSection.style.display="block";
+            errorSection.style.display = "block";
 
         }
-
     }
     catch(error){
 
         errorText.textContent =
-        "Network error. Please try again.";
+            "Network error. Please try again.";
 
-        errorSection.style.display="block";
+        errorSection.style.display = "block";
 
         console.error(error);
 
     }
     finally{
 
-        submitBtn.disabled=false;
+        submitBtn.disabled = false;
 
-        submitBtn.innerHTML=
+        submitBtn.innerHTML =
         '<i class="bi bi-search-heart-fill"></i> Analyze Symptoms';
 
     }
