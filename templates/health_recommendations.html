@@ -1,46 +1,702 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Recommendation - CareOrbit</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Health Recommendations | CareOrbit</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+<style>
+
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+
+}
+
+
+
+body{
+
+background:#eef5ff;
+
+}
+
+
+
+
+.navbar{
+
+background:linear-gradient(90deg,#0d6efd,#2d8cff);
+
+padding:14px 0;
+
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+}
+
+
+
+.navbar-brand{
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+
+
+.logout-btn{
+
+border-radius:40px;
+
+padding:10px 24px;
+
+font-weight:600;
+
+}
+
+
+
+
+
+.hero{
+
+margin-top:40px;
+
+background:linear-gradient(135deg,#0d6efd,#4b9bff);
+
+color:white;
+
+padding:45px;
+
+border-radius:22px;
+
+box-shadow:0 20px 40px rgba(13,110,253,.25);
+
+}
+
+
+
+.hero h2{
+
+font-weight:700;
+
+}
+
+
+
+.hero p{
+
+font-size:17px;
+
+opacity:.95;
+
+}
+
+
+
+
+
+
+
+.section-title{
+
+margin-top:50px;
+
+margin-bottom:25px;
+
+font-weight:700;
+
+color:#0d6efd;
+
+}
+
+
+
+
+
+.recommendation-card{
+
+background:white;
+
+border-radius:20px;
+
+padding:30px;
+
+height:100%;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+
+
+.recommendation-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 18px 35px rgba(13,110,253,.18);
+
+}
+
+
+
+.icon-box{
+
+width:70px;
+
+height:70px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:#e9f3ff;
+
+color:#0d6efd;
+
+font-size:32px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.recommendation-card h5{
+
+font-weight:700;
+
+color:#0d6efd;
+
+margin-bottom:12px;
+
+}
+
+
+
+.recommendation-card p{
+
+color:#6c757d;
+
+}
+
+
+
+
+
+.tip-box{
+
+margin-top:50px;
+
+background:white;
+
+border-radius:20px;
+
+padding:30px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+.tip-box h4{
+
+color:#0d6efd;
+
+font-weight:700;
+
+}
+
+
+
+.footer{
+
+text-align:center;
+
+padding:30px;
+
+color:#6c757d;
+
+}
+
+
+</style>
+
+
 </head>
+
+
 
 <body>
 
-<nav class="navbar navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="/patient-dashboard">
-            🩺 CareOrbit
-        </a>
 
-        <a href="/logout" class="btn btn-light">
-            Logout
-        </a>
-    </div>
-</nav>
 
-<div class="container mt-5">
+<nav class="navbar navbar-expand-lg navbar-dark">
 
-    <div class="card shadow p-4">
 
-        <h2 class="text-primary mb-3">
-            Health Recommendations
-        </h2>
+<div class="container">
 
-        <ul class="list-group">
-            <li class="list-group-item">🥗 Eat a balanced diet rich in fruits and vegetables.</li>
-            <li class="list-group-item">💧 Drink at least 2–3 liters of water daily.</li>
-            <li class="list-group-item">🏃 Exercise for at least 30 minutes each day.</li>
-            <li class="list-group-item">😴 Sleep 7–8 hours every night.</li>
-            <li class="list-group-item">🩺 Consult a doctor if symptoms become severe or persist.</li>
-        </ul>
 
-    </div>
+<a class="navbar-brand" href="{{ url_for('patient_dashboard') }}">
+
+🩺 CareOrbit
+
+</a>
+
+
+
+<a href="{{ url_for('logout') }}" class="btn btn-light logout-btn">
+
+Logout
+
+</a>
+
 
 </div>
 
+
+</nav>
+
+
+
+
+
+<div class="container">
+
+
+
+<div class="hero">
+
+
+<h2>
+
+<i class="bi bi-heart-pulse-fill"></i>
+
+Health Recommendations
+
+</h2>
+
+
+
+<p>
+
+Follow healthy lifestyle practices and maintain your wellbeing with CareOrbit guidance.
+
+</p>
+
+
+</div>
+
+
+
+
+
+<h3 class="section-title">
+
+Daily Wellness Tips
+
+</h3>
+
+
+
+
+
+<div class="row g-4">
+
+<div class="col-md-6 col-lg-4">
+
+
+<div class="recommendation-card">
+
+
+
+<div class="icon-box">
+
+
+<i class="bi bi-egg-fried"></i>
+
+
+</div>
+
+
+
+
+<h5>
+
+Healthy Nutrition
+
+</h5>
+
+
+
+
+<p>
+
+Eat a balanced diet with fruits, vegetables, proteins, and essential nutrients to support overall health.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-6 col-lg-4">
+
+
+<div class="recommendation-card">
+
+
+
+<div class="icon-box">
+
+
+<i class="bi bi-droplet-fill"></i>
+
+
+</div>
+
+
+
+
+<h5>
+
+Stay Hydrated
+
+</h5>
+
+
+
+
+<p>
+
+Drink enough water throughout the day to maintain energy and support body functions.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-6 col-lg-4">
+
+
+<div class="recommendation-card">
+
+
+
+<div class="icon-box">
+
+
+<i class="bi bi-person-walking"></i>
+
+
+</div>
+
+
+
+
+<h5>
+
+Regular Exercise
+
+</h5>
+
+
+
+
+<p>
+
+Include physical activity in your routine to improve fitness and maintain a healthy lifestyle.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-6 col-lg-4">
+
+
+<div class="recommendation-card">
+
+
+
+<div class="icon-box">
+
+
+<i class="bi bi-moon-stars-fill"></i>
+
+
+</div>
+
+
+
+
+<h5>
+
+Quality Sleep
+
+</h5>
+
+
+
+
+<p>
+
+Maintain a regular sleep schedule and aim for sufficient rest every day.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-6 col-lg-4">
+
+
+<div class="recommendation-card">
+
+
+
+<div class="icon-box">
+
+
+<i class="bi bi-shield-check"></i>
+
+
+</div>
+
+
+
+
+<h5>
+
+Preventive Care
+
+</h5>
+
+
+
+
+<p>
+
+Monitor your health regularly and seek professional medical advice when required.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-6 col-lg-4">
+
+
+<div class="recommendation-card">
+
+
+
+<div class="icon-box">
+
+
+<i class="bi bi-clipboard2-pulse-fill"></i>
+
+
+</div>
+
+
+
+
+<h5>
+
+Track Your Health
+
+</h5>
+
+
+
+
+<p>
+
+Keep your medical records updated and follow recommended healthcare practices.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="tip-box">
+
+
+
+<h4>
+
+<i class="bi bi-lightbulb-fill"></i>
+
+CareOrbit Health Tip
+
+</h4>
+
+
+
+
+<p class="text-muted mb-0">
+
+Small healthy habits followed consistently can help improve your overall wellbeing. Always consult a healthcare professional for medical concerns.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="text-center mt-4 mb-4">
+
+
+<a href="{{ url_for('patient_dashboard') }}" class="btn btn-primary rounded-pill px-4">
+
+← Back to Dashboard
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="footer">
+
+
+<hr>
+
+
+
+<p>
+
+© 2026 <strong>CareOrbit</strong> • Smart Healthcare Management System
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
 </body>
+
+
 </html>
