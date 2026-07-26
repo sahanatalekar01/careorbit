@@ -1,230 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CareOrbit | AI Symptom Analysis</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>AI Symptom Analysis | CareOrbit</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Poppins',sans-serif;
-        }
 
-        body{
-            background:#eef5ff;
-        }
 
-        .hero{
-            padding:60px 0;
-        }
+<style>
 
-        .analysis-card{
+*{
 
-            background:white;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 
-            border-radius:20px;
+}
 
-            padding:40px;
 
-            box-shadow:0 15px 40px rgba(0,0,0,.08);
 
-        }
+body{
 
-        .title-icon{
+background:#eef5ff;
+min-height:100vh;
 
-            width:80px;
-            height:80px;
+}
 
-            border-radius:50%;
 
-            display:flex;
-            justify-content:center;
-            align-items:center;
 
-            background:linear-gradient(135deg,#0d6efd,#3d8bfd);
+.navbar{
 
-            color:white;
+background:linear-gradient(90deg,#0d6efd,#2d8cff);
+padding:14px 0;
+box-shadow:0 8px 20px rgba(0,0,0,.12);
 
-            font-size:34px;
+}
 
-            margin:auto;
 
-        }
 
-        h2{
+.navbar-brand{
 
-            font-weight:700;
+font-size:28px;
+font-weight:700;
 
-            color:#0d6efd;
+}
 
-            margin-top:20px;
 
-        }
 
-        .subtitle{
+.nav-btn{
 
-            color:#6c757d;
+border-radius:40px;
+padding:10px 22px;
+font-weight:600;
 
-            margin-bottom:35px;
+}
 
-        }
 
-        label{
 
-            font-weight:600;
+.hero{
 
-            margin-bottom:8px;
+padding:45px 0;
 
-        }
+}
 
-        textarea{
 
-            resize:none;
 
-            min-height:170px;
+.analysis-card{
 
-            border-radius:12px !important;
+background:white;
+border-radius:25px;
+padding:40px;
 
-        }
+box-shadow:0 15px 35px rgba(0,0,0,.10);
 
-        input[type=file]{
+}
 
-            border-radius:12px !important;
 
-        }
 
-        .btn-analyze{
+.title-icon{
 
-            background:#0d6efd;
+width:80px;
+height:80px;
 
-            color:white;
+border-radius:50%;
 
-            border:none;
+display:flex;
+justify-content:center;
+align-items:center;
 
-            border-radius:50px;
+background:linear-gradient(135deg,#0d6efd,#4b9bff);
 
-            padding:14px;
+color:white;
 
-            font-size:17px;
+font-size:38px;
 
-            font-weight:600;
+margin:auto;
 
-            transition:.3s;
+}
 
-        }
 
-        .btn-analyze:hover{
 
-            background:#084298;
+.analysis-card h2{
 
-            transform:translateY(-2px);
+font-weight:700;
+color:#0d6efd;
+margin-top:20px;
 
-        }
+}
 
-        .result-card{
 
-            display:none;
 
-            margin-top:35px;
+.subtitle{
 
-            border-left:6px solid #0d6efd;
+color:#6c757d;
+margin-bottom:35px;
 
-            background:#f8fbff;
+}
 
-            border-radius:15px;
 
-            padding:25px;
 
-        }
+.form-label{
 
-        .error-card{
+font-weight:600;
 
-            display:none;
+}
 
-            margin-top:35px;
 
-            border-left:6px solid red;
 
-            background:#fff5f5;
+textarea{
 
-            border-radius:15px;
+resize:none;
 
-            padding:25px;
+min-height:170px;
 
-        }
+border-radius:14px !important;
 
-        .risk{
+}
 
-            font-size:22px;
 
-            font-weight:700;
 
-            margin:15px 0;
+.form-control{
 
-        }
+border-radius:14px;
 
-        .recommendation{
+padding:13px;
 
-            line-height:1.8;
+border:1px solid #dce6f5;
 
-            color:#444;
+}
 
-        }
 
-    </style>
+
+.form-control:focus{
+
+border-color:#0d6efd;
+
+box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
+
+}
+
+
+
+.btn-analyze{
+
+background:#0d6efd;
+
+color:white;
+
+border:none;
+
+border-radius:30px;
+
+padding:14px;
+
+font-size:17px;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+
+
+.btn-analyze:hover{
+
+background:#084298;
+
+transform:translateY(-3px);
+
+}
+
+
+
+.result-card{
+
+display:none;
+
+margin-top:35px;
+
+border-left:6px solid #0d6efd;
+
+background:#f8fbff;
+
+border-radius:15px;
+
+padding:25px;
+
+}
+
+
+
+.error-card{
+
+display:none;
+
+margin-top:35px;
+
+border-left:6px solid #dc3545;
+
+background:#fff5f5;
+
+border-radius:15px;
+
+padding:25px;
+
+}
+
+
+
+.recommendation{
+
+line-height:1.8;
+
+color:#444;
+
+}
+
+
+.footer{
+
+text-align:center;
+
+padding:30px;
+
+color:#6c757d;
+
+}
+
+
+</style>
 
 </head>
 
+
 <body>
 
-<section class="hero">
+
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+
 
 <div class="container">
 
+
+<a class="navbar-brand" href="{{ url_for('patient_dashboard') }}">
+
+🩺 CareOrbit
+
+</a>
+
+
+
+<div>
+
+
+<a href="{{ url_for('patient_dashboard') }}" class="btn btn-light nav-btn me-2">
+
+Dashboard
+
+</a>
+
+
+<a href="{{ url_for('logout') }}" class="btn btn-light nav-btn">
+
+Logout
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+</nav>
+
+
+
+
+
+<section class="hero">
+
+
+<div class="container">
+
+
 <div class="row justify-content-center">
+
 
 <div class="col-lg-8">
 
+
 <div class="analysis-card">
+
+
 
 <div class="text-center">
 
+
 <div class="title-icon">
+
 
 <i class="bi bi-cpu-fill"></i>
 
+
 </div>
 
-<h2>AI Symptom Analysis</h2>
+
+
+<h2>
+
+AI Symptom Analysis
+
+</h2>
+
+
 
 <p class="subtitle">
 
-Describe your symptoms below. Our AI will generate a preliminary health assessment based on the information you provide.
+Describe your symptoms and receive an AI-assisted preliminary health assessment.
 
 </p>
 
+
 </div>
+
+
+
 
 <form id="symptom-form" enctype="multipart/form-data">
 
+
 <div class="mb-4">
+
 
 <label class="form-label">
 
 Symptoms
 
 </label>
+
 
 <textarea
 
@@ -236,19 +383,23 @@ name="symptoms"
 
 placeholder="Example: Fever since yesterday, headache, body pain..."
 
-required>
+required></textarea>
 
-</textarea>
 
 </div>
 
+
+
+
 <div class="mb-4">
+
 
 <label class="form-label">
 
-Upload Image (Optional)
+Upload Medical Image (Optional)
 
 </label>
+
 
 <input
 
@@ -262,8 +413,8 @@ name="image"
 
 accept="image/*">
 
-</div>
 
+</div>
 <div class="d-grid">
 
 <button
@@ -282,9 +433,11 @@ Analyze Symptoms
 
 </div>
 
-<!-- RESULT -->
+
+
 
 <div id="result-section" class="result-card">
+
 
 <h4 class="mb-3">
 
@@ -292,15 +445,20 @@ Analyze Symptoms
 
 </h4>
 
+
 <p id="analysis-text" class="recommendation"></p>
+
 
 <p id="upload-info" class="text-muted mt-3"></p>
 
+
 </div>
 
-<!-- ERROR -->
+
+
 
 <div id="error-section" class="error-card">
+
 
 <h4 class="text-danger">
 
@@ -308,92 +466,174 @@ Error
 
 </h4>
 
+
 <p id="error-text"></p>
 
+
 </div>
+
+
 
 </form>
 
-<script>
-document.getElementById("symptom-form").addEventListener("submit", async function(e){
 
-    e.preventDefault();
-
-    const submitBtn = document.getElementById("submit-btn");
-
-    const resultSection = document.getElementById("result-section");
-    const errorSection = document.getElementById("error-section");
-
-    const errorText = document.getElementById("error-text");
-
-    resultSection.style.display = "none";
-    errorSection.style.display = "none";
-
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Analyzing...';
-
-    const formData = new FormData(this);
-
-    try{
-
-        const response = await fetch("/analyze",{
-            method:"POST",
-            body:formData
-        });
-
-        const data = await response.json();
-
-        if(response.ok && data.status==="success"){
-
-            // Save AI Result
-            localStorage.setItem("analysisResult", JSON.stringify(data));
-
-            // Redirect to Patient Result page
-            window.location.href = "/patient-results";
-            return;
-
-        }else{
-
-            errorText.textContent =
-                data.message || "Unable to analyze symptoms.";
-
-            errorSection.style.display = "block";
-
-        }
-    }
-    catch(error){
-
-        errorText.textContent =
-            "Network error. Please try again.";
-
-        errorSection.style.display = "block";
-
-        console.error(error);
-
-    }
-    finally{
-
-        submitBtn.disabled = false;
-
-        submitBtn.innerHTML =
-        '<i class="bi bi-search-heart-fill"></i> Analyze Symptoms';
-
-    }
-
-});
-</script>
 
 </div>
 
-</div>
 
 </div>
 
+
 </div>
+
+
+</div>
+
 
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<div class="container">
+
+
+<div class="footer">
+
+<hr>
+
+<p>
+
+© 2026 <strong>CareOrbit</strong> • Smart Healthcare Management System
+
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+document.getElementById("symptom-form").addEventListener("submit", async function(e){
+
+
+e.preventDefault();
+
+
+
+const submitBtn = document.getElementById("submit-btn");
+
+const resultSection = document.getElementById("result-section");
+
+const errorSection = document.getElementById("error-section");
+
+const errorText = document.getElementById("error-text");
+
+
+
+resultSection.style.display="none";
+
+errorSection.style.display="none";
+
+
+
+submitBtn.disabled=true;
+
+submitBtn.innerHTML='<i class="bi bi-arrow-repeat"></i> Analyzing...';
+
+
+
+const formData=new FormData(this);
+
+
+
+try{
+
+
+const response=await fetch("/analyze",{
+
+method:"POST",
+
+body:formData
+
+});
+
+
+
+const data=await response.json();
+
+
+
+if(response.ok && data.status==="success"){
+
+
+localStorage.setItem("analysisResult",JSON.stringify(data));
+
+
+window.location.href="/patient-results";
+
+
+return;
+
+
+}
+
+else{
+
+
+errorText.textContent=data.message || "Unable to analyze symptoms.";
+
+errorSection.style.display="block";
+
+
+}
+
+
+
+}
+
+catch(error){
+
+
+errorText.textContent="Network error. Please try again.";
+
+errorSection.style.display="block";
+
+
+console.error(error);
+
+
+}
+
+finally{
+
+
+submitBtn.disabled=false;
+
+
+submitBtn.innerHTML=
+
+'<i class="bi bi-search-heart-fill"></i> Analyze Symptoms';
+
+
+}
+
+
+});
+
+
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
 
 </body>
 
