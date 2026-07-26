@@ -180,7 +180,7 @@ def analyze():
 
     return jsonify({
         "status": "success",
-        "symptoms": symptoms,
+         "symptoms": symptoms,
         "risk": risk,
         "recommendation": recommendation,
         "uploaded_image": uploaded_image
