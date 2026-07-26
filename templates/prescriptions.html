@@ -125,8 +125,8 @@
             type="text"
             class="form-control"
             name="doctor_name"
-            placeholder="Enter Doctor Name"
-            required>
+            value="{{doctor_name}}"
+            readonly>
     </div>
 
     <!-- Patient Selection & Diagnosis -->
@@ -136,13 +136,12 @@
             <label class="form-label fw-semibold small text-secondary">
                 Select Patient
             </label>
-
-            <select class="form-select" name="patient_name" required>
-                <option selected disabled>Choose patient...</option>
-                <option>Prachi Singh (#PT-8941)</option>
-                <option>Saurabh Pawar (#PT-2291)</option>
-                <option>Rohan Gupta (#PT-4112)</option>
-            </select>
+            <input 
+            type="text"
+            class="form-control"
+            name="patient_name"
+            placeholder="Enter Patient Name"
+            required>
         </div>
 
         <div class="col-md-6">
@@ -207,29 +206,50 @@
                         </form>
                     </div>
                 </div>
+<!-- Right Column: Recent Prescriptions -->
+<div class="col-lg-4">
+    <div class="card presc-card p-4">
+        <h5 class="fw-bold text-dark mb-4">
+            <i class="fa-solid fa-history text-secondary me-2"></i>
+            Recent Prescriptions
+        </h5>
 
-                <!-- Right Column: Recent Prescriptions History -->
-                <div class="col-lg-4">
-                    <div class="card presc-card p-4">
-                        <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-history text-secondary me-2"></i>Recent Receipts</h5>
-                        
-                        <!-- Mini list -->
-                        <div class="d-flex flex-column gap-3">
-                            <div class="p-3 border rounded d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong class="text-dark d-block">Prachi Singh</strong>
-                                    <span class="text-muted small">Paracetamol • 5 Days</span>
-                                </div>
-                                <span class="badge bg-success-subtle text-success p-2">Sent</span>
-                            </div>
-                            <div class="p-3 border rounded d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong class="text-dark d-block">Saurabh Pawar</strong>
-                                    <span class="text-muted small">Amoxicillin • 7 Days</span>
-                                </div>
-                                <span class="badge bg-success-subtle text-success p-2">Sent</span>
-                            </div>
-                        </div>
+        {% if prescriptions %}
+
+            {% for p in prescriptions %}
+            <div class="p-3 border rounded d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <strong class="text-dark d-block">
+                        {{ p.patient_name }}
+                    </strong>
+
+                    <span class="text-muted small">
+                        {{ p.medicine_name }} • {{ p.dosage }}
+                    </span>
+                </div>
+
+                <span class="badge bg-success">
+                    {{ p.status }}
+                </span>
+            </div>
+            {% endfor %}
+
+        {% else %}
+
+            <div class="text-center py-5">
+                <i class="fa-solid fa-file-prescription fa-3x text-secondary mb-3"></i>
+
+                <h5>No Prescriptions Available</h5>
+
+                <p class="text-muted">
+                    Prescriptions issued by doctors will appear here.
+                </p>
+            </div>
+
+        {% endif %}
+
+    </div>
+</div>                      
                     </div>
                 </div>
             </div>

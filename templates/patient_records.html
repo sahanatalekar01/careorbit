@@ -80,7 +80,7 @@
                     <a class="nav-link active" href="{{url_for('patient_records')}}"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('appointments')}}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+                    <a class="nav-link" href="{{url_for('doctor_appointments_list')}}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
@@ -142,61 +142,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Patient 1: Prachi Singh -->
-                                <tr>
-                                    <td class="ps-4 fw-semibold text-primary">#PT-8941</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar me-2 bg-primary-subtle rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
-                                                <i class="fa-solid fa-user text-primary"></i>
-                                            </div>
-                                            <span class="fw-bold text-dark">Prachi Singh</span>
-                                        </div>
-                                    </td>
-                                    <td>28 Yrs / Female</td>
-                                    <td>Today (09:30 AM)</td>
-                                    <td><span class="badge bg-danger-subtle text-danger p-2">High Risk Fever</span></td>
-                                    <td class="text-end pe-4">
-                                        <a href="/appointments/1" class="btn btn-sm btn-outline-primary">Appointments</a>
-                                    </td>
-                                </tr>
-                                <!-- Patient 2: Saurabh Pawar -->
-                                <tr>
-                                    <td class="ps-4 fw-semibold text-primary">#PT-2291</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar me-2 bg-success-subtle rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
-                                                <i class="fa-solid fa-user text-success"></i>
-                                            </div>
-                                            <span class="fw-bold text-dark">Saurabh Pawar</span>
-                                        </div>
-                                    </td>
-                                    <td>34 Yrs / Male</td>
-                                    <td>Today (10:15 AM)</td>
-                                    <td><span class="badge bg-success-subtle text-success p-2">Routine Checkup</span></td>
-                                    <td class="text-end pe-4">
-                                        <a href="/appointments/2" class="btn btn-sm btn-outline-primary">Appointments</a>
-                                    </td>
-                                </tr>
-                                <!-- Patient 3: Rohan Gupta -->
-                                <tr>
-                                    <td class="ps-4 fw-semibold text-primary">#PT-4112</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar me-2 bg-warning-subtle rounded-circle p-2 text-center" style="width: 40px; height: 40px;">
-                                                <i class="fa-solid fa-user text-warning"></i>
-                                            </div>
-                                            <span class="fw-bold text-dark">Rohan Gupta</span>
-                                        </div>
-                                    </td>
-                                    <td>45 Yrs / Male</td>
-                                    <td>12-07-2026</td>
-                                    <td><span class="badge bg-warning-subtle text-warning p-2">Migraine Consultation</span></td>
-                                    <td class="text-end pe-4">
-                                        <a href="/appointments/3" class="btn btn-sm btn-outline-primary">Appointments</a>
-                                    </td>
-                                </tr>
-                            </tbody>
+{% for patient in patients %}
+<tr>
+    <td class="ps-4 fw-semibold text-primary">
+        #PT-{{ patient.id }}
+    </td>
+
+    <td>
+        <div class="d-flex align-items-center">
+            <div class="avatar me-2 bg-primary-subtle rounded-circle p-2 text-center"
+                 style="width:40px;height:40px;">
+                <i class="fa-solid fa-user text-primary"></i>
+            </div>
+            <span class="fw-bold text-dark">
+                {{ patient.full_name }}
+            </span>
+        </div>
+    </td>
+
+    <td>{{ patient.age }} Yrs / {{ patient.gender }}</td>
+
+    <td>-</td>
+
+    <td>{{ patient.blood_group or "N/A" }}</td>
+
+    <td class="text-end pe-4">
+        <a href="/appointments/{{ patient.id }}"
+           class="btn btn-sm btn-outline-primary">
+            Appointments
+        </a>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
                         </table>
                     </div>
                 </div>
