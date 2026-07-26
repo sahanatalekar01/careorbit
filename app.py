@@ -158,13 +158,26 @@ def patient_dashboard():
     if "patient_id" not in session:
         return redirect(url_for("patient_login"))
 
-
     patient = Patient.query.get(session["patient_id"])
-
 
     return render_template(
         "patient_dashboard.html",
         patient_name=session.get("patient_name", "Patient"),
+        patient=patient
+    )
+
+
+# PATIENT PROFILE
+@app.route("/patient-profile")
+def patient_profile():
+
+    if "patient_id" not in session:
+        return redirect(url_for("patient_login"))
+
+    patient = Patient.query.get(session["patient_id"])
+
+    return render_template(
+        "patient_profile.html",
         patient=patient
     )
 
