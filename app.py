@@ -259,16 +259,33 @@ def appointment():
 
 @app.route("/appointments/<int:patient_id>")
 def doctor_appointments(patient_id):
+
     appointments = Appointment.query.filter_by(
         patient_id=patient_id
     ).all()
 
     patient = Patient.query.get_or_404(patient_id)
 
+    pending_count = Appointment.query.filter_by(
+        patient_id=patient_id,
+        status="Pending"
+    ).count()
+
+    accepted_count = Appointment.query.filter_by(
+        patient_id=patient_id,
+        status="Accepted"
+    ).count()
+
+    import os
+    print("Current folder:", os.getcwd())
+    print("Templates folder:", os.listdir("templates"))
+
     return render_template(
-        "doctor_dashboard.html",
+        "doctor_appointment.html",
         patient=patient,
-        appointments=appointments
+        appointments=appointments,
+        pending_count=pending_count,
+        accepted_count=accepted_count
     )
 
 
@@ -469,6 +486,13 @@ def doctor_dashboard():
 
     appointments_list = Appointment.query.all()
 
+    for appointment in appointments_list:
+        print(
+            "Appointment ID :",appointment.id,
+            "Patient ID :", appointment.patient_id,
+            "Patient :", appointment.patient_name
+        )
+
     todays_count = Appointment.query.filter_by(
         appointment_date=today
     ).count()
@@ -516,9 +540,14 @@ def patient_record(patient_id):
 
     patient = Patient.query.get_or_404(patient_id)
 
+    appointment=Appointment.query.filter_by(
+        patient_id=patient_id
+    ).first()
+
     return render_template(
         "patient_details.html",
-        patient=patient
+        patient=patient,
+        appointment=appointment
     )
 
 
@@ -531,6 +560,7 @@ def doctor_register():
         full_name = request.form["full_name"]
         username = request.form["username"]
         email = request.form["email"]
+        phone = request.form["phone"]
         password = request.form["password"]
         confirm_password = request.form["confirm_password"]
 
@@ -550,6 +580,7 @@ def doctor_register():
             full_name=full_name,
             username=username,
             email=email,
+            phone =phone,
             password=password,
             role="doctor"
         )
@@ -670,7 +701,8 @@ def prescriptions():
 
     return render_template(
         "prescriptions.html",
-        prescriptions=data
+        prescriptions=data,
+        doctor_name=session.get("username")
     )
 
 
@@ -970,23 +1002,13 @@ def edit_user(user_id):
 
 # EXTRA PAGES
 @app.route("/appointments")
-def appointments():
+def doctor_appointments_list():
 
     if "role" not in session or session.get("role") != "doctor":
         flash("Please login as doctor.", "danger")
         return redirect(url_for("doctor_login"))
 
     appointments = Appointment.query.all()
-
-    for a in appointments:
-        print(
-            a.patient_name,
-            a.age,
-            a.gender,
-            a.symptoms,
-            a.time,
-            a.status,
-        )
 
     pending_count = Appointment.query.filter_by(
         status="Pending"
@@ -997,18 +1019,21 @@ def appointments():
     ).count()
 
     return render_template(
-        "doctor_appointements.html",
+        "doctor_appointment.html",
         appointments=appointments,
         pending_count=pending_count,
         accepted_count=accepted_count
     )
 
-
 @app.route("/emergency-cases")
 def emergency_cases():
-    return render_template("emergency_cases.html")
 
+    cases = []
 
+    return render_template(
+        "emergency_cases.html",
+        emergency_cases=cases
+    )
 @app.route("/system-nodes")
 def system_nodes():
     return render_template("system_nodes.html")

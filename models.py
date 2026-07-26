@@ -9,6 +9,7 @@ class User(db.Model):
     full_name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
+    phone = db.Column(db.String(15))
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(100), nullable=True)
