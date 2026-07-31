@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Laboratory Report | CareOrbit</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+body{
+    background:#eef5ff;
+}
+
+.report-card{
+    background:white;
+    border-radius:15px;
+    padding:35px;
+    margin-top:40px;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.section-title{
+    color:#0d6efd;
+    font-weight:bold;
+    margin-top:25px;
+    border-bottom:2px solid #e5e5e5;
+    padding-bottom:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="report-card">
+
+<div class="text-center">
+
+<h2>🏥 CareOrbit Hospital</h2>
+
+<h4>Laboratory Investigation Report</h4>
+
+<hr>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<p><strong>Patient Name:</strong> {{ test.patient_name }}</p>
+
+<p><strong>Doctor Name:</strong> {{ test.doctor_name }}</p>
+
+<p><strong>Report ID:</strong> LAB-{{ test.id }}</p>
+
+</div>
+
+<div class="col-md-6">
+
+<p><strong>Test Date:</strong> {{ test.completed_date }}</p>
+
+<p><strong>Status:</strong>
+<span class="badge bg-success">{{ test.status }}</span>
+</p>
+
+</div>
+
+</div>
+
+<h5 class="section-title">🧪 Test Details</h5>
+
+<p><strong>Test Name:</strong> {{ test.test_name }}</p>
+
+<p><strong>Sample Type:</strong> {{ test.sample_type }}</p>
+
+<p><strong>Category:</strong> {{ test.category }}</p>
+
+<h5 class="section-title">📊 Test Result</h5>
+
+<p><strong>Result:</strong> {{ test.result }} {{ test.unit }}</p>
+
+<p><strong>Reference Range:</strong> {{ test.reference_range }}</p>
+
+<p>
+
+<strong>Interpretation:</strong>
+
+{% if test.interpretation == "Normal" %}
+<span class="badge bg-success">Normal</span>
+
+{% elif test.interpretation == "High" %}
+<span class="badge bg-danger">High</span>
+
+{% elif test.interpretation == "Low" %}
+<span class="badge bg-warning text-dark">Low</span>
+
+{% else %}
+{{ test.interpretation }}
+{% endif %}
+
+</p>
+
+<h5 class="section-title">👨‍⚕️ Doctor Remarks</h5>
+
+<p>{{ test.remarks }}</p>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<strong>Verified By</strong>
+
+<br>
+
+{{ test.verified_by }}
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<strong>Digital Signature</strong>
+
+<br>
+
+CareOrbit Laboratory
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+
+<button onclick="window.print()" class="btn btn-primary">
+<i class="bi bi-printer"></i>
+Print Report
+</button>
+
+<a href="{{ url_for('patient_lab_reports') }}" class="btn btn-secondary">
+Back
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

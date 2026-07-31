@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -29,12 +30,42 @@ class Prescription(db.Model):
 # AMBULANCE MODEL
 class AmbulanceUnit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    vehicle_number = db.Column(db.String(50), unique=True, nullable=False)
-    vehicle_type = db.Column(db.String(100), nullable=False)
-    crew_assigned = db.Column(db.String(200), nullable=False)
-    current_destination = db.Column(db.String(200), nullable=True)
-    status = db.Column(db.String(50), default="Available")
 
+    vehicle_number = db.Column(
+        db.String(50),
+        unique=True,
+        nullable=False
+    )
+
+    vehicle_type = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    crew_assigned = db.Column(
+        db.String(200),
+        nullable=False
+    )
+
+    current_destination = db.Column(
+        db.String(200),
+        nullable=True
+    )
+
+    status = db.Column(
+        db.String(50),
+        default="Available"
+    )
+
+    latitude = db.Column(
+        db.Float,
+        default=18.6298
+    )
+
+    longitude = db.Column(
+        db.Float,
+        default=73.7997
+    )
 
 # NOTIFICATION MODEL
 class Notification(db.Model):
@@ -83,7 +114,18 @@ class LabTest(db.Model):
         default="Pending"
     )
     date_requested = db.Column(db.String(50), nullable=False)
-
+    doctor_name=db.Column(db.String(100))
+    priority=db.Column(db.String(50))
+    notes=db.Column(db.Text)
+    sample_type=db.Column(db.String(50))
+    appointment_id = db.Column(db.Integer)
+    result=db.Column(db.String(100))
+    unit=db.Column(db.String(30))
+    reference_range=db.Column(db.String(50))
+    interpretation=db.Column(db.String(50))
+    remarks=db.Column(db.Text)
+    verified_by=db.Column(db.String(100))
+    completed_date=db.Column(db.String(50))
 
 # PATIENT MODEL
 class Patient(db.Model):
@@ -138,6 +180,7 @@ class Patient(db.Model):
 
 # REPORT MODEL
 class Report(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
 
     patient_id = db.Column(
@@ -159,6 +202,33 @@ class Report(db.Model):
     report_date = db.Column(
         db.Date,
         nullable=False
+    )
+
+
+    # Laboratory report fields
+
+    result = db.Column(
+        db.String(100)
+    )
+
+    unit = db.Column(
+        db.String(50)
+    )
+
+    reference_range = db.Column(
+        db.String(100)
+    )
+
+    interpretation = db.Column(
+        db.Text
+    )
+
+    remarks = db.Column(
+        db.Text
+    )
+
+    verified_by = db.Column(
+        db.String(100)
     )
     
 class Doctor(db.Model):
@@ -230,3 +300,29 @@ class Appointment(db.Model):
         db.String(50),
         default="Pending"
     )
+
+class AuditLog(db.Model):
+     id = db.Column(db.Integer, primary_key=True)
+
+     user = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+     action = db.Column(
+        db.String(200),
+        nullable=False
+    )
+
+     timestamp = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
+     details = db.Column(
+        db.String(300)
+    )
+class Analyzer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(50), nullable=False)

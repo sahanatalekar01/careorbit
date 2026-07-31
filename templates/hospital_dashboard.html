@@ -162,7 +162,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Doctors On Duty</span>
-                                <h3 class="fw-bold text-success mt-1 mb-0">14</h3>
+                                <h3 class="fw-bold text-success mt-1 mb-0">{{ doctors_on_duty}}</h3>
                                 <span class="text-muted small">Active on floor</span>
                             </div>
                             <div class="bg-success-subtle p-3 rounded-circle text-success">
@@ -176,8 +176,8 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">OPD Token Queue</span>
-                                <h3 class="fw-bold text-warning mt-1 mb-0">29</h3>
-                                <span class="text-muted small">Avg Wait: 15 mins</span>
+                                <h3 class="fw-bold text-warning mt-1 mb-0">{{ opd_queue }}</h3>
+                                <span class="text-muted small">Avg Wait: {{ avg_wait_time }}</span>
                             </div>
                             <div class="bg-warning-subtle p-3 rounded-circle text-warning">
                                 <i class="fa-solid fa-users-line fs-4"></i>
@@ -239,28 +239,30 @@
                     <div class="card op-card p-4 shadow-sm">
                         <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-microscope text-primary me-2"></i>Active Services Status</h5>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
-                                <div>
-                                    <strong class="d-block text-dark">Pharmacy Hub</strong>
-                                    <span class="text-muted small">Fully Stocked</span>
-                                </div>
-                                <span class="badge bg-success rounded-pill">Online</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
-                                <div>
-                                    <strong class="d-block text-dark">Diagnostics Lab</strong>
-                                    <span class="text-muted small">Processing 14 Reports</span>
-                                </div>
-                                <span class="badge bg-success rounded-pill">Online</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
-                                <div>
-                                    <strong class="d-block text-dark">Emergency Response</strong>
-                                    <span class="text-muted small">3 Fleets Dispatched</span>
-                                </div>
-                                <span class="badge bg-danger rounded-pill">High Load</span>
-                            </li>
-                        </ul>
+
+{% for service in services %}
+
+<li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+
+    <div>
+        <strong class="d-block text-dark">
+            {{ service.name }}
+        </strong>
+
+        <span class="text-muted small">
+            {{ service.description }}
+        </span>
+    </div>
+
+    <span class="badge bg-success rounded-pill">
+        {{ service.status }}
+    </span>
+
+</li>
+
+{% endfor %}
+
+</ul>
                     </div>
                 </div>
             </div>

@@ -714,6 +714,41 @@ Quick Access
 
 
 <div class="row g-4">
+    <!-- Medical Reports Card -->
+
+<div class="col-md-6 col-lg-4">
+    ...
+</div>
+
+<!-- Paste Notifications Card Here -->
+
+<div class="col-md-6 col-lg-4">
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+            <i class="bi bi-bell-fill"></i>
+        </div>
+
+        <h5>Notifications</h5>
+
+        <p>
+            View your latest laboratory updates and hospital notifications.
+        </p>
+
+        <a href="{{ url_for('patient_notifications') }}" class="btn btn-warning">
+            View
+        </a>
+
+    </div>
+
+</div>
+
+<!-- Health Recommendations Card -->
+
+<div class="col-md-6 col-lg-4">
+    ...
+</div>
 
 
 
@@ -939,7 +974,7 @@ Access your prescriptions, reports, and medical history.
 
 
 
-<a href="/reports" class="btn btn-success">
+<a href="{{ url_for('patient_lab_reports') }}" class="btn btn-success">
 
 View
 

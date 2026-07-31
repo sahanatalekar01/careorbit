@@ -71,19 +71,19 @@
             <ul class="nav flex-column gap-1">
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ url_for('admin_dashboard')}}"><i class="fa-solid fa-gauge-high me-2"></i> Core Overview</a>
-                </li>
+                </li><hr>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('user_management')}}"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
-                </li>
+                </li><hr>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('system_nodes')}}"><i class="fa-solid fa-server me-2"></i> System Nodes</a>
-                </li>
+                </li><hr>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('audit_logs')}}"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
-                </li>
+                </li><hr>
                 <li class="nav-item mt-5">
                     <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to App</a>
-                </li>
+                </li><hr>
             </ul>
         </nav>
 
@@ -118,19 +118,21 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <div class="card admin-card p-4 shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="text-muted small fw-medium d-block">API Request Latency</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">42 ms</h3>
-                                <span class="text-success small"><i class="fa-solid fa-circle-check me-1"></i> Optimal speed</span>
-                            </div>
-                            <div class="bg-info-subtle p-3 rounded-circle text-info">
-                                <i class="fa-solid fa-bolt fs-4"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="card admin-card p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-muted small fw-medium d-block">API Request Latency</span>
+                <h3 class="fw-bold text-dark mt-1 mb-0">42 ms</h3>
+                <span class="text-success small">
+                    <i class="fa-solid fa-circle-check me-1"></i> Optimal speed
+                </span>
+            </div>
+            <div class="bg-info-subtle p-3 rounded-circle text-info">
+                <i class="fa-solid fa-bolt fs-4"></i>
+            </div>
+        </div>
+    </div>
+</div>
                 <div class="col-md-3 col-sm-6">
                     <div class="card admin-card p-4 shadow-sm">
                         <div class="d-flex justify-content-between align-items-center">

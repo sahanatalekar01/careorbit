@@ -25,7 +25,9 @@ from models import (
     AmbulanceUnit,
     Notification,
     Ward,
-    Medicine
+    Medicine,
+    AuditLog,
+    Analyzer
 )
 
 
@@ -161,7 +163,9 @@ def patient_dashboard():
 
     patient = Patient.query.get(session["patient_id"])
 
-
+    print("Session:", dict(session))
+    print("Patient Name:", session.get("patient_name"))
+    
     return render_template(
         "patient_dashboard.html",
         patient_name=session.get("patient_name", "Patient"),
@@ -363,6 +367,50 @@ def reports():
         reports=patient_reports
     )
 
+@app.route("/patient-lab-reports")
+def patient_lab_reports():
+
+    if "patient_id" not in session:
+        flash("Please login first.", "danger")
+        return redirect(url_for("patient_login"))
+
+    patient = Patient.query.get_or_404(session["patient_id"])
+
+    tests = LabTest.query.filter_by(
+        patient_name=patient.full_name
+    ).all()
+
+    return render_template(
+        "patient_lab_reports.html",
+        patient=patient,
+        tests=tests
+    )
+
+
+@app.route("/update-lab-status/<int:id>/<status>")
+def update_lab_status(id, status):
+
+    test = LabTest.query.get_or_404(id)
+
+    test.status = status
+
+    if status == "Completed":
+
+        notification = Notification(
+            target_audience=test.patient_name,
+            severity="Success",
+            message=f'Your "{test.test_name}" test has been completed.',
+            is_active=True
+        )
+
+        db.session.add(notification)
+
+    db.session.commit()
+
+    flash("Lab test status updated successfully.", "success")
+
+    return redirect(url_for("laboratory_dashboard"))
+
 
 @app.route("/health-recommendations")
 def health_recommendations():
@@ -370,6 +418,17 @@ def health_recommendations():
         return redirect(url_for("patient_login"))
 
     return render_template("health_recommendations.html")
+
+@app.route("/view-lab-report/<int:id>")
+def view_lab_report(id):
+
+    test = LabTest.query.get_or_404(id)
+
+    return render_template(
+        "view_lab_report.html",
+        test=test
+    )
+
 
 
 @app.route("/save-report", methods=["POST"])
@@ -398,6 +457,47 @@ def save_report():
     db.session.commit()
 
     return redirect(url_for("reports"))
+
+@app.route("/complete-lab-report/<int:id>", methods=["GET", "POST"])
+def complete_lab_report(id):
+
+    test = LabTest.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        test.result = request.form.get("result")
+        test.unit = request.form.get("unit")
+        test.reference_range = request.form.get("reference_range")
+        test.interpretation = request.form.get("interpretation")
+        test.remarks = request.form.get("remarks")
+        test.verified_by = request.form.get("verified_by")
+
+        test.status = "Completed"
+
+        # Add this here
+        test.completed_date = datetime.now().strftime("%d-%m-%Y")
+
+
+        notification = Notification(
+            target_audience=test.patient_name,
+            severity="Success",
+            message=f"Your {test.test_name} test has been completed. Click 'View Report' to see your laboratory report.",
+            is_active=True
+        )
+
+        db.session.add(notification)
+
+        db.session.commit()
+
+        flash("Laboratory report saved successfully.", "success")
+
+        return redirect(url_for("laboratory_dashboard"))
+
+
+    return render_template(
+        "complete_lab_report.html",
+        test=test
+    )
 
 
 # DOCTOR LOGIN
@@ -551,6 +651,22 @@ def patient_record(patient_id):
     )
 
 
+@app.route("/patient-notifications")
+def patient_notifications():
+
+    if "patient_name" not in session:
+        return redirect(url_for("patient_login"))
+
+    notifications = Notification.query.filter_by(
+        target_audience=session["patient_name"],
+        is_active=True
+    ).order_by(Notification.timestamp.desc()).all()
+
+    return render_template(
+        "patient_notifications.html",
+        notifications=notifications
+    )
+
 # DOCTOR REGISTER
 @app.route("/doctor-register", methods=["GET", "POST"])
 def doctor_register():
@@ -666,6 +782,28 @@ def reset_password():
         return redirect(url_for("password_success"))
 
     return render_template("reset_password.html")
+
+@app.route("/add-medicine", methods=["GET", "POST"])
+def add_medicine():
+
+    if request.method == "POST":
+
+        medicine = Medicine(
+            name=request.form.get("name"),
+            category=request.form.get("category"),
+            stock=request.form.get("stock"),
+            status=request.form.get("status")
+        )
+
+        db.session.add(medicine)
+        db.session.commit()
+
+        flash("Medicine added successfully!", "success")
+
+        return redirect(url_for("pharmacy_dashboard"))
+
+
+    return render_template("add_medicine.html")
 
 
 @app.route("/password-success")
@@ -787,8 +925,10 @@ def update_appointment_status(appointment_id, status):
 @app.route("/hospital-dashboard")
 def hospital_dashboard():
 
+    # Get all wards
     wards_list = Ward.query.all()
 
+    # Bed calculation
     total_beds = sum(
         w.total_beds
         for w in wards_list
@@ -807,6 +947,8 @@ def hospital_dashboard():
         else 0
     )
 
+
+    # ICU calculation
     icu = Ward.query.filter(
         Ward.name.ilike("%icu%")
     ).first()
@@ -818,6 +960,39 @@ def hospital_dashboard():
             (icu.occupied_beds / icu.total_beds) * 100
         )
 
+
+    # Doctors count
+    doctors_on_duty = User.query.filter_by(
+        role="doctor"
+    ).count()
+
+
+    # Pending OPD appointments
+    opd_queue = Appointment.query.filter_by(
+        status="Pending"
+    ).count()
+
+
+    # Hospital services
+    services = [
+        {
+            "name": "Pharmacy Hub",
+            "description": "Fully Stocked",
+            "status": "Online"
+        },
+        {
+            "name": "Diagnostics Lab",
+            "description": "Processing Reports",
+            "status": "Online"
+        },
+        {
+            "name": "Emergency Response",
+            "description": "Ambulance Available",
+            "status": "Online"
+        }
+    ]
+
+
     return render_template(
         "hospital_dashboard.html",
         wards=wards_list,
@@ -825,33 +1000,10 @@ def hospital_dashboard():
         icu_capacity=icu_capacity,
         total_beds=total_beds,
         occupied_beds=occupied_beds,
-        icu_ward=icu
-    )
-
-
-# PHARMACY DASHBOARD
-@app.route("/pharmacy-dashboard")
-def pharmacy_dashboard():
-
-    medicines = Medicine.query.all()
-
-    total_stock = sum(
-        m.stock
-        for m in medicines
-        if m.stock
-    )
-
-    low_stock = Medicine.query.filter(
-        Medicine.stock <= 20
-    ).count()
-
-    return render_template(
-        "pharmacy_dashboard.html",
-        medicines=medicines,
-        total_stock=total_stock,
-        pending_orders=12,
-        low_stock=low_stock,
-        dispensed_today=0
+        icu_ward=icu,
+        doctors_on_duty=doctors_on_duty,
+        opd_queue=opd_queue,
+        services=services
     )
 
 
@@ -875,18 +1027,45 @@ def dispense_medication(appointment_id):
     )
 
     return redirect(url_for("pharmacy_dashboard"))
+
 # LABORATORY DASHBOARD
+
 @app.route("/laboratory-dashboard")
 def laboratory_dashboard():
 
     tests = LabTest.query.all()
+    analyzers = Analyzer.query.all()
+
+    today = datetime.now().strftime("%d-%m-%Y")
+
+    today_requests = LabTest.query.filter_by(
+        date_requested=today
+    ).count()
+
+    pending_tests = LabTest.query.filter_by(
+        status="Pending"
+    ).count()
+
+    processing_tests = LabTest.query.filter_by(
+        status="Processing"
+    ).count()
+
+    completed_tests = LabTest.query.filter_by(
+        status="Completed"
+    ).count()
+
+    urgent_tests = LabTest.query.filter_by(
+        priority="High Priority"
+    ).count()
 
     return render_template(
         "laboratory_dashboard.html",
         lab_tests=tests,
-        total_tests=len(tests),
-        pending_tests=LabTest.query.filter_by(status="Pending").count(),
-        processing_tests=LabTest.query.filter_by(status="Processing").count()
+        analyzers=analyzers,
+        pending_tests=pending_tests,
+        processing_tests=processing_tests,
+        completed_tests=completed_tests,
+        urgent_tests=urgent_tests
     )
 
 
@@ -913,10 +1092,15 @@ def ambulance_dashboard():
 @app.route("/admin-dashboard")
 def admin_dashboard():
 
+    if "role" not in session or session.get("role") != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
     total_appointments = Appointment.query.count()
     completed_visits = Appointment.query.filter_by(
         status="Completed"
     ).count()
+
     users = User.query.count()
     notifications = Notification.query.all()
 
@@ -929,10 +1113,13 @@ def admin_dashboard():
         records=notifications
     )
 
-
 # USER MANAGEMENT
 @app.route("/user-management")
 def user_management():
+
+    if "role" not in session or session.get("role")!="admin":
+        flash("Access denied.","danger")
+        return redirect(url_for("home"))
 
     users = User.query.all()
 
@@ -944,7 +1131,10 @@ def user_management():
 
 @app.route("/admin/search")
 def admin_search():
-
+    if "role" not in session or session.get("role")!="admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+    
     query = request.args.get("query", "")
 
     if query:
@@ -953,50 +1143,210 @@ def admin_search():
             | (User.email.like(f"%{query}%"))
         ).all()
     else:
-        results = []
+        results = User.query.all()
 
     return render_template(
         "user_management.html",
         users=results
     )
 
-
-@app.route("/admin-settings")
-def admin_settings():
-    return render_template("admin_settings.html")
-
-
-@app.route("/delete-user/<int:user_id>")
-def delete_user(user_id):
-
-    user = User.query.get_or_404(user_id)
-
-    db.session.delete(user)
-    db.session.commit()
-
-    flash("User deleted successfully.", "success")
-
-    return redirect(url_for("user_management"))
-
-
-# EDIT USER
-@app.route("/edit-user/<int:user_id>", methods=["GET", "POST"])
-def edit_user(user_id):
-
-    user = User.query.get_or_404(user_id)
+@app.route("/admin-register", methods=["GET","POST"])
+def admin_register():
 
     if request.method == "POST":
-        user.username = request.form.get("username")
-        user.email = request.form.get("email")
-        user.role = request.form.get("role")
+
+        admin = User(
+            username=request.form.get("username"),
+            email=request.form.get("email"),
+            password=request.form.get("password"),
+            role="admin"
+        )
+
+        db.session.add(admin)
+        db.session.commit()
+
+        flash("Admin registered successfully.", "success")
+
+        return redirect(url_for("admin_login"))
+
+    return render_template("admin_register.html")
+    
+
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+
+    if request.method == "POST":
+
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        admin = User.query.filter_by(
+            email=email,
+            password=password,
+            role="admin"
+        ).first()
+
+        print("Email:", email)
+        print("Password:", password)
+        print("Admin:", admin)
+
+        if admin:
+
+            session["logged_in"] = True
+            session["user_id"] = admin.id
+            session["role"] = "admin"
+            session["username"] = admin.username
+
+            log = AuditLog(
+                user=admin.username,
+                action="Login",
+                details="Admin logged into CareOrbit"
+            )
+
+            db.session.add(log)
+            db.session.commit()
+
+            flash("Admin login success")
+            print(session)
+
+            return redirect(
+                url_for("admin_dashboard")
+            )
+
+        else:
+            flash("Invalid admin credentials.", "danger")
+
+    return render_template("admin_login.html")
+
+@app.route("/admin-settings", methods=["GET","POST"])
+def admin_settings():
+
+    if "role" not in session or session.get("role") != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+
+        message = request.form.get("message")
+        target = request.form.get("target")
+
+        notification = Notification(
+            message=message,
+            target=target
+        )
+
+        db.session.add(notification)
+        db.session.commit()
+
+        flash("Notification sent successfully", "success")
+
+    return render_template("admin_settings.html")
+
+#PHARMACY DASHBOARD
+@app.route("/pharmacy-dashboard")
+def pharmacy_dashboard():
+
+    medicines = Medicine.query.all()
+
+    total_stock = Medicine.query.count()
+
+    low_stock = Medicine.query.filter(
+        Medicine.stock <= 10
+    ).count()
+
+    pending_orders = Prescription.query.filter_by(
+        status="Pending"
+    ).count()
+
+    dispensed_today = Prescription.query.filter_by(
+        status="Completed"
+    ).count()
+
+    prescriptions = Prescription.query.all()
+
+
+    return render_template(
+        "pharmacy_dashboard.html",
+        medicines=medicines,
+        total_stock=total_stock,
+        low_stock=low_stock,
+        pending_orders=pending_orders,
+        dispensed_today=dispensed_today,
+        prescriptions=prescriptions
+    )
+
+@app.route("/dispatch-ambulance", methods=["POST"])
+def dispatch_ambulance():
+
+    category = request.form.get("category")
+    location = request.form.get("location")
+
+    latitude = request.form.get("latitude")
+    longitude = request.form.get("longitude")
+
+    ambulance = AmbulanceUnit.query.filter_by(
+        status="Available"
+    ).first()
+
+    if ambulance:
+
+        ambulance.status = "On Mission"
+        ambulance.current_destination = location
+
+        if latitude and longitude:
+            ambulance.latitude = float(latitude)
+            ambulance.longitude = float(longitude)
 
         db.session.commit()
 
-        return redirect(url_for("user_management"))
+        flash(
+            f"Ambulance dispatched for {category}",
+            "success"
+        )
+
+    else:
+        flash(
+            "No ambulance available currently.",
+            "danger"
+        )
+
+    return redirect(
+        url_for("ambulance_dashboard")
+    )
+
+@app.route("/lab-request/<int:id>", methods=["GET", "POST"])
+def lab_request(id):
+
+    if "role" not in session or session.get("role") != "doctor":
+        flash("Please login as doctor.", "danger")
+        return redirect(url_for("doctor_login"))
+
+    appointment = Appointment.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        test = LabTest(
+            patient_name=appointment.patient_name,
+            test_name=request.form.get("test_name"),
+            category=request.form.get("sample_type"),
+            status="Pending",
+            date_requested=datetime.now().strftime("%d-%m-%Y %H:%M")
+        )
+
+        db.session.add(test)
+        db.session.commit()
+
+        flash("Lab test request submitted successfully.", "success")
+
+        return redirect(url_for("laboratory_dashboard"))
 
     return render_template(
-        "edit_user.html",
-        user=user
+        "lab_request.html",
+        appointment=appointment,
+        doctor_name=session.get("full_name", "Doctor"),
+        current_date=datetime.now().strftime("%d-%m-%Y"),
+        current_time=datetime.now().strftime("%I:%M %p")
     )
 
 
@@ -1041,7 +1391,16 @@ def system_nodes():
 
 @app.route("/audit-logs")
 def audit_logs():
-    return render_template("audit_logs.html")
+
+    if "role" not in session or session.get("role") != "admin":
+        return redirect(url_for("admin_login"))
+
+    logs = AuditLog.query.all()
+
+    return render_template(
+        "audit_logs.html",
+        records=logs
+    )
 
 
 @app.route("/doctor-logout")

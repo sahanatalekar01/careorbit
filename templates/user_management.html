@@ -125,86 +125,76 @@
                                     <th>System Node Status</th>
                                     <th class="text-end pe-4">System Actions</th>
                                 </tr>
-                            </thead>
-                            
-        {% for user in users %}
+ </thead>
+                                
+ 
+ <tbody>
+
+{% for user in users %}
 <tr>
-    <!-- User Details Column -->
+
     <td class="ps-4">
         <div class="d-flex align-items-center">
+
             <div class="bg-primary-subtle text-primary p-2 rounded-circle me-3">
-                <i class="fa-solid fa-user-doctor"></i>
+                {% if user.role == "doctor" %}
+                    <i class="fa-solid fa-user-doctor"></i>
+                {% elif user.role == "patient" %}
+                    <i class="fa-solid fa-hospital-user"></i>
+                {% else %}
+                    <i class="fa-solid fa-user"></i>
+                {% endif %}
             </div>
+
             <div>
-                <strong class="d-block text-dark">{{ user.username }}</strong>
-                <span class="text-muted small">{{ user.email }}</span>
+                <strong class="d-block text-dark">
+                    {{ user.full_name }}
+                </strong>
+
+                <span class="text-muted small">
+                    {{ user.email }}
+                </span>
             </div>
+
         </div>
     </td>
-    
-    <!-- Role Column -->
-    <td><span class="badge bg-info-subtle text-info">{{ user.role }}</span></td>
-    
-    <!-- Department Column -->
-    <td>General Ward</td>
-    
-    <!-- Status Column -->
-    <td><span class="badge bg-success-subtle text-success p-2">Active</span></td>
-    
-    <!-- System Actions Column (Your new buttons!) -->
+
+    <td>
+        <span class="badge bg-info-subtle text-info">
+            {{ user.role }}
+        </span>
+    </td>
+
+    <td>
+        {{ user.department or "General Ward" }}
+    </td>
+
+    <td>
+        <span class="badge bg-success-subtle text-success p-2">
+            {{ user.status or "Active" }}
+        </span>
+    </td>
+
     <td class="text-end pe-4">
-        <a href="/edit-user/{{ user.id }}" class="btn btn-sm btn-outline-secondary me-1">
+
+        <a href="{{ url_for('edit_user',user_id=user.id) }}" 
+           class="btn btn-sm btn-outline-secondary me-1">
             <i class="fa-solid fa-user-pen"></i>
         </a>
-        <a href="/delete-user/{{ user.id }}" class="btn btn-sm btn-outline-danger" 
+
+        <a href="{{ url_for('delete_user',user_id=user.id) }}"
+           class="btn btn-sm btn-outline-danger"
            onclick="return confirm('Are you sure?')">
             <i class="fa-solid fa-trash"></i>
         </a>
+
     </td>
+
 </tr>
+
 {% endfor %}
-                                
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-success-subtle text-success p-2 rounded-circle me-3">
-                                                <i class="fa-solid fa-prescription-bottle-medical"></i>
-                                            </div>
-                                            <div>
-                                                <strong class="d-block text-dark">Rahul Verma</strong>
-                                                <span class="text-muted small">pharmacy_alpha@careorbit.com</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-warning-subtle text-warning">Pharmacy Head</span></td>
-                                    <td>Main Dispensary Hub</td>
-                                    <td><span class="badge bg-success-subtle text-success p-2">Active Node</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-user-pen"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-ban"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="ps-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-secondary-subtle text-secondary p-2 rounded-circle me-3">
-                                                <i class="fa-solid fa-hospital-user"></i>
-                                            </div>
-                                            <div>
-                                                <strong class="d-block text-dark">Prachi Singh</strong>
-                                                <span class="text-muted small">prachi@example.com</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-secondary-subtle text-secondary">Patient</span></td>
-                                    <td>Outpatient Base</td>
-                                    <td><span class="badge bg-danger-subtle text-danger p-2">Suspended</span></td>
-                                    <td class="text-end pe-4">
-                                        <button class="btn btn-sm btn-outline-secondary me-1"><i class="fa-solid fa-user-pen"></i></button>
-                                        <button class="btn btn-sm btn-outline-success"><i class="fa-solid fa-user-check"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
+
+                           </tbody>
                         </table>
                     </div>
                 </div>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Complete Lab Report - CareOrbit</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
+<style>
+
+body{
+    background:#f4f7fb;
+    font-family:Poppins, sans-serif;
+}
+
+
+.report-card{
+
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+
+}
+
+
+.header{
+
+    background:#0d6efd;
+    color:white;
+    padding:20px;
+    border-radius:15px 15px 0 0;
+
+}
+
+
+label{
+
+    font-weight:600;
+
+}
+
+
+.btn-save{
+
+    background:#198754;
+    color:white;
+    padding:12px 30px;
+    border-radius:10px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container mt-5">
+
+
+<div class="report-card">
+
+
+<div class="header mb-4">
+
+<h3>
+<i class="bi bi-file-earmark-medical"></i>
+Complete Laboratory Report
+</h3>
+
+
+<p class="mb-0">
+Patient: {{test.patient_name}}
+</p>
+
+
+<p>
+Test: {{test.test_name}}
+</p>
+
+
+</div>
+
+
+
+
+<form method="POST">
+
+
+<div class="row">
+
+
+<div class="col-md-6 mb-3">
+
+<label>Result</label>
+
+<input 
+type="text"
+name="result"
+class="form-control"
+placeholder="Enter test result"
+required>
+
+</div>
+
+
+
+<div class="col-md-6 mb-3">
+
+<label>Unit</label>
+
+<input 
+type="text"
+name="unit"
+class="form-control"
+placeholder="Example: mg/dL">
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="mb-3">
+
+<label>Reference Range</label>
+
+<input 
+type="text"
+name="reference_range"
+class="form-control"
+placeholder="Normal range">
+
+</div>
+
+
+
+
+<div class="mb-3">
+
+<label>Interpretation</label>
+
+<textarea
+name="interpretation"
+class="form-control"
+rows="3"
+placeholder="Enter interpretation">
+
+</textarea>
+
+
+</div>
+
+
+
+
+<div class="mb-3">
+
+<label>Remarks</label>
+
+
+<textarea
+name="remarks"
+class="form-control"
+rows="3"
+placeholder="Additional remarks">
+
+</textarea>
+
+
+</div>
+
+
+
+
+<div class="mb-3">
+
+<label>Verified By</label>
+
+
+<input
+type="text"
+name="verified_by"
+class="form-control"
+placeholder="Lab technician / Doctor name">
+
+</div>
+
+
+
+
+<button type="submit" class="btn btn-save" >
+
+<i class="bi bi-check-circle"></i>
+Save Report
+
+</button>
+
+
+</form>
+
+
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+</html>

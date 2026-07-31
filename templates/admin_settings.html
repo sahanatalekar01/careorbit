@@ -69,10 +69,10 @@
             <hr class="text-white-50">
             <ul class="nav flex-column gap-1">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin-dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Core Overview</a>
+                    <a class="nav-link" href="{{ url_for('audit_logs') }}"><i class="fa-solid fa-chart-pie me-2"></i> Core Overview</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user-management"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
+                    <a class="nav-link" href="{{ url_for('user_management') }}"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{url_for('admin_settings')}}"><i class="fa-solid fa-gear me-2"></i> System Settings</a>
@@ -102,15 +102,16 @@
                         <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-bullhorn text-primary me-2"></i>System-Wide Broadcast</h5>
                         <p class="text-muted small">Dispatch real-time emergency banners or structural alerts to all connected portal nodes.</p>
                         
-                        <form>
+                        <form method="POST">
                             <div class="mb-3">
-                                <label class="form-label small fw-semibold text-secondary">Target Audience</label>
-                                <select class="form-select">
-                                    <option>All Users (Doctors, Pharmacy, Laboratory, Patients)</option>
-                                    <option>Medical & Lab Personnel Only</option>
-                                    <option>Patients Only</option>
-                                    <option>Internal Administrators</option>
-                                </select>
+                               <label class="form-label small fw-semibold text-secondary">Target Audience</label>
+
+                  <select name="target" class="form-select">
+                  <option>All Users (Doctors, Pharmacy, Laboratory, Patients)</option>
+                  <option>Medical & Lab Personnel Only</option>
+                  <option>Patients Only</option>
+                  <option>Internal Administrators</option>
+                  </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-semibold text-secondary">Alert Severity</label>
@@ -127,7 +128,11 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-semibold text-secondary">Notification Message</label>
-                                <textarea class="form-control" rows="4" placeholder="e.g., Core database cluster undergoing structural security patch updates tonight at 02:00 IST. Expect intermittent downtime."></textarea>
+                                <textarea name="message" 
+                                class="form-control" 
+                                rows="4"
+                                placeholder="Enter Notification message">
+                                </textarea>
                             </div>
                             <button type="button" class="btn btn-primary w-100 fw-bold"><i class="fa-solid fa-paper-plane me-2"></i>Send Broadcast Notification</button>
                         </form>
