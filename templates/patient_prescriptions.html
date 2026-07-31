@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Prescriptions - CareOrbit</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --primary-hover: #1e3a8a;
+            --accent-blue: #3b82f6;
+            --light-bg: #f8fafc;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar Styling */
+        .navbar-custom {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.85rem 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: var(--primary-blue) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand i {
+            color: #ef4444;
+            font-size: 1.4rem;
+        }
+
+        .btn-back {
+            background-color: #f1f5f9;
+            color: #334155;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.45rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-back:hover {
+            background-color: #e2e8f0;
+            color: var(--primary-blue);
+        }
+
+        /* Hero Banner Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: #ffffff;
+            padding: 2rem 0 2.5rem 0;
+            border-radius: 0 0 1.5rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15);
+        }
+
+        .hero-title {
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .hero-subtitle {
+            color: #dbeafe;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Patient Greeting Tag */
+        .patient-badge {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Prescription Card Styling */
+        .prescription-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prescription-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .card-header-custom {
+            background-color: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            padding: 1.15rem 1.25rem 0.75rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .medicine-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background-color: #eff6ff;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .medicine-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 0.1rem;
+            line-height: 1.3;
+        }
+
+        .doctor-name {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .card-body-custom {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-group {
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+            background-color: #f8fafc;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #f1f5f9;
+        }
+
+        /* Status Badge Colors */
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            text-transform: capitalize;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .status-badge.active,
+        .status-badge.completed,
+        .status-badge.approved {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-badge.pending,
+        .status-badge.processing {
+            background-color: #fef9c3;
+            color: #854d0e;
+            border: 1px solid #fef08a;
+        }
+
+        .status-badge.cancelled,
+        .status-badge.expired,
+        .status-badge.discontinued {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Default fallback badge */
+        .status-badge.default-status {
+            background-color: #e0f2fe;
+            color: #075985;
+            border: 1px solid #bae6fd;
+        }
+
+        /* Empty State Box */
+        .empty-state-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            max-width: 520px;
+            margin: 2rem auto;
+        }
+
+        .empty-icon-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #eff6ff;
+            color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.25rem auto;
+        }
+
+        .empty-state-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('patient_dashboard') }}">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>CareOrbit</span>
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{{ url_for('patient_dashboard') }}" class="btn btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Banner Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="patient-badge mb-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>{{ patient_name if patient_name else 'Patient' }}</span>
+                    </div>
+                    <h1 class="hero-title">My Prescriptions</h1>
+                    <p class="hero-subtitle">View and track all medical prescriptions issued by your doctors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="container mb-5">
+        {% if prescriptions and prescriptions|length > 0 %}
+            <div class="row g-4">
+                {% for p in prescriptions %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="prescription-card">
+                            <div class="card-header-custom">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="medicine-icon-box">
+                                        <i class="fa-solid fa-pills"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="medicine-name">{{ p.medicine_name }}</h2>
+                                        <div class="doctor-name">
+                                            <i class="fa-solid fa-user-doctor"></i>
+                                            <span>Dr. {{ p.doctor_name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body-custom">
+                                <div class="info-group">
+                                    <div class="info-label">Dosage & Instructions</div>
+                                    <div class="info-value">
+                                        <i class="fa-regular fa-clock me-1 text-primary"></i>
+                                        {{ p.dosage }}
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                                    <span class="text-muted small fw-medium">Status</span>
+                                    {% set status_lower = p.status|lower if p.status else 'active' %}
+                                    <span class="status-badge {% if status_lower in ['active', 'completed', 'approved'] %}{{ status_lower }}{% elif status_lower in ['pending', 'processing'] %}{{ status_lower }}{% elif status_lower in ['cancelled', 'expired', 'discontinued'] %}{{ status_lower }}{% else %}default-status{% endif %}">
+                                        <i class="fa-solid fa-circle-notch fa-xs"></i>
+                                        {{ p.status }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Modern Empty State -->
+            <div class="empty-state-card">
+                <div class="empty-icon-circle">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                </div>
+                <h3 class="empty-state-title">No Prescriptions Available</h3>
+                <p class="empty-state-text">You currently do not have any active or past medical prescriptions recorded in the system.</p>
+                <a href="{{ url_for('patient_dashboard') }}" class="btn btn-primary px-4 py-2 rounded-3 fw-semibold">
+                    <i class="fa-solid fa-house me-1"></i> Return to Dashboard
+                </a>
+            </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 CareOrbit Health System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
