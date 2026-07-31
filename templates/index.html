@@ -13,19 +13,13 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <link rel="stylesheet"
-    href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 
-
 <body>
-
-
-<!-- ================= NAVBAR ================= -->
 
 <header class="navbar">
 
@@ -37,38 +31,26 @@
 
     </div>
 
-
     <nav>
 
         <ul class="nav-links">
 
             <li><a href="#home">Home</a></li>
-
             <li><a href="#portals">Portals</a></li>
-
             <li><a href="#features">Features</a></li>
-
             <li><a href="#about">About</a></li>
-
             <li><a href="#contact">Contact</a></li>
 
         </ul>
 
     </nav>
 
-
 </header>
-
-
-
-<!-- ================= HERO ================= -->
 
 
 <section class="hero" id="home">
 
-
     <div class="hero-content">
-
 
         <span class="badge">
 
@@ -79,304 +61,182 @@
         </span>
 
 
-
         <h1>
-
             Smarter Healthcare
-
             <br>
-
             With
-
             <span>CareOrbit</span>
-
         </h1>
 
 
-
         <p>
-
             CareOrbit is a modern healthcare management platform that
             connects patients, doctors, hospitals, pharmacies and
             administrators through one intelligent digital ecosystem.
-
         </p>
-
 
 
         <div class="hero-buttons">
 
-
             <a href="#portals" class="btn-primary">
-
                 Explore Platform
-
             </a>
-
 
             <a href="#features" class="btn-secondary">
-
                 View Features
-
             </a>
-
 
         </div>
 
 
-
-
-        <!-- REALISTIC PROJECT STATS -->
-
-
         <div class="hero-stats">
-
 
             <div class="stat-box">
 
                 <h2>5+</h2>
 
-                <p>
-                    Healthcare Modules
-                </p>
+                <p>Healthcare Modules</p>
 
             </div>
-
 
 
             <div class="stat-box">
 
                 <h2>3</h2>
 
-                <p>
-                    User Portals
-                </p>
+                <p>User Portals</p>
 
             </div>
-
 
 
             <div class="stat-box">
 
                 <h2>AI</h2>
 
-                <p>
-                    Health Analysis
-                </p>
+                <p>Health Analysis</p>
 
             </div>
-
 
 
             <div class="stat-box">
 
                 <h2>24/7</h2>
 
-                <p>
-                    Digital Access
-                </p>
+                <p>Digital Access</p>
 
             </div>
 
-
-
         </div>
-
-
 
     </div>
 
 
-
-
-    <!-- HERO IMAGE -->
-
     <div class="hero-image">
-
 
         <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=700&q=80"
         alt="Doctor using healthcare technology">
 
-
     </div>
-
-
 
 </section>
 
 
-
-
-
-<!-- ================= QUICK ACCESS ================= -->
-
-
 <section class="quick-access" id="portals">
-
 
     <div class="section-title">
 
-
         <span>Main Portals</span>
 
-
         <h2>
-
             Access CareOrbit Modules
-
         </h2>
 
-
-
         <p>
-
             Select your role and access the dedicated healthcare dashboard.
-
         </p>
 
-
-
     </div>
-
-
-
 
 
     <div class="portal-grid">
 
 
-
         <a href="{{ url_for('patient_login') }}" class="portal-card">
-
 
             <i class="fa-solid fa-user"></i>
 
-
-            <h3>
-                Patient Portal
-            </h3>
-
+            <h3>Patient Portal</h3>
 
             <p>
-
                 Manage appointments, reports and AI health assistance.
-
             </p>
 
-
         </a>
-
-
-
 
 
         <a href="{{ url_for('doctor_login') }}" class="portal-card">
 
-
             <i class="fa-solid fa-user-doctor"></i>
 
-
-            <h3>
-                Doctor Portal
-            </h3>
-
+            <h3>Doctor Portal</h3>
 
             <p>
-
                 Manage patients, appointments and prescriptions.
-
             </p>
 
-
         </a>
-
-
-
 
 
         <a href="{{ url_for('hospital_dashboard') }}" class="portal-card">
 
-
             <i class="fa-solid fa-hospital"></i>
 
-
-            <h3>
-                Hospital Dashboard
-            </h3>
-
+            <h3>Hospital Dashboard</h3>
 
             <p>
-
                 Monitor wards and healthcare operations.
-
             </p>
 
-
         </a>
-
-
-
 
 
         <a href="{{ url_for('pharmacy_dashboard') }}" class="portal-card">
 
-
             <i class="fa-solid fa-pills"></i>
 
-
-            <h3>
-                Pharmacy Dashboard
-            </h3>
-
+            <h3>Pharmacy Dashboard</h3>
 
             <p>
-
                 Manage medicines and inventory.
-
             </p>
-
 
         </a>
 
 
+<<<<<<< HEAD
 
 
 
         <a href="{{ url_for('admin_register') }}" class="portal-card">
-
+=======
+        <a href="{{ url_for('admin_dashboard') }}" class="portal-card">
+>>>>>>> d25a7abe3a28557a23a6ef0175115a3c74ae7dfa
 
             <i class="fa-solid fa-user-shield"></i>
 
-
-            <h3>
-                Admin Dashboard
-            </h3>
-
+            <h3>Admin Dashboard</h3>
 
             <p>
-
                 Manage users and system activities.
-
             </p>
-
 
         </a>
 
 
-
-
     </div>
 
-
-
 </section>
-
-
-
-
-<!-- ================= FEATURES ================= -->
- <section class="features" id="features">
-
+<section class="features" id="features">
 
     <div class="section-title">
 
@@ -392,8 +252,6 @@
         </p>
 
     </div>
-
-
 
 
     <div class="feature-grid">
@@ -420,7 +278,6 @@
 
 
 
-
         <div class="feature-card">
 
             <div class="icon">
@@ -429,11 +286,9 @@
 
             </div>
 
-
             <h3>
                 Appointment Management
             </h3>
-
 
             <p>
                 Book and manage doctor appointments easily.
@@ -443,10 +298,7 @@
 
 
 
-
-
         <div class="feature-card">
-
 
             <div class="icon">
 
@@ -454,25 +306,19 @@
 
             </div>
 
-
             <h3>
                 Digital Medical Records
             </h3>
-
 
             <p>
                 Store and access healthcare records securely.
             </p>
 
-
         </div>
 
 
 
-
-
         <div class="feature-card">
-
 
             <div class="icon">
 
@@ -480,25 +326,19 @@
 
             </div>
 
-
             <h3>
                 Doctor Management
             </h3>
-
 
             <p>
                 Help doctors manage patients, visits and prescriptions.
             </p>
 
-
         </div>
 
 
 
-
-
         <div class="feature-card">
-
 
             <div class="icon">
 
@@ -506,25 +346,19 @@
 
             </div>
 
-
             <h3>
                 Pharmacy Management
             </h3>
-
 
             <p>
                 Track medicines, stock and dispensing information.
             </p>
 
-
         </div>
 
 
 
-
-
         <div class="feature-card">
-
 
             <div class="icon">
 
@@ -532,32 +366,21 @@
 
             </div>
 
-
             <h3>
                 Emergency Support
             </h3>
-
 
             <p>
                 Support ambulance and emergency healthcare workflows.
             </p>
 
-
         </div>
-
 
 
     </div>
 
-
 </section>
 
-
-
-
-
-
-<!-- ================= ABOUT ================= -->
 
 
 <section class="why-us" id="about">
@@ -565,19 +388,15 @@
 
     <div class="why-image">
 
-
         <img
         src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=700&q=80"
         alt="Healthcare technology">
-
 
     </div>
 
 
 
-
     <div class="why-content">
-
 
         <span>
             WHY CAREORBIT
@@ -590,10 +409,8 @@
 
 
         <p>
-
             CareOrbit is designed to simplify healthcare workflows by
             connecting different healthcare roles on one intelligent platform.
-
         </p>
 
 
@@ -625,7 +442,6 @@
 
 
 
-
             <div class="why-item">
 
                 <i class="fa-solid fa-circle-check"></i>
@@ -635,7 +451,6 @@
                 </span>
 
             </div>
-
 
 
 
@@ -653,26 +468,14 @@
         </div>
 
 
-
     </div>
 
 
 </section>
-
-
-
-
-
-
-
-<!-- ================= PLATFORM HIGHLIGHTS ================= -->
-
-
 <section class="testimonials">
 
 
     <div class="section-title">
-
 
         <span>
             Platform Highlights
@@ -688,18 +491,14 @@
             Designed to support every role involved in modern healthcare.
         </p>
 
-
     </div>
-
 
 
 
     <div class="testimonial-grid">
 
 
-
         <div class="testimonial-card">
-
 
             <i class="fa-solid fa-user quote"></i>
 
@@ -714,15 +513,11 @@
                 prescriptions and AI health assistance easily.
             </p>
 
-
         </div>
 
 
 
-
-
         <div class="testimonial-card">
-
 
             <i class="fa-solid fa-user-doctor quote"></i>
 
@@ -737,15 +532,11 @@
                 patient records and prescriptions efficiently.
             </p>
 
-
         </div>
 
 
 
-
-
         <div class="testimonial-card">
-
 
             <i class="fa-solid fa-hospital quote"></i>
 
@@ -760,24 +551,14 @@
                 departments and healthcare operations.
             </p>
 
-
         </div>
-
 
 
     </div>
 
 
-
 </section>
 
-
-
-
-
-
-
-<!-- ================= CTA ================= -->
 
 
 <section class="cta">
@@ -806,19 +587,11 @@
         </a>
 
 
-
     </div>
 
 
 </section>
 
-
-
-
-
-
-
-<!-- ================= CONTACT ================= -->
 
 
 <section class="contact" id="contact">
@@ -846,13 +619,10 @@
 
 
 
-
-
     <div class="contact-container">
 
 
         <div class="contact-card">
-
 
             <i class="fa-solid fa-envelope"></i>
 
@@ -871,9 +641,7 @@
 
 
 
-
         <div class="contact-card">
-
 
             <i class="fa-solid fa-phone"></i>
 
@@ -884,7 +652,7 @@
 
 
             <p>
-                +91 98765 43210
+                Contact support through official channels.
             </p>
 
 
@@ -892,10 +660,7 @@
 
 
 
-
-
         <div class="contact-card">
-
 
             <i class="fa-solid fa-location-dot"></i>
 
@@ -913,19 +678,11 @@
         </div>
 
 
-
     </div>
 
 
 </section>
 
-
-
-
-
-
-
-<!-- ================= FOOTER ================= -->
 
 
 <footer class="footer">
@@ -958,8 +715,6 @@
 
 
 
-
-
         <div class="footer-links">
 
 
@@ -970,38 +725,30 @@
 
             <ul>
 
-
                 <li>
                     <a href="#home">Home</a>
                 </li>
-
 
                 <li>
                     <a href="#portals">Portals</a>
                 </li>
 
-
                 <li>
                     <a href="#features">Features</a>
                 </li>
-
 
                 <li>
                     <a href="#about">About</a>
                 </li>
 
-
                 <li>
                     <a href="#contact">Contact</a>
                 </li>
-
 
             </ul>
 
 
         </div>
-
-
 
 
 
@@ -1035,8 +782,6 @@
 
 
 
-
-
     <hr>
 
 
@@ -1049,8 +794,6 @@
 
 
 </footer>
-
-
 
 
 </body>

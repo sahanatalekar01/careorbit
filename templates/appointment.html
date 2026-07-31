@@ -3,113 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointments - CareOrbit</title>
+
+    <title>Appointments | CareOrbit</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        body{
+            background:#f5f9ff;
+            font-family:'Poppins',sans-serif;
+        }
+
+        .navbar{
+            background:linear-gradient(90deg,#0d6efd,#2563eb)!important;
+            box-shadow:0 10px 30px rgba(0,0,0,.08);
+        }
+
+        .container{
+            max-width:1100px;
+        }
+
+        .page-title{
+            font-weight:700;
+            margin-bottom:30px;
+        }
+
+        .card-custom{
+            background:#fff;
+            border:none;
+            border-radius:20px;
+            box-shadow:0 15px 40px rgba(0,0,0,.08);
+            padding:30px;
+            margin-bottom:40px;
+        }
+
+        .form-control{
+            border-radius:12px;
+            padding:12px;
+        }
+
+        .form-control:focus{
+            box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
+        }
+
+        .btn-primary{
+            border-radius:12px;
+            padding:12px 25px;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .btn-primary:hover{
+            transform:translateY(-2px);
+        }
+
+        .table-card{
+            background:white;
+            border-radius:20px;
+            box-shadow:0 15px 40px rgba(0,0,0,.06);
+            padding:25px;
+        }
+
+        .table{
+            margin-bottom:0;
+        }
+
+        .table thead{
+            background:#0d6efd;
+            color:white;
+        }
+
+        .table thead th{
+            color:white;
+            border:none;
+        }
+
+        .badge{
+            padding:9px 14px;
+            font-size:.85rem;
+        }
+
+        .empty-state{
+            background:white;
+            border-radius:20px;
+            box-shadow:0 15px 40px rgba(0,0,0,.06);
+            padding:60px 20px;
+            text-align:center;
+        }
+
+        .empty-state h4{
+            font-weight:600;
+        }
+
+        @media(max-width:768px){
+
+            .card-custom,
+            .table-card{
+                padding:20px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-primary">
+<nav class="navbar navbar-dark">
+
     <div class="container">
-        <a class="navbar-brand" href="/patient-dashboard">
+
+        <a class="navbar-brand fw-bold" href="/patient-dashboard">
             🩺 CareOrbit
         </a>
 
         <a href="/logout" class="btn btn-light">
             Logout
         </a>
+
     </div>
+
 </nav>
 
-<div class="container mt-5">
+<div class="container py-5">
 
-    <h2 class="mb-4">Book Appointment</h2>
-<form action="/book-appointment" method="POST">
+    <h2 class="page-title">
+        📅 Book an Appointment
+    </h2>
 
-    <div class="mb-3">
-        <label class="form-label">Doctor Name</label>
-        <input
-            type="text"
-            name="doctor_name"
-            class="form-control"
-            required>
+    <div class="card-custom">
+
+        <form action="/book-appointment" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Doctor Name</label>
+                <input
+                    type="text"
+                    name="doctor_name"
+                    class="form-control"
+                    placeholder="Enter doctor's name"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Appointment Date</label>
+                <input
+                    type="date"
+                    name="appointment_date"
+                    class="form-control"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Appointment Time</label>
+                <input
+                    type="time"
+                    name="appointment_time"
+                    class="form-control"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Symptoms</label>
+                <textarea
+                    name="symptoms"
+                    class="form-control"
+                    rows="4"
+                    placeholder="Describe your symptoms..."
+                    required></textarea>
+            </div>
+
+            <button class="btn btn-primary">
+                📅 Book Appointment
+            </button>
+
+        </form>
+
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Appointment Date</label>
-        <input
-            type="date"
-            name="appointment_date"
-            class="form-control"
-            required>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Appointment Time</label>
-        <input
-            type="time"
-            name="appointment_time"
-            class="form-control"
-            required>
-    </div>
-
-    <!-- ADD THIS HERE -->
-    <div class="mb-3">
-        <label class="form-label">Symptoms</label>
-        <textarea
-            name="symptoms"
-            class="form-control"
-            rows="3"
-            required></textarea>
-    </div>
-
-    <button class="btn btn-primary">
-        Book Appointment
-    </button>
-
-</form>
-    <hr>
-
-    <h3>Your Appointments</h3>
+    <h3 class="fw-bold mb-4">
+        My Appointments
+    </h3>
 
     {% if appointments %}
 
-    <table class="table table-bordered">
+    <div class="table-card">
 
-        <thead class="table-primary">
-            <tr>
-                <th>Doctor</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-            </tr>
-        </thead>
+        <div class="table-responsive">
 
-        <tbody>
+            <table class="table table-hover align-middle">
 
-        {% for appointment in appointments %}
+                <thead>
 
-            <tr>
-                <td>{{ appointment.doctor_name }}</td>
-                <td>{{ appointment.appointment_date }}</td>
-                <td>{{ appointment.appointment_time }}</td>
-                <td>{{ appointment.status }}</td>
-            </tr>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
 
-        {% endfor %}
+                </thead>
 
-        </tbody>
+                <tbody>
 
-    </table>
+                {% for appointment in appointments %}
+
+                    <tr>
+
+                        <td>
+                            <strong>Dr. {{ appointment.doctor_name }}</strong>
+                        </td>
+
+                        <td>
+                            {{ appointment.appointment_date }}
+                        </td>
+
+                        <td>
+                            {{ appointment.appointment_time }}
+                        </td>
+
+                        <td>
+
+                            {% if appointment.status == "Confirmed" %}
+
+                                <span class="badge bg-success">
+                                    Confirmed
+                                </span>
+
+                            {% elif appointment.status == "Pending" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+
+                            {% elif appointment.status == "Cancelled" %}
+
+                                <span class="badge bg-danger">
+                                    Cancelled
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ appointment.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
     {% else %}
 
-    <p>No appointments booked yet.</p>
+    <div class="empty-state">
+
+        <div style="font-size:60px;">📅</div>
+
+        <h4 class="mt-3">
+            No Appointments Yet
+        </h4>
+
+        <p class="text-muted">
+            You haven't booked any appointments yet.
+            Schedule your first consultation to get started.
+        </p>
+
+    </div>
 
     {% endif %}
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
