@@ -153,6 +153,24 @@ def logout():
     return redirect(url_for("home"))
 
 
+# PATIENT PRESCRIPTIONS
+@app.route("/patient-prescriptions")
+def patient_prescriptions():
+
+    if "patient_id" not in session:
+        return redirect(url_for("patient_login"))
+
+    prescriptions = Prescription.query.filter_by(
+        patient_name=session["patient_name"]
+    ).all()
+
+    return render_template(
+        "patient_prescriptions.html",
+        prescriptions=prescriptions,
+        patient_name=session["patient_name"]
+    )
+
+
 # PATIENT DASHBOARD
 @app.route("/patient-dashboard")
 def patient_dashboard():
