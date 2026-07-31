@@ -1,287 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Patient Login | CareOrbit</title>
-
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-
-
 <style>
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
     font-family:'Poppins',sans-serif;
 }
-
-
 body{
-
     min-height:100vh;
     background:#eef5ff;
-
 }
-
-
-
 /* Navbar */
-
 .navbar{
-
     background:linear-gradient(90deg,#0d6efd,#2d8cff);
     padding:14px 0;
     box-shadow:0 8px 20px rgba(0,0,0,.12);
-
 }
-
-
 .navbar-brand{
-
     font-size:28px;
     font-weight:700;
-
 }
-
-
-
 .home-btn{
-
     border-radius:40px;
     padding:10px 24px;
     font-weight:600;
-
 }
-
-
-
-
 /* Login Section */
-
-
 .login-wrapper{
-
     min-height:calc(100vh - 80px);
     display:flex;
     align-items:center;
-
 }
-
-
-
 .login-card{
-
     background:white;
     border-radius:25px;
     padding:40px;
     box-shadow:0 15px 35px rgba(0,0,0,.10);
-
 }
-
-
-
 .login-icon{
-
     width:80px;
     height:80px;
     border-radius:50%;
     background:#e9f3ff;
     color:#0d6efd;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     font-size:38px;
     margin:auto;
     margin-bottom:20px;
-
 }
-
-
-
 .login-card h2{
-
     font-weight:700;
-
 }
-
-
-
 .form-label{
-
     font-weight:600;
-
 }
-
-
-
 .form-control{
-
     border-radius:14px;
     padding:13px;
     border:1px solid #dce6f5;
-
 }
-
-
-
 .form-control:focus{
-
     border-color:#0d6efd;
     box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
-
 }
-
-
-
 .btn-login{
-
     border-radius:30px;
     padding:13px;
     font-weight:600;
     font-size:16px;
-
 }
-
-
 .register-link{
-
     color:#0d6efd;
     text-decoration:none;
     font-weight:600;
-
 }
-
-
 .register-link:hover{
-
     text-decoration:underline;
-
+}
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
 </style>
 </head>
 
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-dark">
 <div class="container">
-
-<a class="navbar-brand" href="{{ url_for('home') }}">
-🩺 CareOrbit
-</a>
-
-<a href="{{ url_for('home') }}" class="btn btn-light home-btn">
-← Home
-</a>
-
+<a class="navbar-brand" href="{{ url_for('home') }}">🩺 CareOrbit</a>
+<a href="{{ url_for('home') }}" class="btn btn-light home-btn">← Home</a>
 </div>
 </nav>
 
 <div class="container login-wrapper">
-
 <div class="row justify-content-center w-100">
-
 <div class="col-md-6">
-
 <div class="login-card">
 
 <div class="login-icon">
 <i class="bi bi-person-fill-lock"></i>
 </div>
 
-<h2 class="text-center text-primary mb-4">
-Patient Login
-</h2>
+<h2 class="text-center text-primary mb-4">Patient Login</h2>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 {% for category, message in messages %}
-
 <div class="alert alert-{{ category }} alert-dismissible fade show">
 {{ message }}
 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
-
 {% endfor %}
 {% endif %}
 {% endwith %}
 
 <form method="POST" action="{{ url_for('patient_login') }}">
-
 <div class="mb-3">
-<label class="form-label">
-Email
-</label>
-
-<input type="email"
-name="email"
-class="form-control"
-placeholder="Enter your email"
-required>
+<label class="form-label">Email</label>
+<input type="email" name="email" class="form-control" placeholder="Enter your email" required>
 </div>
 
 <div class="mb-3">
+<label class="form-label">Password</label>
+<input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+</div>
 
-<label class="form-label">
-Password
+<!-- REMEMBER ME CHECKBOX -->
+<div class="form-check mb-3">
+<input class="form-check-input" type="checkbox" name="remember" id="remember">
+<label class="form-check-label fw-semibold text-secondary" for="remember" style="cursor: pointer;">
+Remember Me
 </label>
-
-<input type="password"
-name="password"
-class="form-control"
-placeholder="Enter your password"
-required>
-
 </div>
 
 <div class="d-grid">
-
-<button type="submit" class="btn btn-primary btn-login">
-Login
-</button>
-
+<button type="submit" class="btn btn-primary btn-login">Login</button>
 </div>
-
 </form>
 
 <hr>
 
 <p class="text-center mb-2">
 Don't have an account?
-<a href="{{ url_for('patient_register') }}" class="register-link">
-Register Here
-</a>
+<a href="{{ url_for('patient_register') }}" class="register-link">Register Here</a>
 </p>
 
-<p class="text-center">
-<a href="{{ url_for('home') }}" class="text-decoration-none">
-← Back to Home
-</a>
+<p class="text-center mb-0">
+<a href="{{ url_for('home') }}" class="text-decoration-none">← Back to Home</a>
 </p>
 
 </div>
-
 </div>
-
 </div>
-
-</div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

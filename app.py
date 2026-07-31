@@ -78,10 +78,12 @@ def patient_login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
+        remember = request.form.get("remember")
+
         patient = Patient.query.filter_by(email=email, password=password).first()
 
         if patient:
-            session.permanent = True
+            session.permanent = True if remember else False
             session["patient_id"] = patient.id
             session["patient_name"] = patient.full_name
             flash("Login successful!", "success")
@@ -302,10 +304,12 @@ def doctor_login():
     if request.method == "POST":
         login = request.form.get("login")
         password = request.form.get("password")
+        remember = request.form.get("remember")
+
         user = User.query.filter(((User.username == login) | (User.email == login)) & (User.role == "doctor")).first()
 
         if user and user.password == password:
-            session.permanent = True
+            session.permanent = True if remember else False
             session["logged_in"] = True
             session["user_id"] = user.id
             session["username"] = user.username
