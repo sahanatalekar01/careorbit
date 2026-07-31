@@ -162,12 +162,9 @@ def patient_dashboard():
 
     patient = Patient.query.get(session["patient_id"])
 
-<<<<<<< HEAD
     print("Session:", dict(session))
     print("Patient Name:", session.get("patient_name"))
     
-=======
->>>>>>> d25a7abe3a28557a23a6ef0175115a3c74ae7dfa
     return render_template(
         "patient_dashboard.html",
         patient_name=session.get("patient_name", "Patient"),
@@ -429,7 +426,7 @@ def update_lab_status(id, status):
     return redirect(url_for("laboratory_dashboard"))
 
 
-@app.route("/health-recommendations")
+@app.route("/health-recommendations")      
 def health_recommendations():
     if "patient_id" not in session:
         return redirect(url_for("patient_login"))
