@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Profile - CareOrbit</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7fe;
+            color: #2b3674;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 15px;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+            padding: 40px;
+            max-width: 650px;
+            width: 100%;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-header h2 {
+            font-weight: 700;
+            color: #1b2559;
+            margin-bottom: 8px;
+        }
+
+        .brand-header p {
+            color: #a3edda;
+            color: #707ebe;
+            font-size: 0.95rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #2b3674;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 1px solid #e0e5f2;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            color: #2b3674;
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #ffffff;
+            border-color: #4318ff;
+            box-shadow: 0 0 0 0.25rem rgba(67, 24, 255, 0.1);
+            color: #2b3674;
+        }
+
+        .input-group-text {
+            background-color: #f8fafc;
+            border: 1px solid #e0e5f2;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            color: #4318ff;
+        }
+
+        .input-group .form-control {
+            border-left: none;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .btn-careorbit {
+            background-color: #4318ff;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-careorbit:hover {
+            background-color: #3311db;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0px 10px 20px rgba(67, 24, 255, 0.2);
+        }
+
+        .alert {
+            border-radius: 12px;
+            font-size: 0.9rem;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-card">
+    <div class="brand-header">
+        <h2><i class="fa-solid fa-heart-pulse text-primary me-2"></i>CareOrbit</h2>
+        <p class="mb-0">Please complete your profile information to proceed.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('complete_profile') }}" method="POST">
+        <div class="row g-3">
+            <!-- Age Field -->
+            <div class="col-md-6">
+                <label for="age" class="form-label">Age</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-cake-candles"></i></span>
+                    <input type="number" class="form-control" id="age" name="age" min="1" max="120" placeholder="e.g. 28" value="{{ patient.age if patient.age is not none else '' }}" required>
+                </div>
+            </div>
+
+            <!-- Gender Field -->
+            <div class="col-md-6">
+                <label for="gender" class="form-label">Gender</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                    <select class="form-select" id="gender" name="gender" required>
+                        <option value="" disabled {% if not patient.gender %}selected{% endif %}>Select Gender</option>
+                        <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Blood Group Field -->
+            <div class="col-md-6">
+                <label for="blood_group" class="form-label">Blood Group</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-droplet"></i></span>
+                    <select class="form-select" id="blood_group" name="blood_group" required>
+                        <option value="" disabled {% if not patient.blood_group %}selected{% endif %}>Select Blood Group</option>
+                        <option value="A+" {% if patient.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                        <option value="A-" {% if patient.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                        <option value="B+" {% if patient.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                        <option value="B-" {% if patient.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                        <option value="AB+" {% if patient.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                        <option value="AB-" {% if patient.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                        <option value="O+" {% if patient.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                        <option value="O-" {% if patient.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Emergency Contact Field -->
+            <div class="col-md-6">
+                <label for="emergency_contact" class="form-label">Emergency Contact</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                    <input type="tel" class="form-control" id="emergency_contact" name="emergency_contact" placeholder="+1 234 567 8900" value="{{ patient.emergency_contact if patient.emergency_contact else '' }}" required>
+                </div>
+            </div>
+
+            <!-- Address Field -->
+            <div class="col-12">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="2" placeholder="Enter your full residential address" required>{{ patient.address if patient.address else '' }}</textarea>
+            </div>
+
+            <!-- Existing Medical History Field -->
+            <div class="col-12">
+                <label for="medical_history" class="form-label">Existing Medical History</label>
+                <textarea class="form-control" id="medical_history" name="medical_history" rows="3" placeholder="List any chronic conditions, allergies, or past surgeries (Write 'None' if applicable)" required>{{ patient.medical_history if patient.medical_history else '' }}</textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-careorbit mt-4">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save Profile & Continue
+        </button>
+    </form>
+</div>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,821 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Patient Registration | CareOrbit</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
-
-body{
-
-    background:#eef5ff;
-    min-height:100vh;
-
-}
-
-
-
-.navbar{
-
-    background:linear-gradient(90deg,#0d6efd,#2d8cff);
-    padding:14px 0;
-    box-shadow:0 8px 20px rgba(0,0,0,.12);
-
-}
-
-
-.navbar-brand{
-
-    font-size:28px;
-    font-weight:700;
-
-}
-
-
-
-.home-btn{
-
-    border-radius:40px;
-    padding:10px 24px;
-    font-weight:600;
-
-}
-
-
-
-
-.register-wrapper{
-
-    padding:40px 0;
-
-}
-
-
-
-.register-card{
-
-    background:white;
-    border-radius:25px;
-    padding:40px;
-    box-shadow:0 15px 35px rgba(0,0,0,.10);
-
-}
-
-
-
-.register-header{
-
-    text-align:center;
-    margin-bottom:30px;
-
-}
-
-
-
-.register-icon{
-
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    background:#e9f3ff;
-    color:#0d6efd;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    margin:auto;
-    margin-bottom:15px;
-
-    font-size:38px;
-
-}
-
-
-
-.register-header h2{
-
-    font-weight:700;
-    color:#0d6efd;
-
-}
-
-
-
-.register-header p{
-
-    color:#6c757d;
-
-}
-
-
-
-
-.section-title{
-
-    color:#0d6efd;
-    font-weight:700;
-    font-size:18px;
-
-    margin-top:25px;
-    margin-bottom:15px;
-
-    border-bottom:2px solid #e6eefc;
-    padding-bottom:8px;
-
-}
-
-
-
-.form-label{
-
-    font-weight:600;
-
-}
-
-
-
-.form-control,
-.form-select{
-
-    border-radius:14px;
-    padding:13px;
-    border:1px solid #dce6f5;
-
-}
-
-
-
-.form-control:focus,
-.form-select:focus{
-
-    border-color:#0d6efd;
-
-    box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
-
-}
-
-
-
-.btn-register{
-
-    width:100%;
-    border-radius:30px;
-    padding:14px;
-    font-size:16px;
-    font-weight:600;
-
-}
-
-
-
-.password-strength{
-
-    font-size:13px;
-    margin-top:5px;
-
-}
-
-
-.alert{
-
-    border-radius:14px;
-
-}
-
-
-.login-link{
-
-    text-align:center;
-    margin-top:25px;
-
-}
-
-
-.login-link a{
-
-    color:#0d6efd;
-    text-decoration:none;
-    font-weight:600;
-
-}
-
-
-.login-link a:hover{
-
-    text-decoration:underline;
-
-}
-
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration | CareOrbit</title>
+    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css)" rel="stylesheet">
+    <link href="[https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css](https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css)" rel="stylesheet">
+    <link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body { background:#eef5ff; min-height:100vh; }
+        .navbar { background:linear-gradient(90deg,#0d6efd,#2d8cff); padding:14px 0; box-shadow:0 8px 20px rgba(0,0,0,.12); }
+        .navbar-brand { font-size:28px; font-weight:700; }
+        .home-btn { border-radius:40px; padding:10px 24px; font-weight:600; }
+        .register-wrapper { padding:40px 0; }
+        .register-card { background:white; border-radius:25px; padding:40px; box-shadow:0 15px 35px rgba(0,0,0,.10); }
+        .register-header { text-align:center; margin-bottom:30px; }
+        .register-icon { width:80px; height:80px; border-radius:50%; background:#e9f3ff; color:#0d6efd; display:flex; align-items:center; justify-content:center; margin:auto; margin-bottom:15px; font-size:38px; }
+        .register-header h2 { font-weight:700; color:#0d6efd; }
+        .register-header p { color:#6c757d; }
+        .section-title { color:#0d6efd; font-weight:700; font-size:18px; margin-top:25px; margin-bottom:15px; border-bottom:2px solid #e6eefc; padding-bottom:8px; }
+        .form-label { font-weight:600; }
+        .form-control, .form-select { border-radius:14px; padding:13px; border:1px solid #dce6f5; }
+        .form-control:focus, .form-select:focus { border-color:#0d6efd; box-shadow:0 0 0 .2rem rgba(13,110,253,.15); }
+        .btn-register { width:100%; border-radius:30px; padding:14px; font-size:16px; font-weight:600; }
+        .password-strength { font-size:13px; margin-top:5px; }
+        .alert { border-radius:14px; }
+        .login-link { text-align:center; margin-top:25px; }
+        .login-link a { color:#0d6efd; text-decoration:none; font-weight:600; }
+        .login-link a:hover { text-decoration:underline; }
+    </style>
 </head>
-
-
 <body>
 
-
 <nav class="navbar navbar-expand-lg navbar-dark">
-
-<div class="container">
-
-<a class="navbar-brand" href="{{ url_for('home') }}">
-
-🩺 CareOrbit
-
-</a>
-
-
-<a href="{{ url_for('home') }}" class="btn btn-light home-btn">
-
-Home
-
-</a>
-
-
-</div>
-
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">🩺 CareOrbit</a>
+        <a href="{{ url_for('home') }}" class="btn btn-light home-btn">Home</a>
+    </div>
 </nav>
 
-
-
 <div class="container register-wrapper">
+    <div class="register-card">
 
+        <div class="register-header">
+            <div class="register-icon">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <h2>Create Patient Account</h2>
+            <p>Join CareOrbit and manage your healthcare digitally.</p>
+        </div>
 
-<div class="register-card">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
+        <form method="POST" action="{{ url_for('patient_register') }}">
 
+            <div class="section-title">Personal Information</div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" name="full_name" placeholder="Enter your full name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-control" name="age" placeholder="Enter your age" min="1" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" name="phone" placeholder="Enter phone number" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter email address" required>
+                </div>
+            </div>
 
-<div class="register-header">
+            <div class="section-title">Account Information</div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Create password" required onkeyup="checkPasswordStrength()">
+                    <div id="passwordMessage" class="password-strength"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirm_password" placeholder="Confirm password" required>
+                </div>
+            </div>
 
+            <div class="section-title">Health Information</div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Blood Group</label>
+                    <select class="form-select" name="blood_group">
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Emergency Contact</label>
+                    <input type="tel" class="form-control" name="emergency_contact" placeholder="Emergency phone number">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" name="address" rows="3" placeholder="Enter your address"></textarea>
+                </div>
+            </div>
 
-<div class="register-icon">
+            <div class="section-title">Medical History</div>
+            <div class="mb-3">
+                <label class="form-label">Existing Medical Conditions</label>
+                <textarea class="form-control" name="medical_history" rows="3" placeholder="Mention diseases, allergies, or health conditions"></textarea>
+            </div>
 
-<i class="bi bi-person-plus-fill"></i>
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-check-label" for="terms">
+                    I agree that the information provided is accurate.
+                </label>
+            </div>
 
+            <button type="submit" class="btn btn-primary btn-register">Create Patient Account</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="{{ url_for('patient_login') }}">Login here</a>
+        </div>
+
+    </div>
 </div>
-
-
-<h2>
-
-Create Patient Account
-
-</h2>
-
-
-<p>
-
-Join CareOrbit and manage your healthcare digitally.
-
-</p>
-
-
-</div>
-
-
-
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-
-{% if messages %}
-
-{% for category, message in messages %}
-
-<div class="alert alert-{{ category }}">
-
-{{ message }}
-
-</div>
-
-{% endfor %}
-
-{% endif %}
-
-{% endwith %}
-
-
-
-
-
-<form method="POST" action="{{ url_for('patient_register') }}">
-
-
-
-<div class="section-title">
-
-Personal Information
-
-</div>
-
-
-<div class="row">
-
-
-<div class="col-md-6 mb-3">
-
-<label class="form-label">
-
-Full Name
-
-</label>
-
-
-<input 
-type="text"
-class="form-control"
-name="full_name"
-placeholder="Enter your full name"
-required>
-
-</div>
-
-
-
-<div class="col-md-6 mb-3">
-
-<label class="form-label">
-
-Age
-
-</label>
-
-
-<input 
-type="number"
-class="form-control"
-name="age"
-placeholder="Enter your age"
-min="1"
-required>
-
-</div>
-
-
-
-<div class="col-md-6 mb-3">
-
-<label class="form-label">
-
-Gender
-
-</label>
-
-
-<select 
-class="form-select"
-name="gender"
-required>
-
-
-<option value="">
-
-Select Gender
-
-</option>
-
-
-<option value="Male">
-
-Male
-
-</option>
-
-
-<option value="Female">
-
-Female
-
-</option>
-
-
-<option value="Other">
-
-Other
-
-</option>
-
-
-</select>
-
-</div>
-
-
-
-<div class="col-md-6 mb-3">
-
-<label class="form-label">
-
-Phone Number
-
-</label>
-
-
-<input 
-type="tel"
-class="form-control"
-name="phone"
-placeholder="Enter phone number"
-required>
-
-</div>
-
-
-
-<div class="col-md-12 mb-3">
-
-<label class="form-label">
-
-Email Address
-
-</label>
-
-
-<input 
-type="email"
-class="form-control"
-name="email"
-placeholder="Enter email address"
-required>
-
-</div>
-
-
-</div>
-<div class="section-title">
-
-Account Information
-
-</div>
-
-
-<div class="row">
-
-
-<div class="col-md-6 mb-3">
-
-<label class="form-label">
-
-Password
-
-</label>
-
-
-<input 
-type="password"
-class="form-control"
-id="password"
-name="password"
-placeholder="Create password"
-required
-onkeyup="checkPasswordStrength()">
-
-
-
-<div id="passwordMessage" class="password-strength"></div>
-
-
-</div>
-
-
-
-
-<div class="col-md-6 mb-3">
-
-<label class="form-label">
-
-Confirm Password
-
-</label>
-
-
-<input 
-type="password"
-class="form-control"
-id="confirmPassword"
-name="confirm_password"
-placeholder="Confirm password"
-required>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="section-title">
-
-Health Information
-
-</div>
-
-
-
-<div class="row">
-
-
-<div class="col-md-6 mb-3">
-
-
-<label class="form-label">
-
-Blood Group
-
-</label>
-
-
-<select 
-class="form-select"
-name="blood_group">
-
-
-<option value="">
-
-Select Blood Group
-
-</option>
-
-
-<option value="A+">A+</option>
-
-<option value="A-">A-</option>
-
-<option value="B+">B+</option>
-
-<option value="B-">B-</option>
-
-<option value="AB+">AB+</option>
-
-<option value="AB-">AB-</option>
-
-<option value="O+">O+</option>
-
-<option value="O-">O-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-<div class="col-md-6 mb-3">
-
-
-<label class="form-label">
-
-Emergency Contact
-
-</label>
-
-
-<input 
-type="tel"
-class="form-control"
-name="emergency_contact"
-placeholder="Emergency phone number">
-
-
-</div>
-
-
-
-
-<div class="col-md-12 mb-3">
-
-
-<label class="form-label">
-
-Address
-
-</label>
-
-
-<textarea
-class="form-control"
-name="address"
-rows="3"
-placeholder="Enter your address"></textarea>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="section-title">
-
-Medical History
-
-</div>
-
-
-
-<div class="mb-3">
-
-
-<label class="form-label">
-
-Existing Medical Conditions
-
-</label>
-
-
-<textarea
-class="form-control"
-name="medical_history"
-rows="3"
-placeholder="Mention diseases, allergies, or health conditions"></textarea>
-
-
-</div>
-
-
-
-
-<div class="form-check mb-4">
-
-
-<input
-class="form-check-input"
-type="checkbox"
-id="terms"
-required>
-
-
-<label 
-class="form-check-label"
-for="terms">
-
-
-I agree that the information provided is accurate.
-
-
-</label>
-
-
-</div>
-
-
-
-
-<button 
-type="submit"
-class="btn btn-primary btn-register">
-
-
-Create Patient Account
-
-
-</button>
-
-
-
-</form>
-
-
-
-
-<div class="login-link">
-
-
-Already have an account?
-
-
-<a href="{{ url_for('patient_login') }}">
-
-Login here
-
-</a>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
 
 <script>
-
-
 function checkPasswordStrength(){
+    let password = document.getElementById("password").value;
+    let message = document.getElementById("passwordMessage");
 
-
-let password=document.getElementById("password").value;
-
-let message=document.getElementById("passwordMessage");
-
-
-
-if(password.length===0){
-
-message.innerHTML="";
-
+    if (password.length === 0) {
+        message.innerHTML = "";
+    } else if (password.length < 6) {
+        message.innerHTML = "Password is too short";
+        message.style.color = "red";
+    } else if (password.match(/[A-Z]/) && password.match(/[0-9]/)) {
+        message.innerHTML = "Strong password";
+        message.style.color = "green";
+    } else {
+        message.innerHTML = "Add uppercase letters and numbers";
+        message.style.color = "orange";
+    }
 }
 
+document.querySelector("form").addEventListener("submit", function(event){
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
 
-else if(password.length<6){
-
-
-message.innerHTML="Password is too short";
-
-message.style.color="red";
-
-
-}
-
-
-else if(password.match(/[A-Z]/) && password.match(/[0-9]/)){
-
-
-message.innerHTML="Strong password";
-
-message.style.color="green";
-
-
-}
-
-
-else{
-
-
-message.innerHTML="Add uppercase letters and numbers";
-
-message.style.color="orange";
-
-
-}
-
-
-}
-
-
-
-
-
-document.querySelector("form").addEventListener("submit",function(event){
-
-
-let password=document.getElementById("password").value;
-
-let confirmPassword=document.getElementById("confirmPassword").value;
-
-
-
-if(password!==confirmPassword){
-
-
-event.preventDefault();
-
-alert("Passwords do not match!");
-
-
-}
-
-
+    if (password !== confirmPassword) {
+        event.preventDefault();
+        alert("Passwords do not match!");
+    }
 });
-
-
 </script>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
-
+<script src="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js](https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js)"></script>
 </body>
-
 </html>

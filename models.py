@@ -67,6 +67,7 @@ class AmbulanceUnit(db.Model):
         default=73.7997
     )
 
+
 # NOTIFICATION MODEL
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -114,18 +115,19 @@ class LabTest(db.Model):
         default="Pending"
     )
     date_requested = db.Column(db.String(50), nullable=False)
-    doctor_name=db.Column(db.String(100))
-    priority=db.Column(db.String(50))
-    notes=db.Column(db.Text)
-    sample_type=db.Column(db.String(50))
+    doctor_name = db.Column(db.String(100))
+    priority = db.Column(db.String(50))
+    notes = db.Column(db.Text)
+    sample_type = db.Column(db.String(50))
     appointment_id = db.Column(db.Integer)
-    result=db.Column(db.String(100))
-    unit=db.Column(db.String(30))
-    reference_range=db.Column(db.String(50))
-    interpretation=db.Column(db.String(50))
-    remarks=db.Column(db.Text)
-    verified_by=db.Column(db.String(100))
-    completed_date=db.Column(db.String(50))
+    result = db.Column(db.String(100))
+    unit = db.Column(db.String(30))
+    reference_range = db.Column(db.String(50))
+    interpretation = db.Column(db.String(50))
+    remarks = db.Column(db.Text)
+    verified_by = db.Column(db.String(100))
+    completed_date = db.Column(db.String(50))
+
 
 # PATIENT MODEL
 class Patient(db.Model):
@@ -147,17 +149,17 @@ class Patient(db.Model):
         nullable=False
     )
 
+    phone = db.Column(
+        db.String(20),
+        nullable=True
+    )
+
     age = db.Column(
         db.Integer,
-        nullable=False
+        nullable=True
     )
 
     gender = db.Column(
-        db.String(20),
-        nullable=False
-    )
-
-    phone = db.Column(
         db.String(20),
         nullable=True
     )
@@ -172,6 +174,11 @@ class Patient(db.Model):
         nullable=True
     )
 
+    emergency_contact = db.Column(
+        db.String(20),
+        nullable=True
+    )
+
     medical_history = db.Column(
         db.Text,
         nullable=True
@@ -180,7 +187,6 @@ class Patient(db.Model):
 
 # REPORT MODEL
 class Report(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
 
     patient_id = db.Column(
@@ -204,9 +210,7 @@ class Report(db.Model):
         nullable=False
     )
 
-
     # Laboratory report fields
-
     result = db.Column(
         db.String(100)
     )
@@ -230,20 +234,17 @@ class Report(db.Model):
     verified_by = db.Column(
         db.String(100)
     )
-    
+
+
 class Doctor(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
-
     name = db.Column(db.String(100), nullable=False)
-
     email = db.Column(db.String(120), unique=True, nullable=False)
-
     phone = db.Column(db.String(15), unique=True)
-
     password = db.Column(db.String(200), nullable=False)
 
-# APPOINTMENT MODEL (FIXED)
+
+# APPOINTMENT MODEL
 class Appointment(db.Model):
     id = db.Column(
         db.Integer,
@@ -301,27 +302,30 @@ class Appointment(db.Model):
         default="Pending"
     )
 
-class AuditLog(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
 
-     user = db.Column(
+class AuditLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    user = db.Column(
         db.String(100),
         nullable=False
     )
 
-     action = db.Column(
+    action = db.Column(
         db.String(200),
         nullable=False
     )
 
-     timestamp = db.Column(
+    timestamp = db.Column(
         db.DateTime,
         default=datetime.utcnow
     )
 
-     details = db.Column(
+    details = db.Column(
         db.String(300)
     )
+
+
 class Analyzer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
