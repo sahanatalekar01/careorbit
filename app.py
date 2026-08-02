@@ -397,31 +397,13 @@ def complete_lab_report(id):
 # DOCTOR LOGIN
 @app.route("/doctor-login", methods=["GET", "POST"])
 def doctor_login():
-
     if request.method == "POST":
         login = request.form.get("login")
         password = request.form.get("password")
         remember = request.form.get("remember")
 
-        user = User.query.filter(((User.username == login) | (User.email == login)) & (User.role == "doctor")).first()
-
-        if user and user.password == password:
-            session.permanent = True if remember else False
-            session["logged_in"] = True
-            session["user_id"] = user.id
-            session["username"] = user.username
-            session["full_name"] = user.full_name
-            session["role"] = user.role.lower()
-            flash(f"Welcome back, Dr. {user.full_name}!", "success")
-            return redirect(url_for("doctor_dashboard"))
-
-        flash("Invalid username/email or password.", "danger")
         user = User.query.filter(
-            (
-                (User.username == login) |
-                (User.email == login)
-            ) &
-            (User.role == "doctor")
+            ((User.username == login) | (User.email == login)) & (User.role == "doctor")
         ).first()
 
         print("Login entered:", login)
@@ -435,31 +417,28 @@ def doctor_login():
             flash("Invalid password.", "danger")
             return redirect(url_for("doctor_login"))
 
-        if user.verification_status == "Pending":
+        if getattr(user, 'verification_status', None) == "Pending":
             flash(
                 "Your account is under admin verification. Please wait until it is approved.",
                 "warning"
             )
             return redirect(url_for("doctor_login"))
 
-        if user.verification_status == "Rejected":
+        if getattr(user, 'verification_status', None) == "Rejected":
             flash(
-                f"Your account has been rejected. {user.admin_remark or ''}",
+                f"Your account has been rejected. {getattr(user, 'admin_remark', '') or ''}",
                 "danger"
             )
             return redirect(url_for("doctor_login"))
 
+        session.permanent = True if remember else False
         session["logged_in"] = True
         session["user_id"] = user.id
         session["username"] = user.username
         session["full_name"] = user.full_name
         session["role"] = user.role.lower()
 
-        flash(
-            f"Welcome back, Dr. {user.full_name}!",
-            "success"
-        )
-
+        flash(f"Welcome back, Dr. {user.full_name}!", "success")
         return redirect(url_for("doctor_dashboard"))
 
     return render_template("doctor_login.html")
@@ -470,9 +449,6 @@ def doctor_login():
 def add_test_doctor():
     existing_doctor = User.query.filter_by(email="doctor@careorbit.com").first()
     if not existing_doctor:
-        doctor = User(username="Dr. Smith", email="doctor@careorbit.com", password="password123", role="doctor")
-
-
         doctor = User(
             full_name="Dr. Smith",
             username="drsmith",
@@ -481,7 +457,6 @@ def add_test_doctor():
             role="doctor",
             verification_status="Approved"
         )
-
 
         db.session.add(doctor)
         db.session.commit()
@@ -536,21 +511,15 @@ def patient_notifications():
 @app.route("/doctor-register", methods=["GET", "POST"])
 def doctor_register():
     if request.method == "POST":
-
-        full_name, username = request.form["full_name"], request.form["username"]
-        email, phone = request.form["email"], request.form["phone"]
-        password, confirm_password = request.form["password"], request.form["confirm_password"]
-
-
         full_name = request.form["full_name"]
         username = request.form["username"]
         email = request.form["email"]
         phone = request.form["phone"]
 
-        qualification = request.form["qualification"]
-        specialization = request.form["specialization"]
+        qualification = request.form.get("qualification")
+        specialization = request.form.get("specialization")
 
-        profile_photo = request.files["profile_photo"]
+        profile_photo = request.files.get("profile_photo")
 
         password = request.form["password"]
         confirm_password = request.form["confirm_password"]
@@ -565,33 +534,26 @@ def doctor_register():
             flash("Email already registered.", "danger")
             return redirect(url_for("doctor_register"))
 
-        doctor = User(full_name=full_name, username=username, email=email, phone=phone, password=password, role="doctor")
-        db.session.add(doctor)
-        db.session.commit()
-        flash("Registration successful! Please login.", "success")
-        profile_photo_filename = secure_filename(profile_photo.filename)
-
-        profile_photo.save(
-            os.path.join(
-                app.config["UPLOAD_FOLDER"],
-                profile_photo_filename
+        profile_photo_filename = None
+        if profile_photo and profile_photo.filename != "":
+            profile_photo_filename = secure_filename(profile_photo.filename)
+            profile_photo.save(
+                os.path.join(
+                    app.config["UPLOAD_FOLDER"],
+                    profile_photo_filename
+                )
             )
-        )
 
         doctor = User(
             full_name=full_name,
             username=username,
             email=email,
             phone=phone,
-
             qualification=qualification,
             specialization=specialization,
-
             profile_photo=profile_photo_filename,
-
             password=password,
             role="doctor",
-
             verification_status="Pending",
             admin_remark=None
         )
@@ -609,7 +571,6 @@ def doctor_register():
 
 @app.route("/doctor-verification")
 def doctor_verification():
-
     if "role" not in session or session["role"] != "admin":
         flash("Access denied.", "danger")
         return redirect(url_for("home"))
@@ -644,7 +605,6 @@ def doctor_verification():
 
 @app.route("/approve-doctor/<int:doctor_id>")
 def approve_doctor(doctor_id):
-
     if "role" not in session or session["role"] != "admin":
         flash("Access denied.", "danger")
         return redirect(url_for("home"))
@@ -672,7 +632,6 @@ def approve_doctor(doctor_id):
 
 @app.route("/reject-doctor/<int:doctor_id>")
 def reject_doctor(doctor_id):
-
     if "role" not in session or session["role"] != "admin":
         flash("Access denied.", "danger")
         return redirect(url_for("home"))
@@ -699,7 +658,6 @@ def reject_doctor(doctor_id):
 
 @app.route("/delete-user/<int:user_id>")
 def delete_user(user_id):
-
     user = User.query.get_or_404(user_id)
 
     db.session.delete(user)
@@ -712,7 +670,6 @@ def delete_user(user_id):
 
 @app.route("/edit-doctor-profile", methods=["GET", "POST"])
 def edit_doctor_profile():
-
     if "role" not in session or session["role"] != "doctor":
         flash("Access denied.", "danger")
         return redirect(url_for("home"))
@@ -720,7 +677,6 @@ def edit_doctor_profile():
     doctor = User.query.get_or_404(session["user_id"])
 
     if request.method == "POST":
-
         doctor.full_name = request.form["full_name"]
         doctor.email = request.form["email"]
         doctor.phone = request.form["phone"]
@@ -728,7 +684,6 @@ def edit_doctor_profile():
         profile_photo = request.files.get("profile_photo")
 
         if profile_photo and profile_photo.filename != "":
-
             filename = secure_filename(profile_photo.filename)
 
             profile_photo.save(
@@ -758,7 +713,6 @@ def edit_doctor_profile():
 
 @app.route("/doctor-profile")
 def doctor_profile():
-
     if "role" not in session or session["role"] != "doctor":
         flash("Access denied.", "danger")
         return redirect(url_for("home"))
@@ -769,7 +723,6 @@ def doctor_profile():
         "doctor_profile.html",
         doctor=doctor
     )
-
 
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -826,7 +779,6 @@ def password_success():
 
 @app.route("/edit-user/<int:user_id>", methods=["GET", "POST"])
 def edit_user(user_id):
-
     user = User.query.get_or_404(user_id)
 
     if request.method == "POST":
@@ -919,321 +871,10 @@ def hospital_dashboard():
         icu_ward=icu, doctors_on_duty=User.query.filter_by(role="doctor").count(),
         opd_queue=Appointment.query.filter_by(status="Pending").count(),
         services=[
-            {"name": "Pharmacy Hub", "description": "Fully Stocked", "status": "Online"},
-            {"name": "Diagnostics Lab", "description": "Processing Reports", "status": "Online"},
-            {"name": "Emergency Response", "description": "Ambulance Available", "status": "Online"}
+            {"name": "Pharmacy Hub", "descr": "Medication management and inventory control."}
         ]
     )
 
 
-@app.route("/dispense-medication/<int:appointment_id>", methods=["POST"])
-def dispense_medication(appointment_id):
-    appointment_rec = Appointment.query.get_or_404(appointment_id)
-    appointment_rec.status = "Dispensed"
-    db.session.commit()
-    flash("Medicine dispensed successfully.", "success")
-    return redirect(url_for("pharmacy_dashboard"))
-
-
-# LABORATORY DASHBOARD
-@app.route("/laboratory-dashboard")
-def laboratory_dashboard():
-    today = datetime.now().strftime("%d-%m-%Y")
-    return render_template(
-        "laboratory_dashboard.html", lab_tests=LabTest.query.all(), analyzers=Analyzer.query.all(),
-        pending_tests=LabTest.query.filter_by(status="Pending").count(),
-        processing_tests=LabTest.query.filter_by(status="Processing").count(),
-        completed_tests=LabTest.query.filter_by(status="Completed").count(),
-        urgent_tests=LabTest.query.filter_by(priority="High Priority").count()
-    )
-
-
-# AMBULANCE DASHBOARD
-@app.route("/ambulance-dashboard")
-def ambulance_dashboard():
-    ambulances = AmbulanceUnit.query.all()
-    return render_template(
-        "ambulance_dashboard.html", ambulances=ambulances, total_fleet=len(ambulances),
-        dispatch_count=AmbulanceUnit.query.filter_by(status="On Mission").count(),
-        available_ambulances=AmbulanceUnit.query.filter_by(status="Available").count()
-    )
-
-
-# ADMIN DASHBOARD
-@app.route("/admin-dashboard")
-def admin_dashboard():
-    if "role" not in session or session.get("role") != "admin":
-        flash("Access denied.", "danger")
-        return redirect(url_for("home"))
-
-    notifications = Notification.query.all()
-    return render_template(
-        "admin_dashboard.html", total_appointments=Appointment.query.count(),
-        completed_visits=Appointment.query.filter_by(status="Completed").count(),
-        user_count=User.query.count(), notice_count=len(notifications), records=notifications
-    total_appointments = Appointment.query.count()
-
-    completed_visits = Appointment.query.filter_by(
-        status="Completed"
-    ).count()
-
-    users = User.query.count()
-
-    pending_doctors = User.query.filter_by(
-        role="doctor",
-        verification_status="Pending"
-    ).count()
-
-    records = AuditLog.query.order_by(
-        AuditLog.timestamp.desc()
-    ).all()
-
-    return render_template(
-        "admin_dashboard.html",
-        total_appointments=total_appointments,
-        completed_visits=completed_visits,
-        user_count=users,
-        pending_doctors=pending_doctors,
-        records=records
-    )
-
-
-# USER MANAGEMENT
-@app.route("/user-management")
-def user_management():
-    if "role" not in session or session.get("role") != "admin":
-        flash("Access denied.", "danger")
-        return redirect(url_for("home"))
-    return render_template("user_management.html", users=User.query.all())
-
-
-@app.route("/admin/search")
-def admin_search():
-    if "role" not in session or session.get("role") != "admin":
-        flash("Access denied.", "danger")
-        return redirect(url_for("home"))
-
-    query = request.args.get("query", "")
-    results = User.query.filter((User.username.like(f"%{query}%")) | (User.email.like(f"%{query}%"))).all() if query else User.query.all()
-    return render_template("user_management.html", users=results)
-
-    return render_template(
-        "user_management.html",
-        users=results
-    )
-
-
-@app.route("/admin-register", methods=["GET", "POST"])
-def admin_register():
-    if request.method == "POST":
-        admin = User(
-            username=request.form.get("username"), email=request.form.get("email"),
-            password=request.form.get("password"), role="admin"
-
-
-        full_name = request.form.get("full_name")
-        username = request.form.get("username")
-        email = request.form.get("email")
-        phone = request.form.get("phone")
-        password = request.form.get("password")
-
-        # Check if username already exists
-        if User.query.filter_by(username=username).first():
-            flash("Username already exists.", "danger")
-            return redirect(url_for("admin_register"))
-
-        # Check if email already exists
-        if User.query.filter_by(email=email).first():
-            flash("Email already registered.", "danger")
-            return redirect(url_for("admin_register"))
-
-        admin = User(
-            full_name=full_name,
-            username=username,
-            email=email,
-            phone=phone,
-            password=password,
-            role="admin",
-            status="Active"
-
-        )
-        db.session.add(admin)
-        db.session.commit()
-        flash("Admin registered successfully.", "success")
-        return redirect(url_for("admin_login"))
-    return render_template("admin_register.html")
-
-
-@app.route("/admin-login", methods=["GET", "POST"])
-def admin_login():
-    if request.method == "POST":
-        email, password = request.form.get("email"), request.form.get("password")
-        admin = User.query.filter_by(email=email, password=password, role="admin").first()
-
-        if admin:
-            session["logged_in"] = True
-            session["user_id"] = admin.id
-            session["role"] = "admin"
-            session["username"] = admin.username
-            db.session.add(AuditLog(user=admin.username, action="Login", details="Admin logged into CareOrbit"))
-            db.session.commit()
-            flash("Admin login success")
-            return redirect(url_for("admin_dashboard"))
-
-            # Create Audit Log
-            log = AuditLog(
-                admin_user=admin.username,
-                event_scope="Admin Login",
-                target_reference="CareOrbit Admin Panel",
-                security_level="Login"
-            )
-
-            db.session.add(log)
-            db.session.commit()
-
-            flash("Admin login successful.", "success")
-
-            return redirect(url_for("admin_dashboard"))
-
-        else:
-            flash("Invalid admin credentials.", "danger") 
-        flash("Invalid admin credentials.", "danger")
-    return render_template("admin_login.html")
-
-
-@app.route("/admin-settings", methods=["GET", "POST"])
-def admin_settings():
-    if "role" not in session or session.get("role") != "admin":
-        flash("Access denied.", "danger")
-        return redirect(url_for("admin_login"))
-
-    if request.method == "POST":
-        notification = Notification(message=request.form.get("message"), target=request.form.get("target"))
-        db.session.add(notification)
-        db.session.commit()
-        flash("Notification sent successfully", "success")
-    return render_template("admin_settings.html")
-
-
-# PHARMACY DASHBOARD
-@app.route("/pharmacy-dashboard")
-def pharmacy_dashboard():
-    return render_template(
-        "pharmacy_dashboard.html", medicines=Medicine.query.all(),
-        total_stock=Medicine.query.count(), low_stock=Medicine.query.filter(Medicine.stock <= 10).count(),
-        pending_orders=Prescription.query.filter_by(status="Pending").count(),
-        dispensed_today=Prescription.query.filter_by(status="Completed").count(),
-        prescriptions=Prescription.query.all()
-    )
-
-
-@app.route("/dispatch-ambulance", methods=["POST"])
-def dispatch_ambulance():
-    category, location = request.form.get("category"), request.form.get("location")
-    latitude, longitude = request.form.get("latitude"), request.form.get("longitude")
-    ambulance = AmbulanceUnit.query.filter_by(status="Available").first()
-
-    if ambulance:
-        ambulance.status = "On Mission"
-        ambulance.current_destination = location
-        if latitude and longitude:
-            ambulance.latitude = float(latitude)
-            ambulance.longitude = float(longitude)
-        db.session.commit()
-        flash(f"Ambulance dispatched for {category}", "success")
-    else:
-        flash("No ambulance available currently.", "danger")
-    return redirect(url_for("ambulance_dashboard"))
-
-
-@app.route("/lab-request/<int:id>", methods=["GET", "POST"])
-def lab_request(id):
-    if "role" not in session or session.get("role") != "doctor":
-        flash("Please login as doctor.", "danger")
-        return redirect(url_for("doctor_login"))
-
-    appointment = Appointment.query.get_or_404(id)
-    if request.method == "POST":
-        test = LabTest(
-            patient_name=appointment.patient_name, test_name=request.form.get("test_name"),
-            category=request.form.get("sample_type"), status="Pending",
-            date_requested=datetime.now().strftime("%d-%m-%Y %H:%M")
-        )
-        db.session.add(test)
-        db.session.commit()
-        flash("Lab test request submitted successfully.", "success")
-        return redirect(url_for("laboratory_dashboard"))
-
-    return render_template(
-        "lab_request.html", appointment=appointment, doctor_name=session.get("full_name", "Doctor"),
-        current_date=datetime.now().strftime("%d-%m-%Y"), current_time=datetime.now().strftime("%I:%M %p")
-    )
-
-
-# EXTRA PAGES
-@app.route("/appointments")
-def doctor_appointments_list():
-    if "role" not in session or session.get("role") != "doctor":
-        flash("Please login as doctor.", "danger")
-        return redirect(url_for("doctor_login"))
-    return render_template(
-        "doctor_appointment.html", appointments=Appointment.query.all(),
-        pending_count=Appointment.query.filter_by(status="Pending").count(),
-        accepted_count=Appointment.query.filter_by(status="Accepted").count()
-    )
-
-
-@app.route("/emergency-cases")
-def emergency_cases():
-    return render_template("emergency_cases.html", emergency_cases=[])
-
-
-@app.route("/system-nodes")
-def system_nodes():
-    return render_template("system_nodes.html")
-
-
-@app.route("/audit-logs")
-def audit_logs():
-    if "role" not in session or session.get("role") != "admin":
-        return redirect(url_for("admin_login"))
-    return render_template("audit_logs.html", records=AuditLog.query.all())
-
-
-@app.route("/doctor-logout")
-def doctor_logout():
-    session.clear()
-    flash("You have been logged out successfully.", "success")
-    return redirect(url_for("doctor_login"))
-
-
-# ERROR HANDLERS
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template("404.html"), 404
-
-
-@app.errorhandler(500)
-def internal_server_error(error):
-    return render_template("500.html"), 500
-
-@app.route("/doctor-notifications")
-def doctor_notifications():
-
-    if "role" not in session or session["role"] != "doctor":
-        flash("Access denied.", "danger")
-        return redirect(url_for("home"))
-
-    notifications = Notification.query.filter_by(
-        target_audience="Doctor",
-        is_active=True
-    ).order_by(Notification.timestamp.desc()).all()
-
-    return render_template(
-        "doctor_notifications.html",
-        notifications=notifications
-    )
-
-# RUN APPLICATION
 if __name__ == "__main__":
     app.run(debug=True)
