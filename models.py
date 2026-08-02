@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, UTC 
 
 db = SQLAlchemy()
 
@@ -7,16 +7,35 @@ db = SQLAlchemy()
 # USER MODEL (Doctor/Admin/Staff)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+
     full_name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     phone = db.Column(db.String(15))
+
     password = db.Column(db.String(255), nullable=False)
+
     role = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(100), nullable=True)
     status = db.Column(db.String(50), default="Active")
 
+    # Doctor Details
+    qualification = db.Column(db.String(200), nullable=True)
+    specialization = db.Column(db.String(200), nullable=True)
 
+    # Optional Profile Photo
+    profile_photo = db.Column(db.String(255), nullable=True)
+
+    # Verification Status
+    verification_status = db.Column(
+        db.String(30),
+        default="Pending"
+    )
+
+    admin_remark = db.Column(
+        db.Text,
+        nullable=True
+    )
 # PRESCRIPTION MODEL
 class Prescription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -70,16 +89,34 @@ class AmbulanceUnit(db.Model):
 
 # NOTIFICATION MODEL
 class Notification(db.Model):
+    __tablename__ = "notification"
+
     id = db.Column(db.Integer, primary_key=True)
-    target_audience = db.Column(db.String(100), nullable=False)
-    severity = db.Column(db.String(50), nullable=False)
-    message = db.Column(db.Text, nullable=False)
+
+    target_audience = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    severity = db.Column(
+        db.String(50),
+        nullable=False
+    )
+
+    message = db.Column(
+        db.Text,
+        nullable=False
+    )
+
     timestamp = db.Column(
         db.DateTime,
-        default=db.func.current_timestamp()
+        default=datetime.utcnow
     )
-    is_active = db.Column(db.Boolean, default=True)
 
+    is_active = db.Column(
+        db.Boolean,
+        default=True
+    )
 
 # WARD MODEL
 class Ward(db.Model):
@@ -302,16 +339,21 @@ class Appointment(db.Model):
         default="Pending"
     )
 
-
 class AuditLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    user = db.Column(
+    admin_user = db.Column(
         db.String(100),
         nullable=False
     )
 
-    action = db.Column(
+    action = db.Column()
+    event_scope = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    target_reference = db.Column(
         db.String(200),
         nullable=False
     )
@@ -324,6 +366,18 @@ class AuditLog(db.Model):
     details = db.Column(
         db.String(300)
     )
+
+
+    security_level = db.Column(
+        db.String(50),
+        nullable=False
+    )
+
+    timestamp = db.Column(
+        db.DateTime,
+        default=lambda: datetime.now(UTC)
+    )
+
 
 
 class Analyzer(db.Model):

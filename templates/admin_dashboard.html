@@ -75,6 +75,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('user_management')}}"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
                 </li><hr>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_verification') }}"><i class="fa-solid fa-user-doctor me-2"></i>Doctor Verification</a></li><hr>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('system_nodes')}}"><i class="fa-solid fa-server me-2"></i> System Nodes</a>
                 </li><hr>
@@ -148,6 +149,28 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
+    <div class="card admin-card p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-muted small fw-medium d-block">
+                    Pending Doctor Verifications
+                </span>
+                <h3 class="fw-bold text-warning mt-1 mb-0">
+                    {{ pending_doctors }}
+                </h3>
+                <span class="text-warning small">
+                    <i class="fa-solid fa-user-clock me-1"></i>
+                    Awaiting Approval
+                </span>
+            </div>
+
+            <div class="bg-warning-subtle p-3 rounded-circle text-warning">
+                <i class="fa-solid fa-user-doctor fs-4"></i>
+            </div>
+        </div>
+    </div>
+</div>
+                <div class="col-md-3 col-sm-6">
                     <div class="card admin-card p-4 shadow-sm">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -174,30 +197,53 @@
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="ps-4">Timestamp</th>
-                                            <th>Admin User</th>
-                                            <th>Event Scope</th>
-                                            <th>Target Reference</th>
-                                            <th>Security Level</th>
-                                        </tr>
-                                    </thead>
-               <tbody>
-                   {% for log in records %}
-                     <tr>
-                      <td class="ps-4 text-muted small">{{ log.timestamp }}</td>
-                      <td class="fw-bold text-dark">{{ log.admin_user }}</td>
-                      <td class="small">{{ log.event_scope }}</td>
-                      <td><code>{{ log.target_reference }}</code></td>
-                      <td>
-                        <span class="badge {% if log.security_level == 'Approval' %}bg-success-subtle text-success{% elif log.security_level == 'Config' %}bg-info-subtle text-info{% else %}bg-warning-subtle text-warning{% endif %}">
-                           {{ log.security_level }}
-                        </span>
-                      </td>
-                   </tr>
-                  {% endfor %}
-               </tbody>
+                                    <tbody>
+{% for log in records %}
+<tr>
+
+    <td class="ps-4 text-muted small">
+        {{ log.timestamp.strftime("%d-%m-%Y %I:%M %p") }}
+    </td>
+
+    <td class="fw-bold">
+        {{ log.admin_user }}
+    </td>
+
+    <td>
+        {{ log.event_scope }}
+    </td>
+
+    <td>
+        {{ log.target_reference }}
+    </td>
+
+    <td>
+        {% if log.security_level == "Approved" %}
+            <span class="badge bg-success">
+                Approved
+            </span>
+
+        {% elif log.security_level == "Rejected" %}
+            <span class="badge bg-danger">
+                Rejected
+            </span>
+
+        {% else %}
+            <span class="badge bg-warning text-dark">
+                {{ log.security_level }}
+            </span>
+        {% endif %}
+    </td>
+
+</tr>
+{% else %}
+<tr>
+    <td colspan="5" class="text-center text-muted py-4">
+        No audit records found.
+    </td>
+</tr>
+{% endfor %}
+</tbody>
                                             
                                 </table>
                             </div>

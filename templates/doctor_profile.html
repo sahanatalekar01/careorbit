@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit | Doctor Profile</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f4f7fb;
+        }
+
+        .profile-card{
+            border:none;
+            border-radius:18px;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+        }
+
+        .profile-header{
+            background:linear-gradient(135deg,#1063e5,#0d4bb3);
+            color:white;
+            border-radius:18px 18px 0 0;
+            padding:30px;
+        }
+
+        .profile-image{
+            width:130px;
+            height:130px;
+            border-radius:50%;
+            object-fit:cover;
+            border:5px solid white;
+        }
+
+        .section-title{
+            font-weight:600;
+            color:#1063e5;
+            margin-bottom:15px;
+        }
+
+        .info-box{
+            background:white;
+            border-radius:15px;
+            padding:25px;
+            margin-top:25px;
+            box-shadow:0 5px 15px rgba(0,0,0,.05);
+        }
+
+        .btn-view{
+            margin:4px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+<div class="card profile-card">
+
+<div class="profile-header">
+
+<div class="row align-items-center">
+
+<div class="col-md-3 text-center">
+
+<img
+src="{{ url_for('static', filename='uploads/' + doctor.profile_photo) }}"
+class="profile-image">
+
+</div>
+
+<div class="col-md-9">
+
+<h2 class="fw-bold">
+Dr. {{ doctor.full_name }}
+</h2>
+
+<p class="mb-1">
+<i class="fa-solid fa-envelope"></i>
+{{ doctor.email }}
+</p>
+
+<p>
+<i class="fa-solid fa-phone"></i>
+{{ doctor.phone }}
+</p>
+
+{% if doctor.verification_status=="Approved" %}
+
+<span class="badge bg-success fs-6">
+Approved
+</span>
+
+{% elif doctor.verification_status=="Pending" %}
+
+<span class="badge bg-warning text-dark fs-6">
+Pending Verification
+</span>
+
+{% else %}
+
+<span class="badge bg-danger fs-6">
+Rejected
+</span>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card-body">
+
+
+<div class="info-box">
+
+<h4 class="section-title">
+Professional Information
+</h4>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<strong>Qualification</strong>
+
+<p>{{ doctor.qualification }}</p>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<strong>Specialization</strong>
+
+<p>{{ doctor.specialization }}</p>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<strong>Experience</strong>
+
+<p>{{ doctor.experience }} Years</p>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<strong>Medical Registration Number</strong>
+
+<p>{{ doctor.license_number }}</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<h4 class="section-title">
+Uploaded Documents
+</h4>
+
+<a target="_blank"
+href="{{ url_for('static', filename='uploads/' + doctor.degree_certificate) }}"
+class="btn btn-outline-primary btn-view">
+
+<i class="fa-solid fa-file-pdf"></i>
+
+Degree Certificate
+
+</a>
+
+
+<a target="_blank"
+href="{{ url_for('static', filename='uploads/' + doctor.medical_license) }}"
+class="btn btn-outline-success btn-view">
+
+<i class="fa-solid fa-file-medical"></i>
+
+Medical License
+
+</a>
+
+
+<a target="_blank"
+href="{{ url_for('static', filename='uploads/' + doctor.government_id) }}"
+class="btn btn-outline-secondary btn-view">
+
+<i class="fa-solid fa-id-card"></i>
+
+Government ID
+
+</a>
+
+
+{% if doctor.experience_certificate %}
+
+<a target="_blank"
+href="{{ url_for('static', filename='uploads/' + doctor.experience_certificate) }}"
+class="btn btn-outline-info btn-view">
+
+<i class="fa-solid fa-file"></i>
+
+Experience Certificate
+
+</a>
+
+{% endif %}
+
+</div>
+
+
+<div class="mt-4 d-flex justify-content-between">
+
+<a href="{{ url_for('doctor_dashboard') }}"
+class="btn btn-secondary">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back to Dashboard
+
+</a>
+
+<a href="{{ url_for('edit_doctor_profile') }}"
+class="btn btn-primary">
+
+<i class="fa-solid fa-user-pen"></i>
+
+Edit Profile
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

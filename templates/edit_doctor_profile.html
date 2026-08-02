@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Doctor Profile | CareOrbit</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        body{
+            background:#f4f7fb;
+            font-family:'Poppins',sans-serif;
+        }
+
+        .card{
+            border:none;
+            border-radius:18px;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+        }
+
+        .card-header{
+            background:#1063e5;
+            color:white;
+            border-radius:18px 18px 0 0 !important;
+            padding:20px;
+        }
+
+        .profile-image{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            object-fit:cover;
+            border:4px solid #1063e5;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card">
+
+<div class="card-header">
+
+<h3>
+<i class="fa-solid fa-user-pen me-2"></i>
+
+Edit Doctor Profile
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST"
+      enctype="multipart/form-data">
+
+<div class="text-center mb-4">
+
+<img
+src="{{ url_for('static', filename='uploads/' + doctor.profile_photo) }}"
+class="profile-image">
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+Full Name
+</label>
+
+<input
+type="text"
+class="form-control"
+name="full_name"
+value="{{ doctor.full_name }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+Email
+</label>
+
+<input
+type="email"
+class="form-control"
+name="email"
+value="{{ doctor.email }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+Phone Number
+</label>
+
+<input
+type="text"
+class="form-control"
+name="phone"
+value="{{ doctor.phone }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+Change Profile Photo
+</label>
+
+<input
+type="file"
+class="form-control"
+name="profile_photo"
+accept="image/*">
+
+</div>
+
+<hr>
+
+<h5 class="text-primary mb-3">
+Verified Professional Details
+</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>Qualification</label>
+
+<input
+type="text"
+class="form-control"
+value="{{ doctor.qualification }}"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Specialization</label>
+
+<input
+type="text"
+class="form-control"
+value="{{ doctor.specialization }}"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Experience</label>
+
+<input
+type="text"
+class="form-control"
+value="{{ doctor.experience }}"
+readonly>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Medical Registration Number</label>
+
+<input
+type="text"
+class="form-control"
+value="{{ doctor.license_number }}"
+readonly>
+
+</div>
+
+</div>
+
+<div class="alert alert-info">
+
+<i class="fa-solid fa-circle-info me-2"></i>
+
+Verified professional information cannot be changed.
+Please contact the administrator if any correction is required.
+
+</div>
+
+<div class="d-flex justify-content-between">
+
+<a
+href="{{ url_for('doctor_profile') }}"
+class="btn btn-secondary">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back
+
+</a>
+
+<button
+type="submit"
+class="btn btn-primary">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+Save Changes
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

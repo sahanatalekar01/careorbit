@@ -397,6 +397,7 @@ def complete_lab_report(id):
 # DOCTOR LOGIN
 @app.route("/doctor-login", methods=["GET", "POST"])
 def doctor_login():
+
     if request.method == "POST":
         login = request.form.get("login")
         password = request.form.get("password")
@@ -415,6 +416,52 @@ def doctor_login():
             return redirect(url_for("doctor_dashboard"))
 
         flash("Invalid username/email or password.", "danger")
+        user = User.query.filter(
+            (
+                (User.username == login) |
+                (User.email == login)
+            ) &
+            (User.role == "doctor")
+        ).first()
+
+        print("Login entered:", login)
+        print("User found:", user)
+
+        if not user:
+            flash("Doctor account not found.", "danger")
+            return redirect(url_for("doctor_login"))
+
+        if user.password != password:
+            flash("Invalid password.", "danger")
+            return redirect(url_for("doctor_login"))
+
+        if user.verification_status == "Pending":
+            flash(
+                "Your account is under admin verification. Please wait until it is approved.",
+                "warning"
+            )
+            return redirect(url_for("doctor_login"))
+
+        if user.verification_status == "Rejected":
+            flash(
+                f"Your account has been rejected. {user.admin_remark or ''}",
+                "danger"
+            )
+            return redirect(url_for("doctor_login"))
+
+        session["logged_in"] = True
+        session["user_id"] = user.id
+        session["username"] = user.username
+        session["full_name"] = user.full_name
+        session["role"] = user.role.lower()
+
+        flash(
+            f"Welcome back, Dr. {user.full_name}!",
+            "success"
+        )
+
+        return redirect(url_for("doctor_dashboard"))
+
     return render_template("doctor_login.html")
 
 
@@ -424,11 +471,22 @@ def add_test_doctor():
     existing_doctor = User.query.filter_by(email="doctor@careorbit.com").first()
     if not existing_doctor:
         doctor = User(username="Dr. Smith", email="doctor@careorbit.com", password="password123", role="doctor")
+
+
+        doctor = User(
+            full_name="Dr. Smith",
+            username="drsmith",
+            email="doctor@careorbit.com",
+            password="password123",
+            role="doctor",
+            verification_status="Approved"
+        )
+
+
         db.session.add(doctor)
         db.session.commit()
         return "Test doctor created successfully! Email: doctor@careorbit.com, Password: password123"
     return "Test doctor already exists."
-
 
 # DOCTOR DASHBOARD
 @app.route("/doctor-dashboard")
@@ -478,9 +536,24 @@ def patient_notifications():
 @app.route("/doctor-register", methods=["GET", "POST"])
 def doctor_register():
     if request.method == "POST":
+
         full_name, username = request.form["full_name"], request.form["username"]
         email, phone = request.form["email"], request.form["phone"]
         password, confirm_password = request.form["password"], request.form["confirm_password"]
+
+
+        full_name = request.form["full_name"]
+        username = request.form["username"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+
+        qualification = request.form["qualification"]
+        specialization = request.form["specialization"]
+
+        profile_photo = request.files["profile_photo"]
+
+        password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
 
         if password != confirm_password:
             flash("Passwords do not match.", "danger")
@@ -496,8 +569,207 @@ def doctor_register():
         db.session.add(doctor)
         db.session.commit()
         flash("Registration successful! Please login.", "success")
+        profile_photo_filename = secure_filename(profile_photo.filename)
+
+        profile_photo.save(
+            os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                profile_photo_filename
+            )
+        )
+
+        doctor = User(
+            full_name=full_name,
+            username=username,
+            email=email,
+            phone=phone,
+
+            qualification=qualification,
+            specialization=specialization,
+
+            profile_photo=profile_photo_filename,
+
+            password=password,
+            role="doctor",
+
+            verification_status="Pending",
+            admin_remark=None
+        )
+
+        db.session.add(doctor)
+        db.session.commit()
+
+        flash(
+            "Registration submitted successfully. Your account will be activated after admin verification.",
+            "success"
+        )
         return redirect(url_for("doctor_login"))
+
     return render_template("doctor_register.html")
+
+@app.route("/doctor-verification")
+def doctor_verification():
+
+    if "role" not in session or session["role"] != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
+    doctors = User.query.filter_by(
+        role="doctor",
+        verification_status="Pending"
+    ).all()
+
+    pending_doctors = User.query.filter_by(
+        role="doctor",
+        verification_status="Pending"
+    ).count()
+
+    approved_doctors = User.query.filter_by(
+        role="doctor",
+        verification_status="Approved"
+    ).count()
+
+    rejected_doctors = User.query.filter_by(
+        role="doctor",
+        verification_status="Rejected"
+    ).count()
+
+    return render_template(
+        "doctor_verification.html",
+        doctors=doctors,
+        pending_doctors=pending_doctors,
+        approved_doctors=approved_doctors,
+        rejected_doctors=rejected_doctors
+    )
+
+@app.route("/approve-doctor/<int:doctor_id>")
+def approve_doctor(doctor_id):
+
+    if "role" not in session or session["role"] != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
+    doctor = User.query.get_or_404(doctor_id)
+
+    doctor.verification_status = "Approved"
+    doctor.status = "Active"
+    doctor.admin_remark = None
+
+    # Create notification
+    notification = Notification(
+        target_audience="Doctor",
+        severity="Success",
+        message=f"Congratulations Dr. {doctor.full_name}! Your CareOrbit account has been approved by the admin.",
+        is_active=True
+    )
+
+    db.session.add(notification)
+    db.session.commit()
+
+    flash("Doctor approved successfully.", "success")
+
+    return redirect(url_for("doctor_verification"))
+
+@app.route("/reject-doctor/<int:doctor_id>")
+def reject_doctor(doctor_id):
+
+    if "role" not in session or session["role"] != "admin":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
+    doctor = User.query.get_or_404(doctor_id)
+
+    doctor.verification_status = "Rejected"
+    doctor.status = "Inactive"
+    doctor.admin_remark = "Verification rejected by administrator."
+
+    notification = Notification(
+        admin_user="Admin",
+        event_scope="Doctor Verification",
+        target_reference=doctor.full_name,
+        security_level="Rejected"
+    )
+
+    db.session.add(notification)
+    db.session.commit()
+
+    flash("Doctor rejected.", "warning")
+
+    return redirect(url_for("doctor_verification"))
+
+@app.route("/delete-user/<int:user_id>")
+def delete_user(user_id):
+
+    user = User.query.get_or_404(user_id)
+
+    db.session.delete(user)
+    db.session.commit()
+
+    flash("User deleted successfully.", "success")
+
+    return redirect(url_for("user_management"))
+
+
+@app.route("/edit-doctor-profile", methods=["GET", "POST"])
+def edit_doctor_profile():
+
+    if "role" not in session or session["role"] != "doctor":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
+    doctor = User.query.get_or_404(session["user_id"])
+
+    if request.method == "POST":
+
+        doctor.full_name = request.form["full_name"]
+        doctor.email = request.form["email"]
+        doctor.phone = request.form["phone"]
+
+        profile_photo = request.files.get("profile_photo")
+
+        if profile_photo and profile_photo.filename != "":
+
+            filename = secure_filename(profile_photo.filename)
+
+            profile_photo.save(
+                os.path.join(
+                    app.config["UPLOAD_FOLDER"],
+                    filename
+                )
+            )
+
+            doctor.profile_photo = filename
+
+        db.session.commit()
+
+        session["full_name"] = doctor.full_name
+
+        flash(
+            "Profile updated successfully.",
+            "success"
+        )
+
+        return redirect(url_for("doctor_profile"))
+
+    return render_template(
+        "edit_doctor_profile.html",
+        doctor=doctor
+    )
+
+@app.route("/doctor-profile")
+def doctor_profile():
+
+    if "role" not in session or session["role"] != "doctor":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
+    doctor = User.query.get(session["user_id"])
+
+    return render_template(
+        "doctor_profile.html",
+        doctor=doctor
+    )
+
 
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -551,6 +823,23 @@ def add_medicine():
 def password_success():
     return render_template("password_success.html")
 
+
+@app.route("/edit-user/<int:user_id>", methods=["GET", "POST"])
+def edit_user(user_id):
+
+    user = User.query.get_or_404(user_id)
+
+    if request.method == "POST":
+        user.full_name = request.form["full_name"]
+        user.email = request.form["email"]
+        user.phone = request.form["phone"]
+
+        db.session.commit()
+
+        flash("User updated successfully.", "success")
+        return redirect(url_for("user_management"))
+
+    return render_template("edit_user.html", user=user)
 
 @app.route("/prescriptions", methods=["GET", "POST"])
 def prescriptions():
@@ -682,6 +971,30 @@ def admin_dashboard():
         "admin_dashboard.html", total_appointments=Appointment.query.count(),
         completed_visits=Appointment.query.filter_by(status="Completed").count(),
         user_count=User.query.count(), notice_count=len(notifications), records=notifications
+    total_appointments = Appointment.query.count()
+
+    completed_visits = Appointment.query.filter_by(
+        status="Completed"
+    ).count()
+
+    users = User.query.count()
+
+    pending_doctors = User.query.filter_by(
+        role="doctor",
+        verification_status="Pending"
+    ).count()
+
+    records = AuditLog.query.order_by(
+        AuditLog.timestamp.desc()
+    ).all()
+
+    return render_template(
+        "admin_dashboard.html",
+        total_appointments=total_appointments,
+        completed_visits=completed_visits,
+        user_count=users,
+        pending_doctors=pending_doctors,
+        records=records
     )
 
 
@@ -704,6 +1017,11 @@ def admin_search():
     results = User.query.filter((User.username.like(f"%{query}%")) | (User.email.like(f"%{query}%"))).all() if query else User.query.all()
     return render_template("user_management.html", users=results)
 
+    return render_template(
+        "user_management.html",
+        users=results
+    )
+
 
 @app.route("/admin-register", methods=["GET", "POST"])
 def admin_register():
@@ -711,6 +1029,33 @@ def admin_register():
         admin = User(
             username=request.form.get("username"), email=request.form.get("email"),
             password=request.form.get("password"), role="admin"
+
+
+        full_name = request.form.get("full_name")
+        username = request.form.get("username")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        password = request.form.get("password")
+
+        # Check if username already exists
+        if User.query.filter_by(username=username).first():
+            flash("Username already exists.", "danger")
+            return redirect(url_for("admin_register"))
+
+        # Check if email already exists
+        if User.query.filter_by(email=email).first():
+            flash("Email already registered.", "danger")
+            return redirect(url_for("admin_register"))
+
+        admin = User(
+            full_name=full_name,
+            username=username,
+            email=email,
+            phone=phone,
+            password=password,
+            role="admin",
+            status="Active"
+
         )
         db.session.add(admin)
         db.session.commit()
@@ -735,6 +1080,23 @@ def admin_login():
             flash("Admin login success")
             return redirect(url_for("admin_dashboard"))
 
+            # Create Audit Log
+            log = AuditLog(
+                admin_user=admin.username,
+                event_scope="Admin Login",
+                target_reference="CareOrbit Admin Panel",
+                security_level="Login"
+            )
+
+            db.session.add(log)
+            db.session.commit()
+
+            flash("Admin login successful.", "success")
+
+            return redirect(url_for("admin_dashboard"))
+
+        else:
+            flash("Invalid admin credentials.", "danger") 
         flash("Invalid admin credentials.", "danger")
     return render_template("admin_login.html")
 
@@ -855,6 +1217,22 @@ def page_not_found(error):
 def internal_server_error(error):
     return render_template("500.html"), 500
 
+@app.route("/doctor-notifications")
+def doctor_notifications():
+
+    if "role" not in session or session["role"] != "doctor":
+        flash("Access denied.", "danger")
+        return redirect(url_for("home"))
+
+    notifications = Notification.query.filter_by(
+        target_audience="Doctor",
+        is_active=True
+    ).order_by(Notification.timestamp.desc()).all()
+
+    return render_template(
+        "doctor_notifications.html",
+        notifications=notifications
+    )
 
 # RUN APPLICATION
 if __name__ == "__main__":

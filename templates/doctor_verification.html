@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareOrbit - Doctor Verification</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f4f6f9;
+        }
+
+        .sidebar{
+            min-height:100vh;
+            background:linear-gradient(180deg,#1063e5,#0d4bb3);
+            color:white;
+        }
+
+        .sidebar .nav-link{
+            color:#dbeafe;
+            padding:12px 20px;
+            border-radius:8px;
+            margin-bottom:5px;
+            transition:.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active{
+            background:rgba(255,255,255,.15);
+            color:#fff;
+        }
+
+        .dashboard-card{
+            border:none;
+            border-radius:15px;
+            transition:.3s;
+        }
+
+        .dashboard-card:hover{
+            transform:translateY(-4px);
+            box-shadow:0 10px 20px rgba(0,0,0,.08);
+        }
+
+        .icon-circle{
+            width:60px;
+            height:60px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:22px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+<!-- Sidebar -->
+
+<nav class="col-md-3 col-lg-2 sidebar p-4">
+
+<h3 class="fw-bold mb-4">
+<i class="fa-solid fa-hospital me-2"></i>
+CareOrbit
+</h3>
+
+<hr>
+
+<ul class="nav flex-column">
+
+<li class="nav-item">
+<a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+<i class="fa-solid fa-gauge-high me-2"></i>
+Dashboard
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link active" href="{{ url_for('doctor_verification') }}">
+<i class="fa-solid fa-user-doctor me-2"></i>
+Doctor Verification
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="{{ url_for('user_management') }}">
+<i class="fa-solid fa-users me-2"></i>
+User Management
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="/">
+<i class="fa-solid fa-arrow-left me-2"></i>
+Back
+</a>
+</li>
+
+</ul>
+
+</nav>
+
+<!-- Main Content -->
+
+<main class="col-md-9 col-lg-10 p-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div>
+
+<h2 class="fw-bold">
+Doctor Verification Center
+</h2>
+
+<p class="text-muted">
+Review doctor registrations and verify professional credentials.
+</p>
+
+</div>
+
+<input
+type="text"
+class="form-control"
+placeholder="Search Doctor..."
+style="max-width:300px;"
+>
+
+</div>
+
+<div class="row g-4">
+
+<div class="col-md-4">
+
+<div class="card dashboard-card p-4">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6 class="text-muted">
+Pending Verification
+</h6>
+
+<h2 class="text-warning fw-bold">
+{{ pending_doctors }}
+</h2>
+
+</div>
+
+<div class="icon-circle bg-warning-subtle text-warning">
+
+<i class="fa-solid fa-user-clock"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card dashboard-card p-4">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6 class="text-muted">
+Approved Doctors
+</h6>
+
+<h2 class="text-success fw-bold">
+{{ approved_doctors }}
+</h2>
+
+</div>
+
+<div class="icon-circle bg-success-subtle text-success">
+
+<i class="fa-solid fa-circle-check"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card dashboard-card p-4">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6 class="text-muted">
+Rejected Doctors
+</h6>
+
+<h2 class="text-danger fw-bold">
+{{ rejected_doctors }}
+</h2>
+
+</div>
+
+<div class="icon-circle bg-danger-subtle text-danger">
+
+<i class="fa-solid fa-circle-xmark"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<br>
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white">
+        <h5 class="fw-bold mb-0">
+            <i class="fa-solid fa-user-doctor text-primary me-2"></i>
+            Pending Doctor Applications
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        {% if doctors %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Qualification</th>
+                        <th>Specialization</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for doctor in doctors %}
+
+                <tr>
+
+                    <td>
+                        <div class="d-flex align-items-center">
+
+                            {% if doctor.profile_photo %}
+    <img src="{{ url_for('static', filename='uploads/' + doctor.profile_photo) }}"
+         class="rounded-circle"
+         width="60"
+         height="60">
+{% else %}
+    <img src="{{ url_for('static', filename='images/default-doctor.png') }}"
+         class="rounded-circle"
+         width="60"
+         height="60">
+{% endif %}
+                            <div>
+                                <strong>{{ doctor.full_name }}</strong><br>
+                                <small class="text-muted">{{ doctor.email }}</small>
+                            </div>
+
+                        </div>
+                    </td>
+
+                    <td>{{ doctor.qualification }}</td>
+
+                    <td>{{ doctor.specialization }}</td>
+
+
+                    <td>
+
+
+                    <td>
+                        <span class="badge bg-warning">
+                            Pending
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <a href="{{ url_for('approve_doctor', doctor_id=doctor.id) }}"
+                           class="btn btn-success btn-sm">
+                            <i class="fa-solid fa-check"></i>
+                        </a>
+
+                        <a href="{{ url_for('reject_doctor', doctor_id=doctor.id) }}"
+                           class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="alert alert-success text-center">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            No pending doctor verification requests.
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
