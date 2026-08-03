@@ -38,7 +38,6 @@ def is_profile_complete(patient):
     if not patient:
         return False
     
-    # Check phone or emergency_contact depending on schema attribute
     contact = getattr(patient, 'emergency_contact', None) or getattr(patient, 'phone', None)
     
     required_fields = [
@@ -58,7 +57,7 @@ def home():
     return render_template("index.html")
 
 
-# PATIENT REGISTER (Single-Step Form with Health & Personal Details)
+# PATIENT REGISTER
 @app.route("/patient-register", methods=["GET", "POST"])
 def patient_register():
     if request.method == "POST":
@@ -91,7 +90,6 @@ def patient_register():
             "medical_history": request.form.get("medical_history")
         }
         
-        # Dynamically map phone or emergency_contact based on model definition
         if hasattr(Patient, 'emergency_contact'):
             patient_kwargs['emergency_contact'] = phone_val
         if hasattr(Patient, 'phone'):
@@ -123,7 +121,6 @@ def patient_login():
             session["patient_name"] = patient.full_name
             flash("Login successful!", "success")
 
-            # Check if profile details are incomplete
             if not is_profile_complete(patient):
                 flash("Please complete your profile information to continue.", "info")
                 return redirect(url_for("complete_profile"))
@@ -189,7 +186,6 @@ def patient_dashboard():
         return redirect(url_for("patient_login"))
     patient = Patient.query.get_or_404(session["patient_id"])
     
-    # Enforce profile completion check
     if not is_profile_complete(patient):
         flash("Please complete your profile details first.", "warning")
         return redirect(url_for("complete_profile"))
@@ -326,6 +322,12 @@ def patient_lab_reports():
     return render_template("patient_lab_reports.html", patient=patient, tests=tests)
 
 
+@app.route("/laboratory-dashboard")
+def laboratory_dashboard():
+    tests = LabTest.query.all()
+    return render_template("laboratory_dashboard.html", tests=tests)
+
+
 @app.route("/update-lab-status/<int:id>/<status>")
 def update_lab_status(id, status):
     test = LabTest.query.get_or_404(id)
@@ -406,9 +408,6 @@ def doctor_login():
             ((User.username == login) | (User.email == login)) & (User.role == "doctor")
         ).first()
 
-        print("Login entered:", login)
-        print("User found:", user)
-
         if not user:
             flash("Doctor account not found.", "danger")
             return redirect(url_for("doctor_login"))
@@ -462,6 +461,7 @@ def add_test_doctor():
         db.session.commit()
         return "Test doctor created successfully! Email: doctor@careorbit.com, Password: password123"
     return "Test doctor already exists."
+
 
 # DOCTOR DASHBOARD
 @app.route("/doctor-dashboard")
@@ -569,6 +569,50 @@ def doctor_register():
 
     return render_template("doctor_register.html")
 
+
+# ADMIN REGISTER
+@app.route("/admin-register", methods=["GET", "POST"])
+def admin_register():
+    if request.method == "POST":
+        full_name = request.form.get("full_name")
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        if password != confirm_password:
+            flash("Passwords do not match.", "danger")
+            return redirect(url_for("admin_register"))
+
+        if User.query.filter_by(username=username).first():
+            flash("Username already exists.", "danger")
+            return redirect(url_for("admin_register"))
+
+        if User.query.filter_by(email=email).first():
+            flash("Email already registered.", "danger")
+            return redirect(url_for("admin_register"))
+
+        admin_user = User(
+            full_name=full_name,
+            username=username,
+            email=email,
+            password=password,
+            role="admin",
+            status="Active"
+        )
+        db.session.add(admin_user)
+        db.session.commit()
+
+        flash("Admin account created successfully! Please login.", "success")
+        return redirect(url_for("doctor_login"))
+
+    # Renders admin_register.html if it exists, otherwise falls back gracefully
+    try:
+        return render_template("admin_register.html")
+    except:
+        return render_template("patient_register.html")
+
+
 @app.route("/doctor-verification")
 def doctor_verification():
     if "role" not in session or session["role"] != "admin":
@@ -603,6 +647,7 @@ def doctor_verification():
         rejected_doctors=rejected_doctors
     )
 
+
 @app.route("/approve-doctor/<int:doctor_id>")
 def approve_doctor(doctor_id):
     if "role" not in session or session["role"] != "admin":
@@ -615,7 +660,6 @@ def approve_doctor(doctor_id):
     doctor.status = "Active"
     doctor.admin_remark = None
 
-    # Create notification
     notification = Notification(
         target_audience="Doctor",
         severity="Success",
@@ -627,8 +671,8 @@ def approve_doctor(doctor_id):
     db.session.commit()
 
     flash("Doctor approved successfully.", "success")
-
     return redirect(url_for("doctor_verification"))
+
 
 @app.route("/reject-doctor/<int:doctor_id>")
 def reject_doctor(doctor_id):
@@ -653,18 +697,21 @@ def reject_doctor(doctor_id):
     db.session.commit()
 
     flash("Doctor rejected.", "warning")
-
     return redirect(url_for("doctor_verification"))
+
+
+@app.route("/user-management")
+def user_management():
+    users = User.query.all()
+    return render_template("user_management.html", users=users)
+
 
 @app.route("/delete-user/<int:user_id>")
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
-
     db.session.delete(user)
     db.session.commit()
-
     flash("User deleted successfully.", "success")
-
     return redirect(url_for("user_management"))
 
 
@@ -685,31 +732,21 @@ def edit_doctor_profile():
 
         if profile_photo and profile_photo.filename != "":
             filename = secure_filename(profile_photo.filename)
-
             profile_photo.save(
                 os.path.join(
                     app.config["UPLOAD_FOLDER"],
                     filename
                 )
             )
-
             doctor.profile_photo = filename
 
         db.session.commit()
-
         session["full_name"] = doctor.full_name
-
-        flash(
-            "Profile updated successfully.",
-            "success"
-        )
-
+        flash("Profile updated successfully.", "success")
         return redirect(url_for("doctor_profile"))
 
-    return render_template(
-        "edit_doctor_profile.html",
-        doctor=doctor
-    )
+    return render_template("edit_doctor_profile.html", doctor=doctor)
+
 
 @app.route("/doctor-profile")
 def doctor_profile():
@@ -718,11 +755,7 @@ def doctor_profile():
         return redirect(url_for("home"))
 
     doctor = User.query.get(session["user_id"])
-
-    return render_template(
-        "doctor_profile.html",
-        doctor=doctor
-    )
+    return render_template("doctor_profile.html", doctor=doctor)
 
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -758,6 +791,13 @@ def reset_password():
     return render_template("reset_password.html")
 
 
+# PHARMACY DASHBOARD
+@app.route("/pharmacy-dashboard")
+def pharmacy_dashboard():
+    medicines = Medicine.query.all()
+    return render_template("pharmacy_dashboard.html", medicines=medicines)
+
+
 @app.route("/add-medicine", methods=["GET", "POST"])
 def add_medicine():
     if request.method == "POST":
@@ -787,11 +827,11 @@ def edit_user(user_id):
         user.phone = request.form["phone"]
 
         db.session.commit()
-
         flash("User updated successfully.", "success")
         return redirect(url_for("user_management"))
 
     return render_template("edit_user.html", user=user)
+
 
 @app.route("/prescriptions", methods=["GET", "POST"])
 def prescriptions():

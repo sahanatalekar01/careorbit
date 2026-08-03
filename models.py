@@ -347,7 +347,11 @@ class AuditLog(db.Model):
         nullable=False
     )
 
-    action = db.Column()
+    action = db.Column(
+        db.String(255),  # <-- Fixed: Added db.String(255)
+        nullable=False
+    )
+
     event_scope = db.Column(
         db.String(150),
         nullable=False
@@ -358,15 +362,9 @@ class AuditLog(db.Model):
         nullable=False
     )
 
-    timestamp = db.Column(
-        db.DateTime,
-        default=datetime.utcnow
-    )
-
     details = db.Column(
         db.String(300)
     )
-
 
     security_level = db.Column(
         db.String(50),
@@ -375,9 +373,8 @@ class AuditLog(db.Model):
 
     timestamp = db.Column(
         db.DateTime,
-        default=lambda: datetime.now(UTC)
+        default=datetime.utcnow
     )
-
 
 
 class Analyzer(db.Model):
