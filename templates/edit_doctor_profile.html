@@ -72,9 +72,13 @@ Edit Doctor Profile
 
 <div class="text-center mb-4">
 
-<img
-src="{{ url_for('static', filename='uploads/' + doctor.profile_photo) }}"
-class="profile-image">
+{% if doctor.profile_photo is not none and doctor.profile_photo != "" %}
+    <img src="{{ url_for('static', filename='uploads/' ~ doctor.profile_photo) }}"
+         class="profile-image">
+{% else %}
+    <img src="{{ url_for('static', filename='images/default-doctor.png') }}"
+         class="profile-image">
+{% endif %}
 
 </div>
 
@@ -152,8 +156,8 @@ Verified Professional Details
 <input
 type="text"
 class="form-control"
-value="{{ doctor.qualification }}"
-readonly>
+name="qualification"
+value="{{ doctor.qualification }}">
 
 </div>
 
@@ -164,33 +168,17 @@ readonly>
 <input
 type="text"
 class="form-control"
-value="{{ doctor.specialization }}"
-readonly>
+name="specialization"
+value="{{ doctor.specialization }}">
 
 </div>
 
-<div class="col-md-6 mb-3">
-
-<label>Experience</label>
-
-<input
-type="text"
-class="form-control"
-value="{{ doctor.experience }}"
-readonly>
-
-</div>
-
-<div class="col-md-6 mb-3">
-
-<label>Medical Registration Number</label>
-
-<input
-type="text"
-class="form-control"
-value="{{ doctor.license_number }}"
-readonly>
-
+<div class="mb-3">
+    <label class="form-label">Experience</label>
+    <input type="text"
+           class="form-control"
+           name="experience"
+           value="{{ doctor.experience or '' }}">
 </div>
 
 </div>

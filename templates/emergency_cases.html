@@ -11,60 +11,133 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fcf8f8; /* Slightly red-tinted light background for urgency */
-        }
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f7f9;
+}
 
-        /* Sidebar Styling */
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
-            color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
+/* Sidebar */
 
-        /* Emergency Cards */
-        .emergency-card {
-            border: none;
-            border-radius: 15px;
-            background: white;
-            border-left: 5px solid #dc3545; /* Urgent Red Indicator */
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .emergency-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(220, 53, 69, 0.08) !important;
-        }
-        
-        .pulse-icon {
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.15); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-    </style>
+.sidebar{
+    min-height:100vh;
+    background:linear-gradient(180deg,#1063e5 0%,#0d4bb3 100%);
+    color:#fff;
+    box-shadow:4px 0 18px rgba(0,0,0,.12);
+    padding:25px 18px;
+}
+
+.sidebar-brand{
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.sidebar .nav{
+    list-style:none;
+    padding-left:0;
+}
+
+.sidebar .nav-item{
+    margin-bottom:10px;
+}
+
+.sidebar .nav-link{
+    color:rgba(255,255,255,.90);
+    padding:13px 18px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+}
+
+.sidebar .nav-link i{
+    width:25px;
+    font-size:18px;
+    margin-right:12px;
+}
+
+.sidebar .nav-link:hover{
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    transform:translateX(5px);
+}
+
+.sidebar .nav-link.active{
+    background:#fff;
+    color:#1063e5;
+    font-weight:600;
+}
+
+/* Dashboard Cards */
+
+.stat-card{
+    border:none;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Table */
+
+.table-card{
+    border:none;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.table thead{
+    background:#1063e5;
+    color:#fff;
+}
+
+.table thead th{
+    border:none;
+    padding:15px;
+}
+
+.table tbody td{
+    padding:16px;
+    vertical-align:middle;
+}
+
+.table tbody tr:hover{
+    background:#f3f8ff;
+}
+
+.btn{
+    border-radius:10px;
+}
+.letter-avatar {
+    background: #1063e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    font-weight: 600;
+}
+</style>
+
 </head>
 <body>
 

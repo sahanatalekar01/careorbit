@@ -1,60 +1,669 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>System Nodes - CareOrbit</title>
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareOrbit - System Nodes</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
     <style>
-        body { background-color: #f8f9fa; }
-        .sidebar { min-height: 100vh; background-color: #0d6efd; color: white; }
-        .sidebar a { color: white; text-decoration: none; padding: 10px; display: block; }
-        .sidebar a:hover { background-color: #0a58ca; }
-        .content-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(
+                180deg,
+                #1063e5 0%,
+                #0d4bb3 100%
+            );
+            color: white;
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .sidebar-brand {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.65);
+            margin-top: -5px;
+        }
+
+        .sidebar hr {
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.82);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .nav-link i {
+            width: 23px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.12);
+            transform: translateX(3px);
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.18);
+            box-shadow: inset 3px 0 0 white;
+        }
+
+        .sidebar .back-link {
+            color: #ffd166;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            min-height: 100vh;
+        }
+
+        .page-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #172033;
+        }
+
+        .page-description {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+
+        /* =========================
+           NODE CARDS
+        ========================= */
+
+        .node-card {
+            border: 1px solid #edf0f5;
+            border-radius: 15px;
+            background: white;
+            transition: all 0.25s ease;
+        }
+
+        .node-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.07);
+        }
+
+        .node-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .node-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .node-description {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .node-count {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #172033;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #198754;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-text {
+            color: #198754;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* =========================
+           INFO CARD
+        ========================= */
+
+        .info-card {
+            border: 1px solid #edf0f5;
+            border-radius: 15px;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 767px) {
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .page-title {
+                font-size: 1.35rem;
+            }
+
+        }
+
     </style>
+
 </head>
+
 <body>
 
 <div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2 sidebar p-3">
-            <h4>CareOrbit</h4>
-            <hr>
-            <a href="/admin-dashboard"><i class="fas fa-gauge"></i> Dashboard</a>
-            <a href="/system-nodes" class="active bg-primary"><i class="fas fa-server"></i> System Nodes</a>
-        </div>
 
-        <!-- Main Content -->
-        <div class="col-md-10 p-5">
-            <div class="content-card">
-                <h1><i class="fas fa-server text-primary"></i> System Nodes Orchestration</h1>
-                <p class="text-muted">Monitoring live server performance and connection status.</p>
-                <hr>
-                
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="card bg-light p-3">
-                            <h5>Node Alpha</h5>
-                            <p>Status: <span class="text-success">Active</span></p>
-                            <small>Latency: 12ms</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card bg-light p-3">
-                            <h5>Node Beta</h5>
-                            <p>Status: <span class="text-success">Active</span></p>
-                            <small>Latency: 15ms</small>
-                        </div>
-                    </div>
-                </div>
+    <div class="row">
+
+        <!-- =========================
+             SIDEBAR
+        ========================= -->
+
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
+
+            <div class="sidebar-brand d-flex align-items-center mb-1">
+
+                <i class="fa-solid fa-shield-halved me-2"></i>
+
+                <span>CareOrbit Admin</span>
+
             </div>
-        </div>
+
+            <div class="sidebar-subtitle mb-4">
+                Administration Panel
+            </div>
+
+            <hr>
+
+            <ul class="nav flex-column mt-3">
+
+                <!-- Dashboard -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('admin_dashboard') }}"
+                    >
+
+                        <i class="fa-solid fa-gauge-high"></i>
+
+                        Core Overview
+
+                    </a>
+
+                </li>
+
+
+                <!-- User Access -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('user_management') }}"
+                    >
+
+                        <i class="fa-solid fa-users-gear"></i>
+
+                        User Access
+
+                    </a>
+
+                </li>
+
+
+                <!-- Doctor Verification -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('doctor_verification') }}"
+                    >
+
+                        <i class="fa-solid fa-user-doctor"></i>
+
+                        Doctor Verification
+
+                    </a>
+
+                </li>
+
+
+                <!-- System Nodes -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link active"
+                        href="{{ url_for('system_nodes') }}"
+                    >
+
+                        <i class="fa-solid fa-server"></i>
+
+                        System Nodes
+
+                    </a>
+
+                </li>
+
+
+                <!-- Audit Logs -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('audit_logs') }}"
+                    >
+
+                        <i class="fa-solid fa-file-shield"></i>
+
+                        Audit Logs
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item mt-4">
+
+                    <hr>
+
+                </li>
+
+
+                <!-- Hospital -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('hospital_dashboard') }}"
+                    >
+
+                        <i class="fa-solid fa-hospital"></i>
+
+                        Hospital Operations
+
+                    </a>
+
+                </li>
+
+
+                <!-- Back -->
+
+                <li class="nav-item mt-2">
+
+                    <a
+                        class="nav-link back-link"
+                        href="/"
+                    >
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to App
+
+                    </a>
+
+                </li>
+
+
+                <!-- Logout -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('logout') }}"
+                    >
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================= -->
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 main-content">
+
+
+            <!-- HEADER -->
+
+            <div class="page-header mb-4">
+
+                <h1 class="page-title">
+
+                    System Nodes
+
+                </h1>
+
+                <p class="page-description">
+
+                    Monitor the operational components and database activity
+                    of the CareOrbit system.
+
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 SYSTEM NODE CARDS
+            ========================= -->
+
+            <div class="row g-4">
+
+
+                <!-- USER MANAGEMENT -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card node-card shadow-sm p-4 h-100">
+
+                        <div class="node-icon bg-primary-subtle text-primary mb-3">
+
+                            <i class="fa-solid fa-users"></i>
+
+                        </div>
+
+                        <div class="node-title">
+
+                            User Management
+
+                        </div>
+
+                        <div class="node-description mt-1">
+
+                            Registered users in CareOrbit
+
+                        </div>
+
+                        <div class="node-count mt-3">
+
+                            {{ user_count }}
+
+                        </div>
+
+                        <div class="mt-2">
+
+                            <span class="status-dot"></span>
+
+                            <span class="status-text">
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPOINTMENT SERVICE -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card node-card shadow-sm p-4 h-100">
+
+                        <div class="node-icon bg-info-subtle text-info mb-3">
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                        </div>
+
+                        <div class="node-title">
+
+                            Appointment Service
+
+                        </div>
+
+                        <div class="node-description mt-1">
+
+                            Appointment records maintained
+
+                        </div>
+
+                        <div class="node-count mt-3">
+
+                            {{ appointment_count }}
+
+                        </div>
+
+                        <div class="mt-2">
+
+                            <span class="status-dot"></span>
+
+                            <span class="status-text">
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AUDIT LOG SERVICE -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card node-card shadow-sm p-4 h-100">
+
+                        <div class="node-icon bg-warning-subtle text-warning mb-3">
+
+                            <i class="fa-solid fa-file-shield"></i>
+
+                        </div>
+
+                        <div class="node-title">
+
+                            Audit Log Service
+
+                        </div>
+
+                        <div class="node-description mt-1">
+
+                            Administrative activity records
+
+                        </div>
+
+                        <div class="node-count mt-3">
+
+                            {{ audit_count }}
+
+                        </div>
+
+                        <div class="mt-2">
+
+                            <span class="status-dot"></span>
+
+                            <span class="status-text">
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NOTIFICATION SERVICE -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card node-card shadow-sm p-4 h-100">
+
+                        <div class="node-icon bg-success-subtle text-success mb-3">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                        </div>
+
+                        <div class="node-title">
+
+                            Notification Service
+
+                        </div>
+
+                        <div class="node-description mt-1">
+
+                            Notifications stored in system
+
+                        </div>
+
+                        <div class="node-count mt-3">
+
+                            {{ notification_count }}
+
+                        </div>
+
+                        <div class="mt-2">
+
+                            <span class="status-dot"></span>
+
+                            <span class="status-text">
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 SYSTEM INFORMATION
+            ========================= -->
+
+            <div class="card info-card shadow-sm mt-4">
+
+                <div class="card-body p-4">
+
+                    <h5 class="section-title mb-2">
+
+                        <i class="fa-solid fa-circle-info text-primary me-2"></i>
+
+                        System Information
+
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+
+                        System Nodes provides an administrative overview of
+                        CareOrbit's core database-backed services. The
+                        displayed counts are retrieved directly from the
+                        CareOrbit database.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </main>
+
     </div>
+
 </div>
 
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+
 </body>
+
 </html>

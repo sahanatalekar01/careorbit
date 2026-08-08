@@ -9,15 +9,131 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; }
-        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%); color: white; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
-        .sidebar .nav-link { color: rgba(255, 255, 255, 0.85); font-weight: 500; padding: 12px 20px; border-radius: 8px; transition: all 0.3s ease; margin-bottom: 5px; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: white; background-color: rgba(255, 255, 255, 0.15); transform: translateX(5px); }
-        .stat-card { border: none; border-radius: 15px; background: white; }
-        .stat-icon { width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .emergency-alert { background-color: #ffe5e5; border-left: 5px solid #dc3545; color: #b02a37; border-radius: 8px; }
-        .table-card { border: none; border-radius: 15px; overflow: hidden; background: white; }
-    </style>
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f7f9;
+}
+
+/* Sidebar */
+
+.sidebar{
+    min-height:100vh;
+    background:linear-gradient(180deg,#1063e5 0%,#0d4bb3 100%);
+    color:#fff;
+    box-shadow:4px 0 18px rgba(0,0,0,.12);
+    padding:25px 18px;
+}
+
+.sidebar-brand{
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.sidebar .nav{
+    list-style:none;
+    padding-left:0;
+}
+
+.sidebar .nav-item{
+    margin-bottom:10px;
+}
+
+.sidebar .nav-link{
+    color:rgba(255,255,255,.90);
+    padding:13px 18px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+}
+
+.sidebar .nav-link i{
+    width:25px;
+    font-size:18px;
+    margin-right:12px;
+}
+
+.sidebar .nav-link:hover{
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    transform:translateX(5px);
+}
+
+.sidebar .nav-link.active{
+    background:#fff;
+    color:#1063e5;
+    font-weight:600;
+}
+
+/* Dashboard Cards */
+
+.stat-card{
+    border:none;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Table */
+
+.table-card{
+    border:none;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.table thead{
+    background:#1063e5;
+    color:#fff;
+}
+
+.table thead th{
+    border:none;
+    padding:15px;
+}
+
+.table tbody td{
+    padding:16px;
+    vertical-align:middle;
+}
+
+.table tbody tr:hover{
+    background:#f3f8ff;
+}
+
+.btn{
+    border-radius:10px;
+}
+.letter-avatar {
+    background: #1063e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    font-weight: 600;
+}
+</style>
+
 </head>
 <body>
 
@@ -30,7 +146,10 @@
                 <li class="nav-item"><a class="nav-link active" href="#"><i class="fa-solid fa-chart-pie me-2"></i> Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="/patient-records"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a></li>
                 <li class="nav-item">
-    <a class="nav-link" href="/appointments"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+    <a class="nav-link" href="{{ url_for('doctor_appointments_list') }}">
+    <i class="fa-solid fa-calendar-check me-2"></i>
+    Appointments
+</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="/prescriptions"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
@@ -61,10 +180,47 @@
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-4 border-bottom">
-                <div>
-                    <h1 class="h2 fw-bold text-dark">Doctor Dashboard 🩺</h1>
-                    <p class="text-muted">Welcome back, <span class="text-primary fw-semibold">{{doctor_name}}</span></p>
-                </div>
+                <div class="d-flex justify-content-between align-items-center">
+
+    <div>
+        <h2 class="fw-bold mb-1">
+            Welcome, Dr. {{ doctor.full_name }}
+        </h2>
+
+        <p class="text-muted">
+            Here's what's happening today.
+        </p>
+    </div>
+
+    <div class="d-flex align-items-center">
+
+        {% if doctor.profile_photo %}
+            <img src="{{ url_for('static', filename='uploads/' ~ doctor.profile_photo) }}"
+                 style="width:55px;
+                        height:55px;
+                        border-radius:50%;
+                        object-fit:cover;
+                        border:3px solid #1063e5;">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/default-doctor.png') }}"
+                 style="width:55px;
+                        height:55px;
+                        border-radius:50%;">
+        {% endif %}
+
+        <div class="ms-3">
+            <h6 class="mb-0 fw-bold">
+                Dr. {{ doctor.full_name }}
+            </h6>
+
+            <small class="text-muted">
+                {{ doctor.specialization }}
+            </small>
+        </div>
+
+    </div>
+
+</div>
             </div>
             <!-- Stats Metric Cards -->
 <div class="row g-4 mb-4">
@@ -120,15 +276,15 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
-                            <tr>
-                                <th class="ps-4">Time</th>
-                                <th>Patient Name</th>
-                                <th>Gender / Age</th>
-                                <th>Symptoms</th>
-                                <th>Status</th>
-                                <th class="text-end pe-4">Actions</th>
-                            </tr>
-                        </thead>
+<tr>
+    <th class="ps-4" style="width:10%;">Time</th>
+    <th style="width:18%;">Patient Name</th>
+    <th style="width:15%;">Gender / Age</th>
+    <th style="width:27%;">Symptoms</th>
+    <th style="width:10%;">Status</th>
+    <th class="text-end pe-4" style="width:20%;">Actions</th>
+</tr>
+</thead>
                         <tbody>
                             {% for appointment in appointments %}
                             <tr>
@@ -155,24 +311,38 @@
 </td>
 <td class="text-end pe-4">
 
-    <a href="/patient-records/{{ appointment.patient_id }}"
-       class="btn btn-primary btn-sm">
-        <i class="fa-solid fa-user-doctor"></i> Examine
-    </a>
+    <div class="d-flex justify-content-end align-items-center gap-2">
+        <a href="{{ url_for('doctor_appointments_list') }}"
+   class="btn btn-outline-primary btn-sm"
+   title="Appointment Management">
+    <i class="fa-solid fa-calendar-check"></i>
+</a>
 
-    <a href="{{ url_for('lab_request', id=appointment.id) }}"
-       class="btn btn-warning btn-sm">
-        <i class="fa-solid fa-flask"></i> Lab
-    </a>
+        <a href="/patient-records/{{ appointment.patient_id }}"
+           class="btn btn-primary btn-sm"
+           title="Examine">
+            <i class="fa-solid fa-user-doctor"></i>
+        </a>
 
-    <form action="/appointment-status/{{ appointment.id }}/Completed"
-          method="POST"
-          style="display:inline;">
-        <button type="submit"
-                class="btn btn-success btn-sm">
-            <i class="fa-solid fa-circle-check"></i> Complete
-        </button>
-    </form>
+        <a href="{{ url_for('lab_request', id=appointment.id) }}"
+           class="btn btn-warning btn-sm"
+           title="Lab Request">
+            <i class="fa-solid fa-flask"></i>
+        </a>
+
+        <form action="/appointment-status/{{ appointment.id }}/Completed"
+              method="POST"
+              style="margin:0;">
+
+            <button type="submit"
+                    class="btn btn-success btn-sm"
+                    title="Complete">
+                <i class="fa-solid fa-circle-check"></i>
+            </button>
+
+        </form>
+
+    </div>
 
 </td>
                             </tr>

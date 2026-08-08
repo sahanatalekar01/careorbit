@@ -11,63 +11,440 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
-        }
+<style>
+:root {
+    --primary: #1063e5;
+    --primary-dark: #0d4bb3;
+    --background: #f4f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #718096;
+    --border: #e7ecf3;
+    --success: #198754;
+    --danger: #dc3545;
+    --warning: #f59e0b;
+}
 
-        /* Sidebar Styling */
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
-            color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        /* Card & Form Styling */
-        .presc-card {
-            border: none;
-            border-radius: 15px;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .form-control, .form-select {
-            border-radius: 10px;
-            padding: 10px 15px;
-            border: 1px solid #dee2e6;
-        }
-        .form-control:focus, .form-select:focus {
-            box-shadow: 0 0 0 0.25rem rgba(16, 99, 229, 0.15);
-            border-color: #1063e5;
-        }
-        
-        /* Medicine Entry Row Styling */
-        .med-row {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-    </style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+
+.sidebar {
+    min-height: 100vh;
+    background: linear-gradient(
+        180deg,
+        var(--primary) 0%,
+        var(--primary-dark) 100%
+    );
+    color: #fff;
+    padding: 28px 18px !important;
+    box-shadow: 5px 0 20px rgba(13, 75, 179, .15);
+}
+
+.sidebar-brand {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    color: #fff;
+}
+
+.sidebar hr {
+    opacity: .2;
+    margin: 20px 0;
+}
+
+.sidebar .nav-item {
+    margin-bottom: 7px;
+}
+
+.sidebar .nav-link {
+    color: rgba(255,255,255,.88);
+    padding: 13px 16px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: all .25s ease;
+}
+
+.sidebar .nav-link i {
+    width: 25px;
+    font-size: 16px;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255,255,255,.14);
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.sidebar .nav-link.active {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0,0,0,.12);
+}
+
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+main {
+    background: var(--background);
+}
+
+main > .d-flex {
+    border-bottom: 1px solid var(--border) !important;
+}
+
+main h1,
+main h2 {
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: -.4px;
+}
+
+main .text-muted {
+    color: var(--muted) !important;
+}
+
+
+/* =========================================
+   PRESCRIPTION STAT CARDS
+   ========================================= */
+
+.stat-card {
+    border: none;
+    border-radius: 17px;
+    background: var(--card);
+    box-shadow: 0 7px 22px rgba(24, 39, 75, .06);
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(24, 39, 75, .10);
+}
+
+.stat-card h3,
+.stat-card h4 {
+    font-weight: 700;
+}
+
+.stat-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+
+/* =========================================
+   PRESCRIPTION CARD
+   ========================================= */
+
+.prescription-card {
+    border: none;
+    border-radius: 18px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(24, 39, 75, .07);
+}
+
+.prescription-card .card-header {
+    background: #fff;
+    padding: 20px 22px !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+.prescription-card .card-header h5 {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   PRESCRIPTION TABLE
+   ========================================= */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    background: #f7f9fc;
+}
+
+.table thead th {
+    color: #596579;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .45px;
+    padding: 15px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.table tbody td {
+    padding: 16px 14px;
+    border-bottom: 1px solid #eef2f7;
+    color: #344054;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: background .2s ease;
+}
+
+.table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================
+   PATIENT NAME
+   ========================================= */
+
+.patient-name {
+    font-weight: 600;
+    color: #172033;
+}
+
+.patient-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.patient-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e8f1ff;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   MEDICINE TAGS
+   ========================================= */
+
+.medicine-tag {
+    display: inline-block;
+    padding: 6px 10px;
+    margin: 2px;
+    border-radius: 8px;
+    background: #f0f6ff;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   STATUS BADGES
+   ========================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff4d6;
+    color: #9a6700;
+}
+
+.status-active {
+    background: #e7f7ef;
+    color: #137a4b;
+}
+
+.status-completed {
+    background: #e7f0ff;
+    color: #245fc1;
+}
+
+.status-cancelled {
+    background: #fdecec;
+    color: #b42318;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
+.table .btn {
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 12px;
+    transition: all .2s ease;
+}
+
+.table .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,.10);
+}
+
+
+/* =========================================
+   CREATE PRESCRIPTION BUTTON
+   ========================================= */
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 9px 16px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+
+/* =========================================
+   PRESCRIPTION FORM
+   ========================================= */
+
+.form-card {
+    border: none;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(24, 39, 75, .07);
+}
+
+.form-card .card-header {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 20px;
+}
+
+.form-label {
+    color: #344054;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.form-control,
+.form-select {
+    border: 1px solid #dfe5ee;
+    border-radius: 10px;
+    padding: 11px 13px;
+    font-size: 13px;
+    transition: all .2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(16,99,229,.10);
+}
+
+
+/* =========================================
+   EMPTY STATE
+   ========================================= */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.empty-state i {
+    font-size: 45px;
+    opacity: .35;
+    margin-bottom: 15px;
+}
+
+.empty-state h5 {
+    color: #344054;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        min-height: auto;
+    }
+
+    main {
+        padding: 20px !important;
+    }
+
+    main h1,
+    main h2 {
+        font-size: 23px;
+    }
+
+    .prescription-card {
+        border-radius: 14px;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+
+    .stat-card {
+        margin-bottom: 10px;
+    }
+}
+</style>
 </head>
 <body>
 

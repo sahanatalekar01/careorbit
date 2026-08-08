@@ -1,86 +1,655 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Audit Logs - CareOrbit</title>
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome (for icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareOrbit - Audit Logs</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
     <style>
-        body { background-color: #f8f9fa; }
-        .sidebar { min-height: 100vh; background-color: #0d6efd; color: white; }
-        .sidebar a { color: white; text-decoration: none; padding: 10px; display: block; }
-        .sidebar a:hover { background-color: #0a58ca; }
-        .content-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(
+                180deg,
+                #1063e5 0%,
+                #0d4bb3 100%
+            );
+            color: white;
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .sidebar-brand {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.65);
+            margin-top: -5px;
+        }
+
+        .sidebar hr {
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.82);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .nav-link i {
+            width: 23px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.12);
+            transform: translateX(3px);
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.18);
+            box-shadow: inset 3px 0 0 white;
+        }
+
+        .sidebar .back-link {
+            color: #ffd166;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            min-height: 100vh;
+        }
+
+        .page-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #172033;
+        }
+
+        .page-description {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+
+        /* =========================
+           AUDIT CARD
+        ========================= */
+
+        .audit-card {
+            border: 1px solid #edf0f5;
+            border-radius: 15px;
+            background: white;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.73rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 13px 15px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 14px 15px;
+            font-size: 0.8rem;
+            border-color: #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .empty-state {
+            padding: 50px 15px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+
+        .action-text {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .details-text {
+            color: #64748b;
+            font-size: 0.74rem;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 767px) {
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .page-title {
+                font-size: 1.35rem;
+            }
+
+        }
+
     </style>
+
 </head>
+
 <body>
 
 <div class="container-fluid">
+
     <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2 sidebar p-3">
-            <h4>CareOrbit</h4>
-            <hr>
-            <a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-gauge"></i> Dashboard</a>
-            <a href="{{ url_for('audit_logs') }}" class="active bg-primary"><i class="fas fa-shield-halved"></i> Audit Logs</a>
-        </div>
 
-        <!-- Main Content -->
-        <div class="col-md-10 p-5">
-            <div class="content-card">
-                <h1><i class="fas fa-shield-halved text-primary"></i> Global Audit Trails</h1>
-                <p class="text-muted">Reviewing all system access and security events.</p>
-                <hr>
-                
-                <table class="table table-hover mt-4">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Admin User</th>
-                            <th>Event Scope</th>
-                            <th>Target Reference</th>
-                            <th>Security Level</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <!-- =========================
+             SIDEBAR
+        ========================= -->
 
-{% for log in records %}
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
 
-<tr>
-    <td>{{ log.timestamp.strftime("%d-%m-%Y %H:%M") }}</td>
+            <div class="sidebar-brand d-flex align-items-center mb-1">
 
-    <td>{{ log.admin_user }}</td>
+                <i class="fa-solid fa-shield-halved me-2"></i>
 
-    <td>{{ log.event_scope }}</td>
+                <span>CareOrbit Admin</span>
 
-    <td>{{ log.target_reference }}</td>
-
-    <td>
-        <span class="badge bg-success">
-            {{ log.security_level }}
-        </span>
-    </td>
-</tr>
-
-{% else %}
-
-<tr>
-    <td colspan="5" class="text-center text-muted">
-        No audit records found
-    </td>
-</tr>
-
-{% endfor %}
-
-</tbody>
-                </table>
             </div>
-        </div>
+
+            <div class="sidebar-subtitle mb-4">
+                Administration Panel
+            </div>
+
+            <hr>
+
+            <ul class="nav flex-column mt-3">
+
+                <!-- Dashboard -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('admin_dashboard') }}"
+                    >
+
+                        <i class="fa-solid fa-gauge-high"></i>
+
+                        Core Overview
+
+                    </a>
+
+                </li>
+
+
+                <!-- User Access -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('user_management') }}"
+                    >
+
+                        <i class="fa-solid fa-users-gear"></i>
+
+                        User Access
+
+                    </a>
+
+                </li>
+
+
+                <!-- Doctor Verification -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('doctor_verification') }}"
+                    >
+
+                        <i class="fa-solid fa-user-doctor"></i>
+
+                        Doctor Verification
+
+                    </a>
+
+                </li>
+
+
+                <!-- System Nodes -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('system_nodes') }}"
+                    >
+
+                        <i class="fa-solid fa-server"></i>
+
+                        System Nodes
+
+                    </a>
+
+                </li>
+
+
+                <!-- Audit Logs -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link active"
+                        href="{{ url_for('audit_logs') }}"
+                    >
+
+                        <i class="fa-solid fa-file-shield"></i>
+
+                        Audit Logs
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item mt-4">
+
+                    <hr>
+
+                </li>
+
+
+                <!-- Hospital -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('hospital_dashboard') }}"
+                    >
+
+                        <i class="fa-solid fa-hospital"></i>
+
+                        Hospital Operations
+
+                    </a>
+
+                </li>
+
+
+                <!-- Back -->
+
+                <li class="nav-item mt-2">
+
+                    <a
+                        class="nav-link back-link"
+                        href="/"
+                    >
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to App
+
+                    </a>
+
+                </li>
+
+
+                <!-- Logout -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('logout') }}"
+                    >
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================= -->
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 main-content">
+
+
+            <!-- HEADER -->
+
+            <div class="page-header mb-4">
+
+                <h1 class="page-title">
+
+                    Audit Logs
+
+                </h1>
+
+                <p class="page-description">
+
+                    Review administrative actions and security activity
+                    recorded by the CareOrbit system.
+
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 AUDIT TABLE
+            ========================= -->
+
+            <div class="card audit-card shadow-sm">
+
+                <div class="card-header bg-white border-0 p-4">
+
+                    <h5 class="section-title mb-1">
+
+                        <i class="fa-solid fa-file-shield text-primary me-2"></i>
+
+                        Administrative Activity
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Latest security and administrative events
+
+                    </small>
+
+                </div>
+
+
+                <div class="card-body p-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Timestamp</th>
+
+                                    <th>Admin User</th>
+
+                                    <th>Action</th>
+
+                                    <th>Event Scope</th>
+
+                                    <th>Target</th>
+
+                                    <th>Details</th>
+
+                                    <th>Security Level</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                            {% for log in records %}
+
+                                <tr>
+
+                                    <!-- Timestamp -->
+
+                                    <td class="text-muted">
+
+                                        {% if log.timestamp %}
+
+                                            {{ log.timestamp.strftime("%d-%m-%Y %I:%M %p") }}
+
+                                        {% else %}
+
+                                            -
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Admin -->
+
+                                    <td class="fw-semibold">
+
+                                        {{ log.admin_user }}
+
+                                    </td>
+
+
+                                    <!-- Action -->
+
+                                    <td>
+
+                                        <span class="action-text">
+
+                                            {{ log.action }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Event Scope -->
+
+                                    <td>
+
+                                        {{ log.event_scope }}
+
+                                    </td>
+
+
+                                    <!-- Target -->
+
+                                    <td>
+
+                                        {{ log.target_reference }}
+
+                                    </td>
+
+
+                                    <!-- Details -->
+
+                                    <td>
+
+                                        <span class="details-text">
+
+                                            {{ log.details or "No additional details" }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Security Level -->
+
+                                    <td>
+
+                                        {% if log.security_level == "Approved" %}
+
+                                            <span class="badge bg-success-subtle text-success">
+
+                                                Approved
+
+                                            </span>
+
+                                        {% elif log.security_level == "Rejected" %}
+
+                                            <span class="badge bg-danger-subtle text-danger">
+
+                                                Rejected
+
+                                            </span>
+
+                                        {% elif log.security_level == "Warning" %}
+
+                                            <span class="badge bg-warning-subtle text-warning-emphasis">
+
+                                                Warning
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge bg-secondary-subtle text-secondary">
+
+                                                {{ log.security_level }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+
+                            {% else %}
+
+                                <tr>
+
+                                    <td colspan="7">
+
+                                        <div class="empty-state">
+
+                                            <i class="fa-solid fa-file-circle-xmark d-block"></i>
+
+                                            <div>
+
+                                                No administrative activity recorded.
+
+                                            </div>
+
+                                            <small>
+
+                                                Audit records will appear here when administrative actions are logged.
+
+                                            </small>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </main>
+
     </div>
+
 </div>
 
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+
 </body>
+
 </html>

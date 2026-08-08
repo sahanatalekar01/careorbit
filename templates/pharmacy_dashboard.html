@@ -12,49 +12,468 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
-        }
+        /* =========================================
+   CAREORBIT - PHARMACY DASHBOARD
+   ========================================= */
 
-        /* Sidebar Styling */
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
-            color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
+:root {
+    --primary: #1063e5;
+    --primary-dark: #0d4bb3;
+    --background: #f5f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #718096;
+    --border: #e7ecf3;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc3545;
+    --info: #0891b2;
+}
 
-        /* Card Styling */
-        .pharmacy-card {
-            border: none;
-            border-radius: 15px;
-            background: white;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .pharmacy-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
-        }
-    </style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+/* =========================================
+   CAREORBIT SIDEBAR - MODERN ACTIVE STYLE
+   ========================================= */
+    /* ================================
+       SIDEBAR
+       ================================ */
+
+    .sidebar {
+        min-height: 100vh;
+        background: linear-gradient(
+            180deg,
+            #1063e5 0%,
+            #0d4bb3 100%
+        );
+        color: white;
+        box-shadow: 5px 0 25px rgba(16, 99, 229, 0.12);
+        padding-top: 25px !important;
+    }
+
+    .sidebar-brand {
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        padding-left: 5px;
+    }
+
+    .sidebar-brand i {
+        font-size: 1.35rem;
+    }
+
+    .sidebar hr {
+        opacity: 0.2;
+        margin: 18px 0;
+    }
+
+    .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.82);
+        font-weight: 500;
+        padding: 12px 16px;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+        margin-bottom: 5px;
+    }
+
+    .sidebar .nav-link i {
+        width: 24px;
+        font-size: 15px;
+    }
+
+    .sidebar .nav-link:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateX(4px);
+    }
+
+    .sidebar .nav-link.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.18);
+        box-shadow: inset 3px 0 0 #ffffff;
+    }
+
+/* =========================================
+   MAIN AREA
+   ========================================= */
+
+main {
+    min-height: 100vh;
+    background: var(--background);
+}
+
+/* Page Header */
+
+main > .d-flex {
+    border-bottom: 1px solid var(--border) !important;
+    padding-bottom: 20px !important;
+    margin-bottom: 28px !important;
+}
+
+h1.h2 {
+    color: var(--text) !important;
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+main p.text-muted {
+    color: var(--muted) !important;
+    font-size: 13px;
+}
+
+/* =========================================
+   PHARMACY CARDS
+   ========================================= */
+
+.pharmacy-card {
+    border: 1px solid var(--border) !important;
+    border-radius: 17px !important;
+    background: var(--card);
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.055) !important;
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+
+.pharmacy-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(31, 41, 55, 0.09) !important;
+}
+
+/* =========================================
+   QUICK STAT CARDS
+   ========================================= */
+
+.card.pharmacy-card.p-4 {
+    min-height: 145px;
+}
+
+.pharmacy-card h3 {
+    font-size: 1.55rem;
+    letter-spacing: -0.4px;
+}
+
+.pharmacy-card .text-muted {
+    color: var(--muted) !important;
+}
+
+/* Stat Icons */
+
+.pharmacy-card .rounded-circle {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-primary-subtle {
+    background: #eaf2ff !important;
+}
+
+.bg-warning-subtle {
+    background: #fff7e5 !important;
+}
+
+.bg-danger-subtle {
+    background: #fff0f1 !important;
+}
+
+.bg-success-subtle {
+    background: #eaf8ef !important;
+}
+
+/* =========================================
+   SECTION HEADERS
+   ========================================= */
+
+.card-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 18px 22px !important;
+}
+
+.card-header h5 {
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.card-header h5 i {
+    font-size: 16px;
+}
+
+/* Add Medicine Button */
+
+.card-header .btn-outline-primary {
+    border: 1px solid #b9d0f7;
+    color: var(--primary);
+    background: #f7faff;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 13px;
+    transition: all 0.2s ease;
+}
+
+.card-header .btn-outline-primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   INVENTORY TABLE
+   ========================================= */
+
+.table {
+    margin-bottom: 0 !important;
+}
+
+.table thead th {
+    background: #f8fafc !important;
+    color: #64748b;
+    border-top: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 14px 13px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.45px;
+    white-space: nowrap;
+}
+
+.table thead th:first-child {
+    padding-left: 22px;
+}
+
+.table tbody td {
+    padding: 16px 13px;
+    color: #475569;
+    font-size: 0.84rem;
+    border-color: #edf1f6;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background: #f7faff;
+}
+
+.table tbody td:first-child {
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* =========================================
+   MEDICINE NAME
+   ========================================= */
+
+.table tbody td.ps-4 {
+    font-weight: 600;
+    color: #172033 !important;
+}
+
+/* =========================================
+   STATUS BADGES
+   ========================================= */
+
+.badge {
+    border-radius: 7px !important;
+    padding: 7px 10px !important;
+    font-size: 0.69rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.15px;
+}
+
+.badge.bg-success-subtle {
+    background: #eaf8ef !important;
+    color: #16803a !important;
+}
+
+.badge.bg-warning-subtle {
+    background: #fff7e5 !important;
+    color: #b56f00 !important;
+}
+
+.badge.bg-danger-subtle {
+    background: #fff0f1 !important;
+    color: #c62828 !important;
+}
+
+/* =========================================
+   PRESCRIPTION / DISPENSATION SECTION
+   ========================================= */
+
+.d-flex.flex-column.gap-3 {
+    padding: 18px !important;
+    background: #fbfcfe;
+}
+
+/* Prescription item */
+
+.d-flex.flex-column.gap-3 > div {
+    border: 1px solid #e5eaf1 !important;
+    border-left: 4px solid var(--primary) !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+    transition: all 0.2s ease;
+}
+
+.d-flex.flex-column.gap-3 > div:hover {
+    transform: translateX(2px);
+    box-shadow: 0 5px 15px rgba(16, 99, 229, 0.07);
+    background: #ffffff;
+}
+
+.d-flex.flex-column.gap-3 strong {
+    color: var(--text);
+    font-size: 13px;
+}
+
+.d-flex.flex-column.gap-3 p {
+    font-size: 12px;
+}
+
+.d-flex.flex-column.gap-3 span {
+    font-size: 12px;
+}
+
+/* Ready badge */
+
+.d-flex.flex-column.gap-3 .badge {
+    background: #fff7e5 !important;
+    color: #b56f00 !important;
+}
+
+/* =========================================
+   EMPTY INVENTORY
+   ========================================= */
+
+.table tbody td.text-muted {
+    color: #94a3b8 !important;
+    padding: 35px 15px;
+}
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
+.d-flex.flex-column.gap-3::-webkit-scrollbar {
+    width: 6px;
+}
+
+.d-flex.flex-column.gap-3::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.d-flex.flex-column.gap-3::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.d-flex.flex-column.gap-3::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+.btn {
+    border-radius: 9px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 992px) {
+
+    .sidebar {
+        min-height: auto;
+    }
+
+    main {
+        padding: 20px !important;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        padding: 20px 15px !important;
+    }
+
+    .sidebar-brand {
+        font-size: 1.35rem;
+    }
+
+    h1.h2 {
+        font-size: 1.25rem;
+    }
+
+    .card.pharmacy-card.p-4 {
+        min-height: auto;
+    }
+
+    .table {
+        min-width: 700px;
+    }
+
+    .pharmacy-card {
+        border-radius: 14px !important;
+    }
+}
+
+@media (max-width: 576px) {
+
+    main {
+        padding: 15px !important;
+    }
+
+    main > .d-flex {
+        margin-bottom: 20px !important;
+    }
+
+    .pharmacy-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .card-header {
+        padding: 15px !important;
+    }
+}
+   </style>
 </head>
 <body>
 

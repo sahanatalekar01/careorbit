@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareOrbit - Add Ward</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h2>Add Ward</h2>
+
+    <p>
+        Hospital:
+        <strong>{{ hospital_name }}</strong>
+    </p>
+
+    <form method="POST">
+
+        <!-- Ward Name -->
+
+        <div class="mb-3">
+            <label class="form-label">Ward Name</label>
+
+            <input
+                type="text"
+                name="name"
+                class="form-control"
+                placeholder="Example: General Ward"
+                required
+            >
+        </div>
+
+        <!-- Ward Type -->
+
+        <div class="mb-3">
+            <label class="form-label">Ward Type</label>
+
+            <select
+                name="type"
+                class="form-select"
+                required
+            >
+                <option value="">Select Ward Type</option>
+                <option value="General">General</option>
+                <option value="ICU">ICU</option>
+                <option value="Emergency">Emergency</option>
+                <option value="Pediatric">Pediatric</option>
+                <option value="Maternity">Maternity</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <!-- Total Beds -->
+
+        <div class="mb-3">
+            <label class="form-label">Total Beds</label>
+
+            <input
+                type="number"
+                name="total_beds"
+                class="form-control"
+                min="0"
+                required
+            >
+        </div>
+
+        <!-- Occupied Beds -->
+
+        <div class="mb-3">
+            <label class="form-label">Occupied Beds</label>
+
+            <input
+                type="number"
+                name="occupied_beds"
+                class="form-control"
+                min="0"
+                value="0"
+                required
+            >
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            <i class="fa-solid fa-plus"></i>
+            Add Ward
+        </button>
+
+        <a
+            href="{{ url_for('admin_wards') }}"
+            class="btn btn-secondary"
+        >
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

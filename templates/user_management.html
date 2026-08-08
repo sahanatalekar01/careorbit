@@ -3,206 +3,766 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>CareOrbit - Admin User Access Control</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts (Poppins) -->
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
+
+        * {
+            box-sizing: border-box;
         }
 
-        /* Standardized Blue Sidebar Styling */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
         .sidebar {
             min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            background: linear-gradient(
+                180deg,
+                #1063e5 0%,
+                #0d4bb3 100%
+            );
             color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
         }
 
-        /* Card Styling */
+        .sidebar-brand {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.3px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.65);
+            margin-top: -5px;
+        }
+
+        .sidebar hr {
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.82);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .nav-link i {
+            width: 23px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.12);
+            transform: translateX(3px);
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.18);
+            box-shadow: inset 3px 0 0 white;
+        }
+
+        .sidebar .back-link {
+            color: #ffd166;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            min-height: 100vh;
+        }
+
+        .page-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #172033;
+        }
+
+        .page-description {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+
+        /* =========================
+           ADMIN PROFILE
+        ========================= */
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .admin-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #e8f1ff;
+            color: #1063e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .admin-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .admin-role {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
         .admin-card {
-            border: none;
+            border: 1px solid #edf0f5;
             border-radius: 15px;
             background: white;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.25s ease;
         }
+
         .admin-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.07) !important;
         }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        .stat-number {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 4px 0;
+            color: #172033;
+        }
+
+        .stat-description {
+            color: #94a3b8;
+            font-size: 0.72rem;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        /* =========================
+           SECTION CARDS
+        ========================= */
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .section-title i {
+            margin-right: 8px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.73rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 13px 15px;
+        }
+
+        .table tbody td {
+            padding: 14px 15px;
+            font-size: 0.8rem;
+            border-color: #f1f5f9;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .empty-state {
+            padding: 35px 15px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 13px;
+            border: 1px solid #edf0f5;
+            border-radius: 11px;
+            color: #334155;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+        }
+
+        .quick-action:hover {
+            background: #f8fbff;
+            border-color: #cfe0ff;
+            color: #1063e5;
+            transform: translateX(2px);
+        }
+
+        .quick-action-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #edf4ff;
+            color: #1063e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 11px;
+        }
+
+        .quick-action-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .quick-action-text {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin: 2px 0 0;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 767px) {
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .page-title {
+                font-size: 1.35rem;
+            }
+
+            .admin-profile {
+                margin-top: 15px;
+            }
+        }
+
     </style>
 </head>
+
 <body>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar Navigation -->
+
+        <!-- ================= SIDEBAR ================= -->
         <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
+
             <div class="sidebar-brand d-flex align-items-center mb-4">
-                <i class="fa-solid fa-house-medical me-2"></i>
+                <i class="fa-solid fa-sliders me-2"></i>
                 <span>CareOrbit Admin</span>
             </div>
+
             <hr class="text-white-50">
+
             <ul class="nav flex-column gap-1">
+
+                <!-- Core Overview -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin-dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Core Overview</a>
+                    <a class="nav-link"
+                       href="{{ url_for('admin_dashboard') }}">
+                        <i class="fa-solid fa-gauge-high me-2"></i>
+                        Core Overview
+                    </a>
                 </li>
+
+                <!-- User Access -->
                 <li class="nav-item">
-                    <a class="nav-link active" href="#"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
+                    <a class="nav-link active"
+                       href="{{ url_for('user_management') }}">
+                        <i class="fa-solid fa-users-gear me-2"></i>
+                        User Access
+                    </a>
                 </li>
+
+                <!-- Doctor Verification -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin-settings"><i class="fa-solid fa-gear me-2"></i> System Settings</a>
+                    <a class="nav-link"
+                       href="{{ url_for('doctor_verification') }}">
+                        <i class="fa-solid fa-user-doctor me-2"></i>
+                        Doctor Verification
+                    </a>
                 </li>
+
+                <!-- System Nodes -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
+                    <a class="nav-link"
+                       href="{{ url_for('system_nodes') }}">
+                        <i class="fa-solid fa-server me-2"></i>
+                        System Nodes
+                    </a>
                 </li>
+
+                <!-- Audit Logs -->
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{{ url_for('audit_logs') }}">
+                        <i class="fa-solid fa-shield-halved me-2"></i>
+                        Audit Logs
+                    </a>
+                </li>
+
                 <li class="nav-item mt-5">
-                    <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to App</a>
+                    <a class="nav-link text-warning" href="/">
+                        <i class="fa-solid fa-arrow-left me-2"></i>
+                        Back to App
+                    </a>
                 </li>
+
             </ul>
         </nav>
 
-        <!-- Main Content -->
+
+        <!-- ================= MAIN CONTENT ================= -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
 
-    <!-- Flash Message Block -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-        <h1 class="h2 fw-bold text-dark">User Access Control</h1>
-        <!-- ... -->
-    </div>
-            <!-- Main Interactive Table Card -->
-            <div class="card admin-card shadow-sm mb-4">
-                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-<form action="{{ url_for('user_management') }}" method="GET" class="input-group style-group w-25">
-    <span class="input-group-text bg-light border-end-0">
-        <i class="fa-solid fa-magnifying-glass text-muted"></i>
-    </span>
-    <input type="text" name="query" class="form-control bg-light border-start-0 small" placeholder="Search entries...">
-</form>
-                    </div>
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show"
+                             role="alert">
+
+                            {{ message }}
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert">
+                            </button>
+
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between
+                        flex-wrap flex-md-nowrap
+                        align-items-center
+                        pt-3 pb-3 mb-4
+                        border-bottom">
+
+                <div>
+                    <h1 class="h2 fw-bold text-dark mb-1">
+                        User Access Control
+                    </h1>
+
+                    <p class="text-muted mb-0">
+                        Manage registered users and control their access
+                        within the CareOrbit system.
+                    </p>
                 </div>
+
+            </div>
+
+
+            <!-- ================= USER TABLE CARD ================= -->
+            <div class="card admin-card shadow-sm">
+
+                <!-- Search Header -->
+                <div class="card-header bg-white border-0 p-4">
+
+                    <div class="d-flex justify-content-between
+                                align-items-center
+                                flex-wrap gap-3">
+
+                        <div>
+                            <h5 class="fw-bold text-dark mb-1">
+                                <i class="fa-solid fa-users text-primary me-2"></i>
+                                Registered Users
+                            </h5>
+
+                            <span class="text-muted small">
+                                Users currently registered in CareOrbit.
+                            </span>
+                        </div>
+
+
+                        <!-- Search -->
+                        <form action="{{ url_for('user_management') }}"
+                              method="GET"
+                              class="input-group search-box">
+
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                            </span>
+
+                            <input type="text"
+                                   name="query"
+                                   class="form-control"
+                                   placeholder="Search by name, username or email..."
+                                   value="{{ query or '' }}">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                <i class="fa-solid fa-search me-1"></i>
+                                Search
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Table -->
                 <div class="card-body p-0">
+
                     <div class="table-responsive">
+
                         <table class="table table-hover align-middle mb-0">
+
                             <thead>
                                 <tr>
-                                    <th class="ps-4">User Details</th>
-                                    <th>Assigned Privilege Role</th>
-                                    <th>Linked Node / Department</th>
-                                    <th>System Node Status</th>
-                                    <th class="text-end pe-4">System Actions</th>
+
+                                    <th class="ps-4">
+                                        User Details
+                                    </th>
+
+                                    <th>
+                                        Role
+                                    </th>
+
+                                    <th>
+                                        Department
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th class="text-end pe-4">
+                                        Actions
+                                    </th>
+
                                 </tr>
- </thead>
-                                
- 
- <tbody>
+                            </thead>
 
-{% for user in users %}
-<tr>
 
-    <td class="ps-4">
-        <div class="d-flex align-items-center">
+                            <tbody>
 
-            <div class="bg-primary-subtle text-primary p-2 rounded-circle me-3">
-                {% if user.role == "doctor" %}
-                    <i class="fa-solid fa-user-doctor"></i>
-                {% elif user.role == "patient" %}
-                    <i class="fa-solid fa-hospital-user"></i>
-                {% else %}
-                    <i class="fa-solid fa-user"></i>
-                {% endif %}
-            </div>
+                            {% for user in users %}
 
-            <div>
-                <strong class="d-block text-dark">
-                    {{ user.full_name }}
-                </strong>
+                                <tr>
 
-                <span class="text-muted small">
-                    {{ user.email }}
-                </span>
-            </div>
+                                    <!-- User Details -->
+                                    <td class="ps-4">
 
-        </div>
-    </td>
+                                        <div class="d-flex align-items-center">
 
-    <td>
-        <span class="badge bg-info-subtle text-info">
-            {{ user.role }}
-        </span>
-    </td>
+                                            <div class="user-avatar
+                                                        bg-primary-subtle
+                                                        text-primary
+                                                        rounded-circle
+                                                        me-3">
 
-    <td>
-        {{ user.department or "General Ward" }}
-    </td>
+                                                {% if user.role == "doctor" %}
 
-    <td>
-        <span class="badge bg-success-subtle text-success p-2">
-            {{ user.status or "Active" }}
-        </span>
-    </td>
+                                                    <i class="fa-solid fa-user-doctor"></i>
 
-    <td class="text-end pe-4">
+                                                {% elif user.role == "patient" %}
 
-        <a href="{{ url_for('edit_user',user_id=user.id) }}" 
-           class="btn btn-sm btn-outline-secondary me-1">
-            <i class="fa-solid fa-user-pen"></i>
-        </a>
+                                                    <i class="fa-solid fa-hospital-user"></i>
 
-        <a href="{{ url_for('delete_user',user_id=user.id) }}"
-           class="btn btn-sm btn-outline-danger"
-           onclick="return confirm('Are you sure?')">
-            <i class="fa-solid fa-trash"></i>
-        </a>
+                                                {% elif user.role == "admin" %}
 
-    </td>
+                                                    <i class="fa-solid fa-user-shield"></i>
 
-</tr>
+                                                {% else %}
 
-{% endfor %}
+                                                    <i class="fa-solid fa-user"></i>
 
-                           </tbody>
+                                                {% endif %}
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <strong class="d-block text-dark">
+                                                    {{ user.full_name }}
+                                                </strong>
+
+                                                <span class="text-muted small d-block">
+                                                    @{{ user.username }}
+                                                </span>
+
+                                                <span class="text-muted small">
+                                                    {{ user.email }}
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- Role -->
+                                    <td>
+
+                                        {% if user.role == "admin" %}
+
+                                            <span class="badge role-badge
+                                                         bg-danger-subtle
+                                                         text-danger">
+                                                <i class="fa-solid fa-user-shield me-1"></i>
+                                                Admin
+                                            </span>
+
+                                        {% elif user.role == "doctor" %}
+
+                                            <span class="badge role-badge
+                                                         bg-primary-subtle
+                                                         text-primary">
+                                                <i class="fa-solid fa-user-doctor me-1"></i>
+                                                Doctor
+                                            </span>
+
+                                        {% elif user.role == "patient" %}
+
+                                            <span class="badge role-badge
+                                                         bg-info-subtle
+                                                         text-info">
+                                                <i class="fa-solid fa-hospital-user me-1"></i>
+                                                Patient
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge role-badge
+                                                         bg-secondary-subtle
+                                                         text-secondary">
+                                                {{ user.role }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Department -->
+                                    <td>
+
+                                        {% if user.department %}
+
+                                            <span class="text-dark">
+                                                {{ user.department }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+                                                Not assigned
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Status -->
+                                    <td>
+
+                                        {% if user.status == "Active" %}
+
+                                            <span class="badge status-badge
+                                                         bg-success-subtle
+                                                         text-success">
+                                                <i class="fa-solid fa-circle-check me-1"></i>
+                                                Active
+                                            </span>
+
+                                        {% elif user.status == "Inactive" %}
+
+                                            <span class="badge status-badge
+                                                         bg-secondary-subtle
+                                                         text-secondary">
+                                                <i class="fa-solid fa-circle-xmark me-1"></i>
+                                                Inactive
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge status-badge
+                                                         bg-warning-subtle
+                                                         text-warning">
+                                                {{ user.status or "Not specified" }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- Actions -->
+                                    <td class="text-end pe-4">
+
+                                        <a href="{{ url_for('edit_user', user_id=user.id) }}"
+                                           class="btn btn-sm btn-outline-secondary me-1"
+                                           title="Edit User">
+
+                                            <i class="fa-solid fa-user-pen"></i>
+
+                                        </a>
+
+
+                                        <a href="{{ url_for('delete_user', user_id=user.id) }}"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Delete User"
+                                           onclick="return confirm('Are you sure you want to delete this user?');">
+
+                                            <i class="fa-solid fa-trash"></i>
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% else %}
+
+                                <!-- No Users Found -->
+                                <tr>
+
+                                    <td colspan="5">
+
+                                        <div class="text-center empty-state">
+
+                                            <div class="empty-icon">
+                                                <i class="fa-solid fa-users-slash"></i>
+                                            </div>
+
+                                            <h5 class="fw-bold text-dark">
+                                                No users found
+                                            </h5>
+
+                                            {% if query %}
+
+                                                <p class="text-muted mb-0">
+                                                    No registered user matches
+                                                    "{{ query }}".
+                                                </p>
+
+                                            {% else %}
+
+                                                <p class="text-muted mb-0">
+                                                    No registered users are
+                                                    currently available.
+                                                </p>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
                         </table>
+
                     </div>
+
                 </div>
+
             </div>
+
         </main>
+
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+<!-- Bootstrap JS -->
+ <script
+ src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+ </body>
+ </html>

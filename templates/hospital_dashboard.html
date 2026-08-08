@@ -12,49 +12,348 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
-        }
+    /* ================================
+       CAREORBIT HOSPITAL DASHBOARD
+       ================================ */
 
-        /* Sidebar Styling */
+    :root {
+        --primary: #1063e5;
+        --primary-dark: #0d4bb3;
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --text: #172033;
+        --muted: #718096;
+        --border: #e8edf5;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #dc3545;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+    }
+
+    /* ================================
+       SIDEBAR
+       ================================ */
+
+    .sidebar {
+        min-height: 100vh;
+        background: linear-gradient(
+            180deg,
+            #1063e5 0%,
+            #0d4bb3 100%
+        );
+        color: white;
+        box-shadow: 5px 0 25px rgba(16, 99, 229, 0.12);
+        padding-top: 25px !important;
+    }
+
+    .sidebar-brand {
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        padding-left: 5px;
+    }
+
+    .sidebar-brand i {
+        font-size: 1.35rem;
+    }
+
+    .sidebar hr {
+        opacity: 0.2;
+        margin: 18px 0;
+    }
+
+    .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.82);
+        font-weight: 500;
+        padding: 12px 16px;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+        margin-bottom: 5px;
+    }
+
+    .sidebar .nav-link i {
+        width: 24px;
+        font-size: 15px;
+    }
+
+    .sidebar .nav-link:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateX(4px);
+    }
+
+    .sidebar .nav-link.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.18);
+        box-shadow: inset 3px 0 0 #ffffff;
+    }
+
+    /* ================================
+       MAIN CONTENT
+       ================================ */
+
+    main {
+        background: var(--bg);
+        min-height: 100vh;
+    }
+
+    main > .d-flex {
+        border-bottom: 1px solid var(--border) !important;
+        padding-bottom: 20px !important;
+        margin-bottom: 28px !important;
+    }
+
+    /* ================================
+       HOSPITAL HEADER
+       ================================ */
+
+    main .bg-primary-subtle {
+        background: #eaf2ff !important;
+    }
+
+    main .bg-primary-subtle i {
+        color: var(--primary);
+    }
+
+    h1.h2 {
+        font-size: 1.55rem;
+        letter-spacing: -0.3px;
+    }
+
+    /* ================================
+       OPERATION CARDS
+       ================================ */
+
+    .op-card {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--card);
+        overflow: hidden;
+        transition: all 0.25s ease;
+    }
+
+    .op-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(31, 41, 55, 0.08) !important;
+    }
+
+    .card.op-card {
+        min-height: 145px;
+    }
+
+    .op-card h3 {
+        font-size: 1.55rem;
+    }
+
+    .op-card .text-muted {
+        color: var(--muted) !important;
+    }
+
+    /* ================================
+       METRIC ICONS
+       ================================ */
+
+    .op-card .rounded-circle {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .op-card .bg-danger-subtle {
+        background: #fff0f1 !important;
+    }
+
+    .op-card .bg-success-subtle {
+        background: #eaf8ef !important;
+    }
+
+    .op-card .bg-warning-subtle {
+        background: #fff7e6 !important;
+    }
+
+    /* ================================
+       WARD SECTION
+       ================================ */
+
+    .card-header {
+        border-bottom: 1px solid var(--border) !important;
+        padding: 18px 22px !important;
+    }
+
+    .card-header h5 {
+        font-size: 1rem;
+        letter-spacing: -0.1px;
+    }
+
+    .card-header .btn {
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 8px 14px;
+        box-shadow: 0 4px 10px rgba(16, 99, 229, 0.15);
+        transition: all 0.2s ease;
+    }
+
+    .card-header .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(16, 99, 229, 0.2);
+    }
+
+    /* ================================
+       TABLE
+       ================================ */
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: #f8fafc;
+        color: #64748b;
+        border-bottom: 1px solid var(--border);
+        border-top: none;
+        font-size: 0.74rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 14px 12px;
+        white-space: nowrap;
+    }
+
+    .table tbody td {
+        padding: 16px 12px;
+        border-color: #eef2f7;
+        color: #475569;
+        font-size: 0.87rem;
+        vertical-align: middle;
+    }
+
+    .table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .table tbody td:first-child {
+        color: var(--text);
+        font-weight: 600;
+    }
+
+    /* ================================
+       STATUS BADGES
+       ================================ */
+
+    .badge {
+        border-radius: 7px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+    }
+
+    .badge.bg-danger-subtle {
+        background: #fff0f1 !important;
+        color: #dc3545 !important;
+    }
+
+    .badge.bg-warning-subtle {
+        background: #fff7e6 !important;
+        color: #c47b00 !important;
+    }
+
+    .badge.bg-success-subtle {
+        background: #eaf8ef !important;
+        color: #16803a !important;
+    }
+
+    /* ================================
+       ACTIVE SERVICES
+       ================================ */
+
+    .list-group-item {
+        border-color: #eef2f7 !important;
+        background: transparent;
+    }
+
+    .list-group-item strong {
+        font-size: 0.88rem;
+    }
+
+    .list-group-item .text-muted {
+        font-size: 0.76rem;
+    }
+
+    .list-group-item .badge {
+        padding: 7px 10px;
+        font-size: 0.68rem;
+    }
+
+    /* ================================
+       ADMIN PROFILE
+       ================================ */
+
+    .bg-primary.text-white.rounded-circle {
+        box-shadow: 0 5px 15px rgba(16, 99, 229, 0.18);
+    }
+
+    /* ================================
+       BUTTONS
+       ================================ */
+
+    .btn-primary {
+        background: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+
+    /* ================================
+       RESPONSIVE
+       ================================ */
+
+    @media (max-width: 768px) {
+
         .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
-            color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            min-height: auto;
         }
 
-        /* Operations Cards */
-        .op-card {
-            border: none;
-            border-radius: 15px;
-            background: white;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        main {
+            padding: 18px !important;
         }
-        .op-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
+
+        main > .d-flex {
+            align-items: flex-start !important;
         }
-    </style>
+
+        h1.h2 {
+            font-size: 1.25rem;
+        }
+
+        .card.op-card {
+            min-height: auto;
+        }
+
+        .table {
+            min-width: 650px;
+        }
+    }
+</style>
 </head>
 <body>
 
@@ -68,9 +367,6 @@
             </div>
             <hr class="text-white-50">
             <ul class="nav flex-column gap-1">
-                <li class="nav-item">
-                    <a class="nav-link" href="/doctor-dashboard"><i class="fa-solid fa-chart-pie me-2"></i> Doctor Panel</a>
-                </li>
                 <li class="nav-item">
     <a class="nav-link active" href="/hospital-dashboard">
         <i class="fa-solid fa-hotel me-2"></i> Hospital Hub
@@ -112,11 +408,50 @@
         <!-- Main Content -->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-                <div>
-                    <h1 class="h2 fw-bold text-dark">Hospital Operations Dashboard</h1>
-                    <p class="text-muted font-sans">Real-time capacity, ward metrics, and departmental oversight.</p>
-                </div>
+
+    <!-- Hospital Information -->
+    <div class="d-flex align-items-center">
+
+        <div class="bg-primary-subtle text-primary rounded-3 p-3 me-3">
+            <i class="fa-solid fa-hospital fa-2x"></i>
+        </div>
+
+        <div>
+            <h1 class="h2 fw-bold text-dark mb-1">
+                {{ hospital_name }}
+            </h1>
+
+            <p class="text-muted mb-0">
+                Hospital Operations Dashboard ·
+                Real-time capacity, ward metrics, and departmental oversight.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Admin Profile -->
+    <div class="d-flex align-items-center mt-3 mt-md-0">
+
+        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+             style="width:45px; height:45px;">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+        </div>
+
+        <div>
+            <div class="fw-semibold text-dark">
+                Admin
             </div>
+
+            <small class="text-muted">
+                Administrator
+            </small>
+        </div>
+
+    </div>
+
+</div>
 
             <!-- Quick Status Metrics Grid -->
             <div class="row g-3 mb-4">
@@ -177,7 +512,7 @@
                             <div>
                                 <span class="text-muted small fw-medium d-block">OPD Token Queue</span>
                                 <h3 class="fw-bold text-warning mt-1 mb-0">{{ opd_queue }}</h3>
-                                <span class="text-muted small">Avg Wait: {{ avg_wait_time }}</span>
+                                <span class="text-muted small">Pending patients</span>
                             </div>
                             <div class="bg-warning-subtle p-3 rounded-circle text-warning">
                                 <i class="fa-solid fa-users-line fs-4"></i>
@@ -192,9 +527,22 @@
                 <!-- Left: Ward Status Table -->
                 <div class="col-lg-8">
                     <div class="card op-card shadow-sm">
-                        <div class="card-header bg-white py-3 border-0">
-                            <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-hospital-user text-primary me-2"></i>Ward Occupancy Status</h5>
-                        </div>
+                        <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+
+    <h5 class="m-0 fw-bold text-dark">
+        <i class="fa-solid fa-hospital-user text-primary me-2"></i>
+        Ward Occupancy Status
+    </h5>
+
+    <a
+        href="{{ url_for('add_ward') }}"
+        class="btn btn-primary btn-sm"
+    >
+        <i class="fa-solid fa-plus me-1"></i>
+        Add Ward
+    </a>
+
+</div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0">

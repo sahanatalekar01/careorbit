@@ -8,20 +8,24 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+    # Basic User Information
     full_name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     phone = db.Column(db.String(15))
-
+    gender = db.Column(db.String(10), nullable=True)
     password = db.Column(db.String(255), nullable=False)
 
+    # Role & Hospital Information
     role = db.Column(db.String(50), nullable=False)
     department = db.Column(db.String(100), nullable=True)
+    hospital_name = db.Column(db.String(200), nullable=True)
     status = db.Column(db.String(50), default="Active")
 
     # Doctor Details
     qualification = db.Column(db.String(200), nullable=True)
     specialization = db.Column(db.String(200), nullable=True)
+    experience = db.Column(db.String(100), nullable=True)
 
     # Optional Profile Photo
     profile_photo = db.Column(db.String(255), nullable=True)
@@ -32,6 +36,7 @@ class User(db.Model):
         default="Pending"
     )
 
+    # Admin Remark
     admin_remark = db.Column(
         db.Text,
         nullable=True
@@ -121,12 +126,33 @@ class Notification(db.Model):
 # WARD MODEL
 class Ward(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    type = db.Column(db.String(100), nullable=False)
-    total_beds = db.Column(db.Integer, nullable=False, default=0)
-    occupied_beds = db.Column(db.Integer, nullable=False, default=0)
 
+    hospital_name = db.Column(
+        db.String(150),
+        nullable=False
+    )
 
+    name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    type = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    total_beds = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0
+    )
+
+    occupied_beds = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0
+    )
 # MEDICINE MODEL
 class Medicine(db.Model):
     id = db.Column(db.Integer, primary_key=True)

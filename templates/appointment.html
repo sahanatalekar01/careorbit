@@ -13,105 +13,705 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <style>
+    
+<style>
 
-        body{
-            background:#f5f9ff;
-            font-family:'Poppins',sans-serif;
-        }
+/* =========================================
+   CAREORBIT APPOINTMENT MANAGEMENT
+   ========================================= */
 
-        .navbar{
-            background:linear-gradient(90deg,#0d6efd,#2563eb)!important;
-            box-shadow:0 10px 30px rgba(0,0,0,.08);
-        }
+:root {
+    --primary: #1063e5;
+    --primary-dark: #0d4bb3;
+    --background: #f5f7fb;
+    --white: #ffffff;
+    --text: #172033;
+    --muted: #6b7280;
+    --border: #e6eaf0;
 
-        .container{
-            max-width:1100px;
-        }
+    --success: #198754;
+    --success-light: #e9f7ef;
 
-        .page-title{
-            font-weight:700;
-            margin-bottom:30px;
-        }
+    --danger: #dc3545;
+    --danger-light: #fff0f1;
 
-        .card-custom{
-            background:#fff;
-            border:none;
-            border-radius:20px;
-            box-shadow:0 15px 40px rgba(0,0,0,.08);
-            padding:30px;
-            margin-bottom:40px;
-        }
+    --warning: #f59e0b;
+}
 
-        .form-control{
-            border-radius:12px;
-            padding:12px;
-        }
 
-        .form-control:focus{
-            box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
-        }
+/* =========================================
+   GLOBAL
+   ========================================= */
 
-        .btn-primary{
-            border-radius:12px;
-            padding:12px 25px;
-            font-weight:600;
-            transition:.3s;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .btn-primary:hover{
-            transform:translateY(-2px);
-        }
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
 
-        .table-card{
-            background:white;
-            border-radius:20px;
-            box-shadow:0 15px 40px rgba(0,0,0,.06);
-            padding:25px;
-        }
+a {
+    text-decoration: none;
+}
 
-        .table{
-            margin-bottom:0;
-        }
 
-        .table thead{
-            background:#0d6efd;
-            color:white;
-        }
+/* =========================================
+   SIDEBAR
+   ========================================= */
 
-        .table thead th{
-            color:white;
-            border:none;
-        }
+.sidebar {
+    min-height: 100vh;
 
-        .badge{
-            padding:9px 14px;
-            font-size:.85rem;
-        }
+    background: linear-gradient(
+        180deg,
+        var(--primary) 0%,
+        var(--primary-dark) 100%
+    );
 
-        .empty-state{
-            background:white;
-            border-radius:20px;
-            box-shadow:0 15px 40px rgba(0,0,0,.06);
-            padding:60px 20px;
-            text-align:center;
-        }
+    color: white;
 
-        .empty-state h4{
-            font-weight:600;
-        }
+    padding: 28px 18px !important;
 
-        @media(max-width:768px){
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.10);
+}
 
-            .card-custom,
-            .table-card{
-                padding:20px;
-            }
 
-        }
+/* CareOrbit Logo */
 
-    </style>
+.sidebar-brand {
+    font-size: 25px;
+    font-weight: 700;
 
+    color: #ffffff;
+
+    letter-spacing: 0.3px;
+
+    margin-bottom: 28px !important;
+}
+
+.sidebar-brand i {
+    font-size: 24px;
+}
+
+
+/* Sidebar Navigation */
+
+.sidebar .nav {
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .nav-item {
+    list-style: none;
+    margin-bottom: 7px;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+
+    padding: 13px 16px;
+
+    border-radius: 11px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center;
+
+    transition: all 0.25s ease;
+}
+
+.sidebar .nav-link i {
+    width: 25px;
+
+    font-size: 16px;
+
+    margin-right: 7px;
+}
+
+.sidebar .nav-link:hover {
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    transform: translateX(4px);
+}
+
+
+/* Active Sidebar Item */
+
+.sidebar .nav-link.active {
+    color: var(--primary);
+
+    background: #ffffff;
+
+    font-weight: 600;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+main {
+    min-height: 100vh;
+
+    background: var(--background);
+}
+
+
+/* =========================================
+   PAGE HEADER
+   ========================================= */
+
+main > div:first-child {
+    padding-top: 18px !important;
+
+    padding-bottom: 20px !important;
+
+    border-bottom: 1px solid var(--border) !important;
+}
+
+main h1 {
+    color: var(--text);
+
+    font-size: 27px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.4px;
+}
+
+main > div:first-child p {
+    font-size: 13px;
+
+    color: var(--muted);
+
+    margin-top: 5px;
+}
+
+
+/* =========================================
+   METRIC CARDS
+   ========================================= */
+
+.metric-card {
+    border: none;
+
+    border-radius: 16px;
+
+    background: var(--white);
+
+    padding: 20px !important;
+
+    box-shadow: 0 7px 22px rgba(24, 39, 75, 0.06);
+
+    transition: all 0.25s ease;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Small blue indicator */
+
+.metric-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: var(--primary);
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 12px 28px rgba(24, 39, 75, 0.10);
+}
+
+.metric-card span {
+    font-size: 12px;
+
+    color: var(--muted);
+}
+
+.metric-card h4 {
+    font-size: 17px;
+
+    font-weight: 700;
+
+    margin-top: 8px !important;
+}
+
+
+/* =========================================
+   APPOINTMENT CARD
+   ========================================= */
+
+.appointment-card {
+    border: none;
+
+    border-radius: 18px;
+
+    background: var(--white);
+
+    overflow: hidden;
+
+    box-shadow: 0 8px 25px rgba(24, 39, 75, 0.07);
+}
+
+
+/* Card Header */
+
+.appointment-card .card-header {
+    background: #ffffff;
+
+    border-bottom: 1px solid var(--border) !important;
+
+    padding: 20px 22px !important;
+}
+
+.appointment-card .card-header h5 {
+    color: var(--text);
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    margin: 0;
+}
+
+.appointment-card .card-header i {
+    color: var(--primary);
+}
+
+
+/* =========================================
+   TABLE
+   ========================================= */
+
+.appointment-card .table {
+    margin: 0;
+
+    width: 100%;
+}
+
+
+/* Table Header */
+
+.appointment-card .table thead {
+    background: #f8fafc;
+}
+
+.appointment-card .table thead th {
+    color: #667085;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    padding: 15px 14px;
+
+    border: none;
+
+    border-bottom: 1px solid var(--border);
+
+    white-space: nowrap;
+}
+
+
+/* Table Body */
+
+.appointment-card .table tbody td {
+    padding: 17px 14px;
+
+    font-size: 13px;
+
+    color: #475467;
+
+    border-bottom: 1px solid #edf0f4;
+
+    vertical-align: middle;
+}
+
+
+/* Last row */
+
+.appointment-card .table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Row Hover */
+
+.appointment-card .table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.appointment-card .table tbody tr:hover {
+    background: #f8fbff;
+}
+
+
+/* =========================================
+   REQUESTED TIME
+   ========================================= */
+
+.appointment-card .table tbody td:first-child {
+    color: var(--primary);
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   PATIENT NAME
+   ========================================= */
+
+.appointment-card .table tbody td:nth-child(2) {
+    color: var(--text);
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   SYMPTOM SUMMARY
+   ========================================= */
+
+.appointment-card .table tbody td:nth-child(3) {
+    color: #667085;
+
+    max-width: 300px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   STATUS
+   ========================================= */
+
+.appointment-card .table tbody td:nth-child(4) {
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/*
+   Give normal text status a cleaner appearance.
+   Your existing status text remains unchanged.
+*/
+
+.appointment-card .table tbody td:nth-child(4) {
+    color: #344054;
+}
+
+
+/* =========================================
+   DECISION COLUMN
+   ========================================= */
+
+.appointment-card .table tbody td:last-child {
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+
+/* Keep Accept and Reject beside each other */
+
+.appointment-card td:last-child form {
+    display: inline-block !important;
+
+    margin: 0 3px !important;
+
+    vertical-align: middle;
+}
+
+
+/* =========================================
+   ACCEPT BUTTON
+   ========================================= */
+
+.appointment-card form[action*="Accepted"] .btn {
+    height: 34px;
+
+    min-width: 88px;
+
+    padding: 6px 12px;
+
+    border-radius: 8px;
+
+    background: var(--success);
+
+    border: 1px solid var(--success);
+
+    color: #ffffff;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    box-shadow: none;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Accept Hover */
+
+.appointment-card form[action*="Accepted"] .btn:hover {
+    background: #157347;
+
+    border-color: #157347;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(25, 135, 84, 0.20);
+}
+
+
+/* =========================================
+   REJECT BUTTON
+   ========================================= */
+
+.appointment-card form[action*="Declined"] .btn {
+    height: 34px;
+
+    min-width: 88px;
+
+    padding: 6px 12px;
+
+    border-radius: 8px;
+
+    background: var(--danger);
+
+    border: 1px solid var(--danger);
+
+    color: #ffffff;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    box-shadow: none;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Reject Hover */
+
+.appointment-card form[action*="Declined"] .btn:hover {
+    background: #bb2d3b;
+
+    border-color: #bb2d3b;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.20);
+}
+
+
+/* =========================================
+   BUTTON ICONS
+   ========================================= */
+
+.appointment-card .btn i {
+    font-size: 11px;
+}
+
+
+/* =========================================
+   BUTTON CLICK
+   ========================================= */
+
+.appointment-card .btn:active {
+    transform: scale(0.96);
+}
+
+
+/* =========================================
+   EMPTY APPOINTMENT
+   ========================================= */
+
+.appointment-card .table tbody td[colspan] {
+    padding: 60px 20px !important;
+
+    text-align: center;
+
+    color: var(--muted);
+}
+
+.appointment-card .table tbody td[colspan] i {
+    opacity: 0.35;
+
+    margin-bottom: 15px;
+}
+
+.appointment-card .table tbody td[colspan] h5 {
+    color: var(--text);
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
+.table-responsive::-webkit-scrollbar {
+    height: 7px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f3f6;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+   ========================================= */
+
+@media (max-width: 992px) {
+
+    .sidebar {
+        min-height: auto;
+    }
+
+    main {
+        padding: 20px !important;
+    }
+
+    .appointment-card {
+        border-radius: 14px;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    main h1 {
+        font-size: 22px;
+    }
+
+    .metric-card {
+        margin-bottom: 5px;
+    }
+
+    .appointment-card .table thead th,
+    .appointment-card .table tbody td {
+        padding: 12px 10px;
+
+        font-size: 11px;
+    }
+
+    .appointment-card form[action*="Accepted"] .btn,
+    .appointment-card form[action*="Declined"] .btn {
+
+        min-width: 72px;
+
+        height: 32px;
+
+        padding: 5px 8px;
+
+        font-size: 10px;
+    }
+
+    .appointment-card .btn i {
+        font-size: 10px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 576px) {
+
+    .sidebar {
+        padding: 20px 14px !important;
+    }
+
+    .sidebar-brand {
+        font-size: 22px;
+    }
+
+    .appointment-card .card-header {
+        padding: 16px !important;
+    }
+
+    .appointment-card .card-header h5 {
+        font-size: 14px;
+    }
+
+}
+
+</style>
+    
 </head>
 
 <body>

@@ -57,6 +57,15 @@
         .btn-view{
             margin:4px;
         }
+       .letter-avatar {
+           background: #1063e5;
+           color: white;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           font-size: 52px;
+           font-weight: 600;
+        }
 
     </style>
 
@@ -74,10 +83,15 @@
 
 <div class="col-md-3 text-center">
 
-<img
-src="{{ url_for('static', filename='uploads/' + doctor.profile_photo) }}"
-class="profile-image">
-
+{% if doctor.profile_photo %}
+    <img src="{{ url_for('static', filename='uploads/' + doctor.profile_photo) }}"
+         class="profile-image"
+         alt="Doctor Profile Photo">
+{% else %}
+    <div class="profile-image letter-avatar">
+        {{ doctor.full_name[0]|upper }}
+    </div>
+{% endif %}
 </div>
 
 <div class="col-md-9">
@@ -157,72 +171,9 @@ Professional Information
 <p>{{ doctor.experience }} Years</p>
 
 </div>
-
-<div class="col-md-6 mb-3">
-
-<strong>Medical Registration Number</strong>
-
-<p>{{ doctor.license_number }}</p>
-
 </div>
 
 </div>
-
-</div>
-
-
-<div class="info-box">
-
-<h4 class="section-title">
-Uploaded Documents
-</h4>
-
-<a target="_blank"
-href="{{ url_for('static', filename='uploads/' + doctor.degree_certificate) }}"
-class="btn btn-outline-primary btn-view">
-
-<i class="fa-solid fa-file-pdf"></i>
-
-Degree Certificate
-
-</a>
-
-
-<a target="_blank"
-href="{{ url_for('static', filename='uploads/' + doctor.medical_license) }}"
-class="btn btn-outline-success btn-view">
-
-<i class="fa-solid fa-file-medical"></i>
-
-Medical License
-
-</a>
-
-
-<a target="_blank"
-href="{{ url_for('static', filename='uploads/' + doctor.government_id) }}"
-class="btn btn-outline-secondary btn-view">
-
-<i class="fa-solid fa-id-card"></i>
-
-Government ID
-
-</a>
-
-
-{% if doctor.experience_certificate %}
-
-<a target="_blank"
-href="{{ url_for('static', filename='uploads/' + doctor.experience_certificate) }}"
-class="btn btn-outline-info btn-view">
-
-<i class="fa-solid fa-file"></i>
-
-Experience Certificate
-
-</a>
-
-{% endif %}
 
 </div>
 

@@ -10,58 +10,131 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
-        }
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f7f9;
+}
 
-        /* Sidebar Styling */
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
-            color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
+/* Sidebar */
 
-        /* Card Styling */
-        .appointment-card {
-            border: none;
-            border-radius: 15px;
-            background: white;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .appointment-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
-        }
-        
-        /* Metric Badges */
-        .metric-card {
-            border: none;
-            border-radius: 12px;
-            background: white;
-        }
-    </style>
+.sidebar{
+    min-height:100vh;
+    background:linear-gradient(180deg,#1063e5 0%,#0d4bb3 100%);
+    color:#fff;
+    box-shadow:4px 0 18px rgba(0,0,0,.12);
+    padding:25px 18px;
+}
+
+.sidebar-brand{
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.sidebar .nav{
+    list-style:none;
+    padding-left:0;
+}
+
+.sidebar .nav-item{
+    margin-bottom:10px;
+}
+
+.sidebar .nav-link{
+    color:rgba(255,255,255,.90);
+    padding:13px 18px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+}
+
+.sidebar .nav-link i{
+    width:25px;
+    font-size:18px;
+    margin-right:12px;
+}
+
+.sidebar .nav-link:hover{
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    transform:translateX(5px);
+}
+
+.sidebar .nav-link.active{
+    background:#fff;
+    color:#1063e5;
+    font-weight:600;
+}
+
+/* Dashboard Cards */
+
+.stat-card{
+    border:none;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Table */
+
+.table-card{
+    border:none;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.table thead{
+    background:#1063e5;
+    color:#fff;
+}
+
+.table thead th{
+    border:none;
+    padding:15px;
+}
+
+.table tbody td{
+    padding:16px;
+    vertical-align:middle;
+}
+
+.table tbody tr:hover{
+    background:#f3f8ff;
+}
+
+.btn{
+    border-radius:10px;
+}
+.letter-avatar {
+    background: #1063e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    font-weight: 600;
+}
+</style>
 </head>
 <body>
 
@@ -82,7 +155,7 @@
                     <a class="nav-link" href="/patient-records"><i class="fa-solid fa-hospital-user me-2"></i> Patient Records</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
+                    <a class="nav-link active" href="{{ url_for('doctor_appointments_list') }}"><i class="fa-solid fa-calendar-check me-2"></i> Appointments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('prescriptions')}}"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions</a>
@@ -148,19 +221,30 @@
         <td>{{ appointment.patient_name }}</td>
         <td>{{ appointment.symptoms }}</td>
         <td>{{ appointment.status }}</td>
-        <td>
-            <form action="/appointment-status/{{ appointment.id }}/Accepted" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-success">
-                    Accept
-                </button>
-            </form>
+        <td class="text-end pe-4">
 
-            <form action="/appointment-status/{{ appointment.id }}/Declined" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger">
-                    Reject
-                </button>
-            </form>
-        </td>
+    <form action="/appointment-status/{{ appointment.id }}/Accepted"
+          method="POST">
+
+        <button type="submit" class="btn btn-success">
+            <i class="fa-solid fa-circle-check"></i>
+            Accept
+        </button>
+
+    </form>
+
+    <form action="/appointment-status/{{ appointment.id }}/Declined"
+          method="POST">
+
+        <button type="submit" class="btn btn-danger">
+            <i class="fa-solid fa-circle-xmark"></i>
+            Reject
+        </button>
+
+    </form>
+
+</td>
+           
     </tr>
     {% endfor %}
 

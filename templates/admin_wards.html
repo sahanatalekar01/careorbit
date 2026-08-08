@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareOrbit - Ward Management</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .hospital {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Ward Management</h1>
+
+    <div class="hospital">
+        Hospital: <strong>{{ hospital_name }}</strong>
+    </div>
+    
+    <a href="{{ url_for('add_ward') }}" class="btn btn-primary">
+    <i class="fa-solid fa-plus"></i>
+    Add Ward
+</a>
+
+    {% if wards %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ward Name</th>
+                <th>Type</th>
+                <th>Total Beds</th>
+                <th>Occupied Beds</th>
+                <th>Available Beds</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for ward in wards %}
+
+            <tr>
+                <td>{{ ward.name }}</td>
+
+                <td>{{ ward.type }}</td>
+
+                <td>{{ ward.total_beds }}</td>
+
+                <td>{{ ward.occupied_beds }}</td>
+
+                <td>
+                    {{ ward.total_beds - ward.occupied_beds }}
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+    {% else %}
+
+        <p>No wards have been added for this hospital yet.</p>
+
+    {% endif %}
+
+</body>
+</html>

@@ -3,288 +3,944 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareOrbit - Admin Super Control</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts (Poppins) -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <title>CareOrbit - Admin Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f1f3f6;
+
+        * {
+            box-sizing: border-box;
         }
 
-        /* Admin Dark Sidebar Styling */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
         .sidebar {
             min-height: 100vh;
-            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            background: linear-gradient(
+                180deg,
+                #1063e5 0%,
+                #0d4bb3 100%
+            );
             color: white;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.15);
-        }
-        .sidebar .nav-link {
-            color: #94a3b8;
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #38bdf8;
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
         }
 
-        /* Admin Card Styling */
-        .admin-card {
-            border: none;
-            border-radius: 12px;
+        .sidebar-brand {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.3px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.65);
+            margin-top: -5px;
+        }
+
+        .sidebar hr {
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.82);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .nav-link i {
+            width: 23px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.12);
+            transform: translateX(3px);
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.18);
+            box-shadow: inset 3px 0 0 white;
+        }
+
+        .sidebar .back-link {
+            color: #ffd166;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            min-height: 100vh;
+        }
+
+        .page-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #172033;
+        }
+
+        .page-description {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+
+        /* =========================
+           ADMIN PROFILE
+        ========================= */
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
             background: white;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 12px;
         }
+
+        .admin-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #e8f1ff;
+            color: #1063e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .admin-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .admin-role {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .admin-card {
+            border: 1px solid #edf0f5;
+            border-radius: 15px;
+            background: white;
+            transition: all 0.25s ease;
+        }
+
         .admin-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.07) !important;
         }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        .stat-number {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 4px 0;
+            color: #172033;
+        }
+
+        .stat-description {
+            color: #94a3b8;
+            font-size: 0.72rem;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        /* =========================
+           SECTION CARDS
+        ========================= */
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .section-title i {
+            margin-right: 8px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.73rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 13px 15px;
+        }
+
+        .table tbody td {
+            padding: 14px 15px;
+            font-size: 0.8rem;
+            border-color: #f1f5f9;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .empty-state {
+            padding: 35px 15px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 13px;
+            border: 1px solid #edf0f5;
+            border-radius: 11px;
+            color: #334155;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+        }
+
+        .quick-action:hover {
+            background: #f8fbff;
+            border-color: #cfe0ff;
+            color: #1063e5;
+            transform: translateX(2px);
+        }
+
+        .quick-action-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #edf4ff;
+            color: #1063e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 11px;
+        }
+
+        .quick-action-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .quick-action-text {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin: 2px 0 0;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 767px) {
+
+            .sidebar {
+                min-height: auto;
+            }
+
+            .page-title {
+                font-size: 1.35rem;
+            }
+
+            .admin-profile {
+                margin-top: 15px;
+            }
+        }
+
     </style>
 </head>
+
 <body>
 
 <div class="container-fluid">
+
     <div class="row">
-        <!-- Sidebar Navigation -->
+
+        <!-- =========================
+             SIDEBAR
+        ========================= -->
+
         <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-4">
-            <div class="sidebar-brand d-flex align-items-center mb-4">
-                <i class="fa-solid fa-sliders me-2"></i>
+
+            <div class="sidebar-brand d-flex align-items-center mb-1">
+                <i class="fa-solid fa-shield-halved me-2"></i>
                 <span>CareOrbit Admin</span>
             </div>
-            <hr class="text-secondary">
-            <ul class="nav flex-column gap-1">
+
+            <div class="sidebar-subtitle mb-4">
+                Administration Panel
+            </div>
+
+            <hr>
+
+            <ul class="nav flex-column mt-3">
+
+                <!-- Core Overview -->
+
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ url_for('admin_dashboard')}}"><i class="fa-solid fa-gauge-high me-2"></i> Core Overview</a>
-                </li><hr>
+                    <a
+                        class="nav-link active"
+                        href="{{ url_for('admin_dashboard') }}"
+                    >
+                        <i class="fa-solid fa-gauge-high"></i>
+                        Core Overview
+                    </a>
+                </li>
+
+                <!-- User Access -->
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('user_management')}}"><i class="fa-solid fa-users-gear me-2"></i> User Access</a>
-                </li><hr>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_verification') }}"><i class="fa-solid fa-user-doctor me-2"></i>Doctor Verification</a></li><hr>
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('user_management') }}"
+                    >
+                        <i class="fa-solid fa-users-gear"></i>
+                        User Access
+                    </a>
+                </li>
+
+                <!-- Doctor Verification -->
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('system_nodes')}}"><i class="fa-solid fa-server me-2"></i> System Nodes</a>
-                </li><hr>
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('doctor_verification') }}"
+                    >
+                        <i class="fa-solid fa-user-doctor"></i>
+                        Doctor Verification
+                    </a>
+                </li>
+
+                <!-- System Nodes -->
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('audit_logs')}}"><i class="fa-solid fa-shield-halved me-2"></i> Audit Logs</a>
-                </li><hr>
-                <li class="nav-item mt-5">
-                    <a class="nav-link text-warning" href="/"><i class="fa-solid fa-arrow-left me-2"></i> Back to App</a>
-                </li><hr>
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('system_nodes') }}"
+                    >
+                        <i class="fa-solid fa-server"></i>
+                        System Nodes
+                    </a>
+                </li>
+
+                <!-- Audit Logs -->
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('audit_logs') }}"
+                    >
+                        <i class="fa-solid fa-file-shield"></i>
+                        Audit Logs
+                    </a>
+                </li>
+
+                <li class="nav-item mt-4">
+                    <hr>
+                </li>
+
+                <!-- Hospital Dashboard -->
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('hospital_dashboard') }}"
+                    >
+                        <i class="fa-solid fa-hospital"></i>
+                        Hospital Operations
+                    </a>
+                </li>
+
+                <!-- Back -->
+
+                <li class="nav-item mt-2">
+                    <a
+                        class="nav-link back-link"
+                        href="/"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to App
+                    </a>
+                </li>
+
+                <!-- Logout -->
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('logout') }}"
+                    >
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </a>
+                </li>
+
             </ul>
+
         </nav>
 
-        <!-- Main Content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-                <div>
-                    <h1 class="h2 fw-bold text-dark">System Command Console</h1>
-                    <p class="text-muted">High-level ecosystem vitals, server nodes orchestration, and user audits.</p>
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================= -->
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 main-content">
+
+            <!-- HEADER -->
+
+            <div class="page-header mb-4">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                    <div>
+
+    <h1 class="page-title">
+        CareOrbit Administration
+    </h1>
+
+    <p class="page-description">
+        {{ session.get("hospital_name", "Hospital") }}
+    </p>
+
+    <p class="page-description">
+        Central management of users, appointments,
+        doctor verification and system activity.
+    </p>
+
+</div>
+
+                    <!-- REAL LOGGED-IN ADMIN -->
+
+                    <div class="admin-profile">
+
+                        <div class="admin-avatar">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+
+                        <div>
+
+                            <p class="admin-name">
+                                {{ session.get("username", "Admin") }}
+                            </p>
+
+                            <p class="admin-role">
+                                Administrator
+                            </p>
+
+                        </div>
+
+                    </div>
+
                 </div>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <span class="badge bg-success-subtle text-success p-2 fs-6 rounded-pill">
-                        <i class="fa-solid fa-circle-check me-1"></i> Core Systems Nominal
-                    </span>
-                </div>
+
             </div>
 
-            <!-- Operational System Metrics Grid -->
+
+            <!-- =========================
+                 REAL STATISTICS
+            ========================= -->
+
             <div class="row g-3 mb-4">
-                <div class="col-md-3 col-sm-6">
-                    <div class="card admin-card p-4 shadow-sm">
+
+                <!-- USERS -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card admin-card shadow-sm p-4 h-100">
+
                         <div class="d-flex justify-content-between align-items-center">
+
                             <div>
-                                <span class="text-muted small fw-medium d-block">Total Registered Users</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">{{user_count}}</h3>
-                                <span class="text-success small"><i class="fa-solid fa-arrow-up me-1"></i> +12% this week</span>
+
+                                <span class="stat-label">
+                                    Total Registered Users
+                                </span>
+
+                                <h3 class="stat-number">
+                                    {{ user_count }}
+                                </h3>
+
+                                <span class="stat-description">
+                                    Registered in CareOrbit
+                                </span>
+
                             </div>
-                            <div class="bg-primary-subtle p-3 rounded-circle text-primary">
-                                <i class="fa-solid fa-users fs-4"></i>
+
+                            <div class="stat-icon bg-primary-subtle text-primary">
+                                <i class="fa-solid fa-users"></i>
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
-                <div class="col-md-3 col-sm-6">
-    <div class="card admin-card p-4 shadow-sm">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <span class="text-muted small fw-medium d-block">API Request Latency</span>
-                <h3 class="fw-bold text-dark mt-1 mb-0">42 ms</h3>
-                <span class="text-success small">
-                    <i class="fa-solid fa-circle-check me-1"></i> Optimal speed
-                </span>
-            </div>
-            <div class="bg-info-subtle p-3 rounded-circle text-info">
-                <i class="fa-solid fa-bolt fs-4"></i>
-            </div>
-        </div>
-    </div>
-</div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="card admin-card p-4 shadow-sm">
+
+
+                <!-- APPOINTMENTS -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card admin-card shadow-sm p-4 h-100">
+
                         <div class="d-flex justify-content-between align-items-center">
+
                             <div>
-                                <span class="text-muted small fw-medium d-block">Database Status</span>
-                                <h3 class="fw-bold text-success mt-1 mb-0">{{completed_visits}} Completed</h3>
-                                <span class="text-muted small">Active replication online</span>
+
+                                <span class="stat-label">
+                                    Total Appointments
+                                </span>
+
+                                <h3 class="stat-number">
+                                    {{ total_appointments }}
+                                </h3>
+
+                                <span class="stat-description">
+                                    Appointments recorded
+                                </span>
+
                             </div>
-                            <div class="bg-success-subtle p-3 rounded-circle text-success">
-                                <i class="fa-solid fa-database fs-4"></i>
+
+                            <div class="stat-icon bg-info-subtle text-info">
+                                <i class="fa-solid fa-calendar-check"></i>
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
-                <div class="col-md-3 col-sm-6">
-    <div class="card admin-card p-4 shadow-sm">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <span class="text-muted small fw-medium d-block">
-                    Pending Doctor Verifications
-                </span>
-                <h3 class="fw-bold text-warning mt-1 mb-0">
-                    {{ pending_doctors }}
-                </h3>
-                <span class="text-warning small">
-                    <i class="fa-solid fa-user-clock me-1"></i>
-                    Awaiting Approval
-                </span>
+
+
+                <!-- COMPLETED VISITS -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card admin-card shadow-sm p-4 h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+
+                                <span class="stat-label">
+                                    Completed Visits
+                                </span>
+
+                                <h3 class="stat-number">
+                                    {{ completed_visits }}
+                                </h3>
+
+                                <span class="stat-description">
+                                    Successfully completed
+                                </span>
+
+                            </div>
+
+                            <div class="stat-icon bg-success-subtle text-success">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PENDING DOCTORS -->
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="card admin-card shadow-sm p-4 h-100">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+
+                                <span class="stat-label">
+                                    Pending Doctor Verifications
+                                </span>
+
+                                <h3 class="stat-number text-warning">
+                                    {{ pending_doctors }}
+                                </h3>
+
+                                <span class="stat-description">
+                                    Awaiting admin review
+                                </span>
+
+                            </div>
+
+                            <div class="stat-icon bg-warning-subtle text-warning">
+                                <i class="fa-solid fa-user-clock"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="bg-warning-subtle p-3 rounded-circle text-warning">
-                <i class="fa-solid fa-user-doctor fs-4"></i>
-            </div>
-        </div>
-    </div>
-</div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="card admin-card p-4 shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="text-muted small fw-medium d-block">Security Incidents</span>
-                                <h3 class="fw-bold text-dark mt-1 mb-0">0</h3>
-                                <span class="text-muted small">Firewall rule intact</span>
-                            </div>
-                            <div class="bg-light p-3 rounded-circle text-secondary">
-                                <i class="fa-solid fa-shield-virus fs-4"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Deep Systems Audit Logs -->
+            <!-- =========================
+                 SECONDARY INFORMATION
+            ========================= -->
+
             <div class="row g-4">
-                <!-- Left: Recent Administrative Actions -->
+
+
+                <!-- AUDIT LOGS -->
+
                 <div class="col-lg-8">
+
                     <div class="card admin-card shadow-sm">
-                        <div class="card-header bg-white py-3 border-0">
-                            <h5 class="m-0 fw-bold text-dark"><i class="fa-solid fa-fingerprint text-primary me-2"></i>Global Audit Trails</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <tbody>
-{% for log in records %}
-<tr>
 
-    <td class="ps-4 text-muted small">
-        {{ log.timestamp.strftime("%d-%m-%Y %I:%M %p") }}
-    </td>
+                        <div class="card-header bg-white border-0 p-4">
 
-    <td class="fw-bold">
-        {{ log.admin_user }}
-    </td>
+                            <div class="d-flex justify-content-between align-items-center">
 
-    <td>
-        {{ log.event_scope }}
-    </td>
+                                <div>
 
-    <td>
-        {{ log.target_reference }}
-    </td>
+                                    <h5 class="section-title mb-1">
+                                        <i class="fa-solid fa-file-shield text-primary"></i>
+                                        Recent Administrative Activity
+                                    </h5>
 
-    <td>
-        {% if log.security_level == "Approved" %}
-            <span class="badge bg-success">
-                Approved
-            </span>
+                                    <small class="text-muted">
+                                        Latest actions recorded by the system
+                                    </small>
 
-        {% elif log.security_level == "Rejected" %}
-            <span class="badge bg-danger">
-                Rejected
-            </span>
+                                </div>
 
-        {% else %}
-            <span class="badge bg-warning text-dark">
-                {{ log.security_level }}
-            </span>
-        {% endif %}
-    </td>
+                                <a
+                                    href="{{ url_for('audit_logs') }}"
+                                    class="btn btn-sm btn-outline-primary"
+                                >
+                                    View All
+                                </a>
 
-</tr>
-{% else %}
-<tr>
-    <td colspan="5" class="text-center text-muted py-4">
-        No audit records found.
-    </td>
-</tr>
-{% endfor %}
-</tbody>
-                                            
-                                </table>
                             </div>
+
                         </div>
+
+
+                        <div class="card-body p-0">
+
+                            <div class="table-responsive">
+
+                                <table class="table table-hover align-middle">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Time</th>
+
+                                            <th>Admin</th>
+
+                                            <th>Activity</th>
+
+                                            <th>Target</th>
+
+                                            <th>Level</th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+
+                                    {% for log in records %}
+
+                                    <tr>
+
+                                        <td class="text-muted">
+                                            {{ log.timestamp.strftime("%d-%m-%Y %I:%M %p") }}
+                                        </td>
+
+                                        <td class="fw-semibold">
+                                            {{ log.admin_user }}
+                                        </td>
+
+                                        <td>
+                                            {{ log.event_scope }}
+                                        </td>
+
+                                        <td>
+                                            {{ log.target_reference }}
+                                        </td>
+
+                                        <td>
+
+                                            {% if log.security_level == "Approved" %}
+
+                                                <span class="badge bg-success-subtle text-success">
+                                                    Approved
+                                                </span>
+
+                                            {% elif log.security_level == "Rejected" %}
+
+                                                <span class="badge bg-danger-subtle text-danger">
+                                                    Rejected
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="badge bg-warning-subtle text-warning-emphasis">
+                                                    {{ log.security_level }}
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% else %}
+
+                                    <tr>
+
+                                        <td colspan="5">
+
+                                            <div class="empty-state">
+
+                                                <i class="fa-solid fa-file-circle-xmark d-block"></i>
+
+                                                <div>
+                                                    No administrative activity recorded.
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </div>
 
-                <!-- Right: Connected Infrastructure Health -->
+
+                <!-- QUICK ACTIONS -->
+
                 <div class="col-lg-4">
-                    <div class="card admin-card p-4 shadow-sm">
-                        <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-network-wired text-primary me-2"></i>Services Topology</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
-                                <div>
-                                    <strong class="d-block text-dark">Authentication Server</strong>
-                                    <span class="text-muted small">JWT Node Verification</span>
+
+                    <div class="card admin-card shadow-sm h-100">
+
+                        <div class="card-header bg-white border-0 p-4">
+
+                            <h5 class="section-title mb-1">
+                                <i class="fa-solid fa-bolt text-primary"></i>
+                                Administration
+                            </h5>
+
+                            <small class="text-muted">
+                                Manage CareOrbit system resources
+                            </small>
+
+                        </div>
+
+                        <div class="card-body pt-0">
+
+                            <a
+                                href="{{ url_for('user_management') }}"
+                                class="quick-action"
+                            >
+
+                                <div class="quick-action-icon">
+                                    <i class="fa-solid fa-users-gear"></i>
                                 </div>
-                                <span class="badge bg-success rounded-pill">Stable</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+
                                 <div>
-                                    <strong class="d-block text-dark">Telemetry Push Core</strong>
-                                    <span class="text-muted small">Websocket Cluster</span>
+                                    <p class="quick-action-title">
+                                        User Access
+                                    </p>
+
+                                    <p class="quick-action-text">
+                                        Manage registered users
+                                    </p>
                                 </div>
-                                <span class="badge bg-success rounded-pill">Stable</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('doctor_verification') }}"
+                                class="quick-action"
+                            >
+
+                                <div class="quick-action-icon">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+
                                 <div>
-                                    <strong class="d-block text-dark">SMTP Email Dispatcher</strong>
-                                    <span class="text-muted small">Queue Length: 0</span>
+                                    <p class="quick-action-title">
+                                        Doctor Verification
+                                    </p>
+
+                                    <p class="quick-action-text">
+                                        Review doctor registrations
+                                    </p>
                                 </div>
-                                <span class="badge bg-success rounded-pill">Stable</span>
-                            </li>
-                        </ul>
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('system_nodes') }}"
+                                class="quick-action"
+                            >
+
+                                <div class="quick-action-icon">
+                                    <i class="fa-solid fa-server"></i>
+                                </div>
+
+                                <div>
+                                    <p class="quick-action-title">
+                                        System Nodes
+                                    </p>
+
+                                    <p class="quick-action-text">
+                                        View system components
+                                    </p>
+                                </div>
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('audit_logs') }}"
+                                class="quick-action"
+                            >
+
+                                <div class="quick-action-icon">
+                                    <i class="fa-solid fa-file-shield"></i>
+                                </div>
+
+                                <div>
+                                    <p class="quick-action-title">
+                                        Audit Logs
+                                    </p>
+
+                                    <p class="quick-action-text">
+                                        Review administrative activity
+                                    </p>
+                                </div>
+
+                            </a>
+
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </main>
+
     </div>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+
 </body>
+
 </html>
+    
