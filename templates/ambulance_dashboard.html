@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,352 +10,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     
     <style>
-    /* ================================
-       CAREORBIT HOSPITAL DASHBOARD
-       ================================ */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+        }
 
-    :root {
-        --primary: #1063e5;
-        --primary-dark: #0d4bb3;
-        --bg: #f5f7fb;
-        --card: #ffffff;
-        --text: #172033;
-        --muted: #718096;
-        --border: #e8edf5;
-        --success: #16a34a;
-        --warning: #f59e0b;
-        --danger: #dc3545;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        margin: 0;
-    }
-
-    /* ================================
-       SIDEBAR
-       ================================ */
-
-    .sidebar {
-        min-height: 100vh;
-        background: linear-gradient(
-            180deg,
-            #1063e5 0%,
-            #0d4bb3 100%
-        );
-        color: white;
-        box-shadow: 5px 0 25px rgba(16, 99, 229, 0.12);
-        padding-top: 25px !important;
-    }
-
-    .sidebar-brand {
-        font-size: 1.55rem;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        padding-left: 5px;
-    }
-
-    .sidebar-brand i {
-        font-size: 1.35rem;
-    }
-
-    .sidebar hr {
-        opacity: 0.2;
-        margin: 18px 0;
-    }
-
-    .sidebar .nav-link {
-        color: rgba(255, 255, 255, 0.82);
-        font-weight: 500;
-        padding: 12px 16px;
-        border-radius: 10px;
-        transition: all 0.25s ease;
-        margin-bottom: 5px;
-    }
-
-    .sidebar .nav-link i {
-        width: 24px;
-        font-size: 15px;
-    }
-
-    .sidebar .nav-link:hover {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.12);
-        transform: translateX(4px);
-    }
-
-    .sidebar .nav-link.active {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.18);
-        box-shadow: inset 3px 0 0 #ffffff;
-    }
-
-    /* ================================
-       MAIN CONTENT
-       ================================ */
-
-    main {
-        background: var(--bg);
-        min-height: 100vh;
-    }
-
-    main > .d-flex {
-        border-bottom: 1px solid var(--border) !important;
-        padding-bottom: 20px !important;
-        margin-bottom: 28px !important;
-    }
-
-    /* ================================
-       HOSPITAL HEADER
-       ================================ */
-
-    main .bg-primary-subtle {
-        background: #eaf2ff !important;
-    }
-
-    main .bg-primary-subtle i {
-        color: var(--primary);
-    }
-
-    h1.h2 {
-        font-size: 1.55rem;
-        letter-spacing: -0.3px;
-    }
-
-    /* ================================
-       OPERATION CARDS
-       ================================ */
-
-    .op-card {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: var(--card);
-        overflow: hidden;
-        transition: all 0.25s ease;
-    }
-
-    .op-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(31, 41, 55, 0.08) !important;
-    }
-
-    .card.op-card {
-        min-height: 145px;
-    }
-
-    .op-card h3 {
-        font-size: 1.55rem;
-    }
-
-    .op-card .text-muted {
-        color: var(--muted) !important;
-    }
-
-    /* ================================
-       METRIC ICONS
-       ================================ */
-
-    .op-card .rounded-circle {
-        width: 52px;
-        height: 52px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .op-card .bg-danger-subtle {
-        background: #fff0f1 !important;
-    }
-
-    .op-card .bg-success-subtle {
-        background: #eaf8ef !important;
-    }
-
-    .op-card .bg-warning-subtle {
-        background: #fff7e6 !important;
-    }
-
-    /* ================================
-       WARD SECTION
-       ================================ */
-
-    .card-header {
-        border-bottom: 1px solid var(--border) !important;
-        padding: 18px 22px !important;
-    }
-
-    .card-header h5 {
-        font-size: 1rem;
-        letter-spacing: -0.1px;
-    }
-
-    .card-header .btn {
-        border-radius: 8px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        padding: 8px 14px;
-        box-shadow: 0 4px 10px rgba(16, 99, 229, 0.15);
-        transition: all 0.2s ease;
-    }
-
-    .card-header .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 14px rgba(16, 99, 229, 0.2);
-    }
-
-    /* ================================
-       TABLE
-       ================================ */
-
-    .table {
-        margin-bottom: 0;
-    }
-
-    .table thead th {
-        background: #f8fafc;
-        color: #64748b;
-        border-bottom: 1px solid var(--border);
-        border-top: none;
-        font-size: 0.74rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 14px 12px;
-        white-space: nowrap;
-    }
-
-    .table tbody td {
-        padding: 16px 12px;
-        border-color: #eef2f7;
-        color: #475569;
-        font-size: 0.87rem;
-        vertical-align: middle;
-    }
-
-    .table tbody tr {
-        transition: background 0.2s ease;
-    }
-
-    .table tbody tr:hover {
-        background: #f8fbff;
-    }
-
-    .table tbody td:first-child {
-        color: var(--text);
-        font-weight: 600;
-    }
-
-    /* ================================
-       STATUS BADGES
-       ================================ */
-
-    .badge {
-        border-radius: 7px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.2px;
-    }
-
-    .badge.bg-danger-subtle {
-        background: #fff0f1 !important;
-        color: #dc3545 !important;
-    }
-
-    .badge.bg-warning-subtle {
-        background: #fff7e6 !important;
-        color: #c47b00 !important;
-    }
-
-    .badge.bg-success-subtle {
-        background: #eaf8ef !important;
-        color: #16803a !important;
-    }
-
-    /* ================================
-       ACTIVE SERVICES
-       ================================ */
-
-    .list-group-item {
-        border-color: #eef2f7 !important;
-        background: transparent;
-    }
-
-    .list-group-item strong {
-        font-size: 0.88rem;
-    }
-
-    .list-group-item .text-muted {
-        font-size: 0.76rem;
-    }
-
-    .list-group-item .badge {
-        padding: 7px 10px;
-        font-size: 0.68rem;
-    }
-
-    /* ================================
-       ADMIN PROFILE
-       ================================ */
-
-    .bg-primary.text-white.rounded-circle {
-        box-shadow: 0 5px 15px rgba(16, 99, 229, 0.18);
-    }
-
-    /* ================================
-       BUTTONS
-       ================================ */
-
-    .btn-primary {
-        background: var(--primary);
-        border-color: var(--primary);
-    }
-
-    .btn-primary:hover {
-        background: var(--primary-dark);
-        border-color: var(--primary-dark);
-    }
-
-    /* ================================
-       RESPONSIVE
-       ================================ */
-
-    @media (max-width: 768px) {
-
+        /* Sidebar Styling */
         .sidebar {
-            min-height: auto;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1063e5 0%, #0d4bb3 100%);
+            color: white;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
-        main {
-            padding: 18px !important;
+        /* Card Styling */
+        .fleet-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .fleet-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05) !important;
         }
 
-        main > .d-flex {
-            align-items: flex-start !important;
+        .pulse-beacon {
+            animation: blink 1.2s infinite;
         }
-
-        h1.h2 {
-            font-size: 1.25rem;
+        @keyframes blink {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
         }
-
-        .card.op-card {
-            min-height: auto;
-        }
-
-        .table {
-            min-width: 650px;
-        }
-    }
-</style>
+    </style>
 </head>
 <body>
 
@@ -382,23 +92,22 @@
                     <a class="nav-link" href="/laboratory-dashboard"><i class="fa-solid fa-flask-vial me-2"></i> Laboratory</a>
                 </li>
                 <li class="nav-item">
-    <a class="nav-link active" href="/ambulance-dashboard">
-        <i class="fa-solid fa-truck-ramp-box me-2"></i> Ambulance
-    </a>
-</li>
+                    <a class="nav-link active" href="/ambulance-dashboard">
+                        <i class="fa-solid fa-truck-ramp-box me-2"></i> Ambulance
+                    </a>
+                </li>
 
-<li class="nav-item mt-5">
+                <li class="nav-item mt-5">
                     <a class="nav-link text-warning" href="/">
                         <i class="fa-solid fa-arrow-left me-2"></i> Back to Home
                     </a>
                 </li>
 
-<li class="nav-item mt-5">
-    <a class="nav-link text-danger" href="/logout">
-        <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
-    </a>
-</li>
-                
+                <li class="nav-item mt-5">
+                    <a class="nav-link text-danger" href="/logout">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -432,7 +141,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">On Active Calls</span>
-                                <h3 class="fw-bold text-danger mt-1 mb-0">{{dispatch_count}} Dispatched</h3>
+                                <h3 class="fw-bold text-danger mt-1 mb-0">{{ dispatch_count }} Dispatched</h3>
                                 <span class="text-danger small pulse-beacon"><i class="fa-solid fa-circle-radiation me-1"></i> Sirens active</span>
                             </div>
                             <div class="bg-danger-subtle p-3 rounded-circle text-danger">
@@ -446,7 +155,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="text-muted small fw-medium d-block">Available Stations</span>
-                                <h3 class="fw-bold text-success mt-1 mb-0">{{ available_ambulances}} standby</h3>
+                                <h3 class="fw-bold text-success mt-1 mb-0">{{ available_ambulances }} standby</h3>
                                 <span class="text-success small"><i class="fa-solid fa-check me-1"></i> Ready for dispatch</span>
                             </div>
                             <div class="bg-success-subtle p-3 rounded-circle text-success">
@@ -490,131 +199,185 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-       {% for amb in ambulances %}
-<tr>
-    <td class="fw-bold text-primary">
-        {{ amb.vehicle_number }}
-    </td>
+                                    <tbody>
+                                        {% for amb in ambulances %}
+                                        <tr>
+                                            <td class="fw-bold text-primary ps-4">
+                                                {{ amb.vehicle_number }}
+                                            </td>
 
-    <td>
-        {{ amb.vehicle_type }}
-    </td>
+                                            <td>
+                                                {{ amb.vehicle_type }}
+                                            </td>
 
-    <td>
-        {{ amb.crew_assigned }}
-    </td>
+                                            <td>
+                                                {{ amb.crew_assigned }}
+                                            </td>
 
-    <td>
-        {{ amb.current_destination or "Standby" }}
-    </td>
+                                            <td>
+                                                {{ amb.current_destination or "Standby" }}
+                                            </td>
 
-    <td>
-        {% if amb.status == "Available" %}
-            <span class="badge bg-success-subtle text-success p-2">
-                Available
-            </span>
-
-        {% elif amb.status == "On Mission" %}
-            <span class="badge bg-danger-subtle text-danger p-2">
-                On Mission
-            </span>
-
-        {% else %}
-            <span class="badge bg-secondary-subtle text-secondary p-2">
-                {{ amb.status }}
-            </span>
-
-        {% endif %}
-    </td>
-</tr>
-
-{% else %}
-<tr>
-    <td colspan="5" class="text-center text-muted py-4">
-        No fleet vehicles currently tracked.
-    </td>
-</tr>
-{% endfor %}
+                                            <td>
+                                                {% if amb.status == "Available" %}
+                                                    <span class="badge bg-success-subtle text-success p-2">
+                                                        Available
+                                                    </span>
+                                                {% elif amb.status == "On Mission" %}
+                                                    <span class="badge bg-danger-subtle text-danger p-2">
+                                                        On Mission
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary-subtle text-secondary p-2">
+                                                        {{ amb.status }}
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                No fleet vehicles currently tracked.
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Quick Dispatch System Panel -->
+    <!-- INCOMING PATIENT AMBULANCE REQUESTS -->
+<div class="card fleet-card shadow-sm mt-4">
+    <div class="card-header bg-white py-3 border-0">
+        <h5 class="m-0 fw-bold text-dark">
+            <i class="fa-solid fa-truck-medical text-danger me-2"></i>
+            Incoming Patient Ambulance Requests
+        </h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Request</th>
+                        <th>Emergency</th>
+                        <th>Pickup</th>
+                        <th>Destination</th>
+                        <th>Ambulance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in ambulance_bookings %}
+                    <tr>
+                        <td class="ps-4 fw-semibold">
+                            #{{ booking.id }}
+                        </td>
+
+                        <td>
+                            <span class="badge bg-danger-subtle text-danger">
+                                {{ booking.emergency_category }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <i class="fa-solid fa-location-dot text-danger me-1"></i>
+                            {{ booking.pickup_location }}
+                        </td>
+
+                        <td>
+                            {{ booking.destination or "Not specified" }}
+                        </td>
+
+                        <td class="fw-semibold text-primary">
+                            {% for amb in ambulances %}
+                                {% if amb.id == booking.ambulance_id %}
+                                    {{ amb.vehicle_number }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td>
+                            {% if booking.status == "Accepted" or booking.status == "On Mission" %}
+                                <span class="badge bg-success-subtle text-success p-2">
+                                    {{ booking.status }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-warning-subtle text-warning p-2">
+                                    {{ booking.status }}
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-5">
+                            <i class="fa-solid fa-truck-medical fs-3 mb-2 d-block"></i>
+                            No incoming ambulance requests.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+            <!-- Right: Quick Dispatch System Panel & Map -->
                 <div class="col-lg-4">
                     <div class="card fleet-card p-4 shadow-sm border-top border-primary border-3">
                         <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-truck-ramp-box text-primary me-2"></i>Instant Unit Dispatch</h5>
                         <form method="POST" action="/dispatch-ambulance">
+                            <div class="mb-3">
+                                <label class="form-label">Emergency Category</label>
+                                <select class="form-select" name="category">
+                                    <option selected disabled>Choose severity status...</option>
+                                    <option>Category 1 - Cardiac / Respiratory Arrest</option>
+                                    <option>Category 2 - Major Trauma / Stroke</option>
+                                    <option>Category 3 - Urgent Medical Check</option>
+                                </select>
+                            </div>
 
-    <div class="mb-3">
-        <label class="form-label">
-            Emergency Category
-        </label>
+                            <div class="mb-3">
+                                <label class="form-label">Pickup Location</label>
+                                <input type="text" name="location" class="form-control" placeholder="Enter location" required>
+                            </div>
 
-        <select class="form-select">
-    <option selected disabled>Choose severity status...</option>
-    <option>Category 1 - Cardiac / Respiratory Arrest</option>
-    <option>Category 2 - Major Trauma / Stroke</option>
-    <option>Category 3 - Urgent Medical Check</option>
-</select>
-    </div>
+                            <div class="mb-3">
+                                <label class="form-label">Latitude</label>
+                                <input type="text" name="latitude" class="form-control" placeholder="Example: 18.6298">
+                            </div>
 
+                            <div class="mb-3">
+                                <label class="form-label">Longitude</label>
+                                <input type="text" name="longitude" class="form-control" placeholder="Example: 73.7997">
+                            </div>
 
-    <div class="mb-3">
-        <label class="form-label">
-            Pickup Location
-        </label>
+                            <button type="submit" class="btn btn-primary w-100">Deploy Nearest Unit</button>
+                        </form>
+                    </div>
 
-        <input 
-        type="text"
-        name="location"
-        class="form-control"
-        placeholder="Enter location"
-        required>
-    </div>
-
-
-    <div class="mb-3">
-        <label class="form-label">
-            Latitude
-        </label>
-
-        <input 
-        type="text"
-        name="latitude"
-        class="form-control"
-        placeholder="Example: 18.6298">
-    </div>
-
-
-    <div class="mb-3">
-        <label class="form-label">
-            Longitude
-        </label>
-
-        <input 
-        type="text"
-        name="longitude"
-        class="form-control"
-        placeholder="Example: 73.7997">
-    </div>
-
-
-    <button type="submit" class="btn btn-primary w-100">
-        Deploy Nearest Unit
-    </button>
-
-</form>
-                         <!-- Ambulance Map -->
- <div class="card fleet-card p-4 mt-4">
-        <h5 class="fw-bold text-dark mb-3">
-              <i class="fa-solid fa-map-location-dot text-primary me-2"></i>
-                Ambulance Live Map</h5>
-   <div id="map" style="height:400px; border-radius:10px;"></div>
-            </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+                    <!-- Ambulance Live Map -->
+                    <div class="card fleet-card p-4 mt-4 shadow-sm">
+                        <h5 class="fw-bold text-dark mb-3">
+                            <i class="fa-solid fa-map-location-dot text-primary me-2"></i>
+                            Ambulance Live Map
+                        </h5>
+                        <div id="map" 
+                             style="height: 380px; border-radius: 10px;"
+                             data-ambulances='[
+                                {% for amb in ambulances %}
+                                {
+                                    "vehicle_number": {{ amb.vehicle_number | tojson }},
+                                    "status": {{ amb.status | tojson }},
+                                    "lat": {{ amb.latitude if amb.latitude is not none else 18.6298 }},
+                                    "lng": {{ amb.longitude if amb.longitude is not none else 73.7997 }}
+                                }{% if not loop.last %},{% endif %}
+                                {% endfor %}
+                             ]'>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -622,37 +385,137 @@
     </div>
 </div>
 
+<!-- External Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+<!-- Pure JS Execution -->
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
 
-var map = L.map('map').setView([18.6298, 73.7997], 13);
+    // 1. Initialize Map
+    const map = L.map('map').setView([18.6298, 73.7997], 13);
 
+    // 2. Add OpenStreetMap Tile Layer
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-        attribution: '© OpenStreetMap contributors'
+    // 3. Read JSON data from HTML data attribute
+    try {
+        const rawData = mapElement.getAttribute('data-ambulances');
+        const fleetData = JSON.parse(rawData || '[]');
+
+        // 4. Render Leaflet Markers
+        fleetData.forEach(function (amb) {
+            if (amb.lat && amb.lng) {
+                L.marker([amb.lat, amb.lng])
+                    .addTo(map)
+                    .bindPopup("<b>" + amb.vehicle_number + "</b><br>Status: " + amb.status);
+            }
+        });
+    } catch (err) {
+        console.error("Error parsing fleet data for Leaflet map:", err);
     }
-).addTo(map);
-
-
-{% for amb in ambulances %}
-
-L.marker([
-    {{ amb.latitude or 18.6298 }},
-    {{ amb.longitude or 73.7997 }}
-])
-.addTo(map)
-.bindPopup(
-    "<b>{{ amb.vehicle_number }}</b><br>Status: {{ amb.status }}"
-);
-
-{% endfor %}
-
-
+});
 </script>
+
+<!-- ============================================================
+     PATIENT AMBULANCE REQUESTS
+     ============================================================ -->
+<section class="container-fluid mt-4 mb-4">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="badge bg-danger-subtle text-danger mb-2">
+                        <i class="fa-solid fa-bell me-1"></i> Incoming Requests
+                    </span>
+                    <h4 class="fw-bold mb-1">Patient Ambulance Requests</h4>
+                    <p class="text-muted mb-0">
+                        View emergency pickup and destination details.
+                    </p>
+                </div>
+                <i class="fa-solid fa-truck-medical text-danger fs-2"></i>
+            </div>
+
+            {% if ambulance_bookings %}
+                <div class="row g-3">
+                    {% for booking in ambulance_bookings %}
+                    <div class="col-12">
+                        <div class="border rounded-3 p-3">
+
+                            <div class="row g-3 align-items-center">
+
+                                <div class="col-lg-2">
+                                    <small class="text-muted d-block">Patient ID</small>
+                                    <strong>#{{ booking.patient_id }}</strong>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <small class="text-muted d-block">Emergency</small>
+                                    <strong>{{ booking.emergency_category }}</strong>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <small class="text-muted d-block">Pickup</small>
+                                    <strong>{{ booking.pickup_location }}</strong>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <small class="text-muted d-block">Destination</small>
+                                    <strong>
+                                        {{ booking.destination or "Not specified" }}
+                                    </strong>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <span class="badge
+                                        {% if booking.status == 'On Mission' %}
+                                            bg-danger
+                                        {% elif booking.status == 'Accepted' %}
+                                            bg-success
+                                        {% else %}
+                                            bg-warning text-dark
+                                        {% endif %}
+                                        px-3 py-2">
+                                        {{ booking.status }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            {% if booking.description %}
+                            <div class="mt-3 small text-muted">
+                                <strong>Details:</strong>
+                                {{ booking.description }}
+                            </div>
+                            {% endif %}
+
+                            <div class="mt-3 small text-muted">
+                                <i class="fa-solid fa-location-dot me-1"></i>
+                                Coordinates:
+                                {{ booking.pickup_latitude or "N/A" }},
+                                {{ booking.pickup_longitude or "N/A" }}
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="fa-solid fa-truck-medical fs-2 mb-2"></i>
+                    <p class="mb-0">No active ambulance requests.</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
 </body>
 </html>

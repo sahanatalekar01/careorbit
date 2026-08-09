@@ -1,10 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, UTC 
+﻿from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, UTC
 
 db = SQLAlchemy()
 
 
+# ============================================================
 # USER MODEL (Doctor/Admin/Staff)
+# ============================================================
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -41,17 +44,45 @@ class User(db.Model):
         db.Text,
         nullable=True
     )
+
+
+# ============================================================
 # PRESCRIPTION MODEL
+# ============================================================
+
 class Prescription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    patient_name = db.Column(db.String(150), nullable=False)
-    medicine_name = db.Column(db.String(150), nullable=False)
-    dosage = db.Column(db.String(100), nullable=False)
-    doctor_name = db.Column(db.String(150), nullable=False)
-    status = db.Column(db.String(50), default="Pending")
+
+    patient_name = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    medicine_name = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    dosage = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    doctor_name = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    status = db.Column(
+        db.String(50),
+        default="Pending"
+    )
 
 
-# AMBULANCE MODEL
+# ============================================================
+# AMBULANCE UNIT MODEL
+# ============================================================
+
 class AmbulanceUnit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -92,7 +123,77 @@ class AmbulanceUnit(db.Model):
     )
 
 
+# ============================================================
 # NOTIFICATION MODEL
+# ============================================================
+
+
+# ============================================================
+# AMBULANCE BOOKING MODEL
+# ============================================================
+
+class AmbulanceBooking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    patient_id = db.Column(
+        db.Integer,
+        db.ForeignKey("patient.id"),
+        nullable=False
+    )
+
+    ambulance_id = db.Column(
+        db.Integer,
+        db.ForeignKey("ambulance_unit.id"),
+        nullable=False
+    )
+
+    emergency_category = db.Column(
+        db.String(100),
+        nullable=False,
+        default="Emergency"
+    )
+
+    description = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    pickup_location = db.Column(
+        db.String(255),
+        nullable=False
+    )
+
+    pickup_latitude = db.Column(
+        db.Float,
+        nullable=True
+    )
+
+    pickup_longitude = db.Column(
+        db.Float,
+        nullable=True
+    )
+
+    destination = db.Column(
+        db.String(255),
+        nullable=True
+    )
+
+    status = db.Column(
+        db.String(50),
+        nullable=False,
+        default="Pending"
+    )
+
+    accepted_at = db.Column(
+        db.DateTime,
+        nullable=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
+
 class Notification(db.Model):
     __tablename__ = "notification"
 
@@ -123,7 +224,11 @@ class Notification(db.Model):
         default=True
     )
 
+
+# ============================================================
 # WARD MODEL
+# ============================================================
+
 class Ward(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -153,12 +258,31 @@ class Ward(db.Model):
         nullable=False,
         default=0
     )
+
+
+# ============================================================
 # MEDICINE MODEL
+# ============================================================
+
 class Medicine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    category = db.Column(db.String(100), nullable=False)
-    stock = db.Column(db.Integer, nullable=False, default=0)
+
+    name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    category = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    stock = db.Column(
+        db.Integer,
+        nullable=False,
+        default=0
+    )
+
     status = db.Column(
         db.String(50),
         nullable=False,
@@ -166,33 +290,92 @@ class Medicine(db.Model):
     )
 
 
+# ============================================================
 # LAB TEST MODEL
+# ============================================================
+
 class LabTest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    patient_name = db.Column(db.String(100), nullable=False)
-    test_name = db.Column(db.String(100), nullable=False)
-    category = db.Column(db.String(100), nullable=False)
+
+    patient_name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    test_name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    category = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
     status = db.Column(
         db.String(50),
         nullable=False,
         default="Pending"
     )
-    date_requested = db.Column(db.String(50), nullable=False)
-    doctor_name = db.Column(db.String(100))
-    priority = db.Column(db.String(50))
-    notes = db.Column(db.Text)
-    sample_type = db.Column(db.String(50))
-    appointment_id = db.Column(db.Integer)
-    result = db.Column(db.String(100))
-    unit = db.Column(db.String(30))
-    reference_range = db.Column(db.String(50))
-    interpretation = db.Column(db.String(50))
-    remarks = db.Column(db.Text)
-    verified_by = db.Column(db.String(100))
-    completed_date = db.Column(db.String(50))
+
+    date_requested = db.Column(
+        db.String(50),
+        nullable=False
+    )
+
+    doctor_name = db.Column(
+        db.String(100)
+    )
+
+    priority = db.Column(
+        db.String(50)
+    )
+
+    notes = db.Column(
+        db.Text
+    )
+
+    sample_type = db.Column(
+        db.String(50)
+    )
+
+    appointment_id = db.Column(
+        db.Integer
+    )
+
+    result = db.Column(
+        db.String(100)
+    )
+
+    unit = db.Column(
+        db.String(30)
+    )
+
+    reference_range = db.Column(
+        db.String(50)
+    )
+
+    interpretation = db.Column(
+        db.String(50)
+    )
+
+    remarks = db.Column(
+        db.Text
+    )
+
+    verified_by = db.Column(
+        db.String(100)
+    )
+
+    completed_date = db.Column(
+        db.String(50)
+    )
 
 
+# ============================================================
 # PATIENT MODEL
+# ============================================================
+
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -248,9 +431,19 @@ class Patient(db.Model):
     )
 
 
-# REPORT MODEL
+# ============================================================
+# AMBULANCE BOOKING MODEL
+# ============================================================
+# Patient creates a booking.
+# The booking is linked to both the patient and ambulance.
+# Driver/ambulance dashboard can use this information.
+# ============================================================
+
 class Report(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     patient_id = db.Column(
         db.Integer,
@@ -299,15 +492,42 @@ class Report(db.Model):
     )
 
 
+# ============================================================
+# DOCTOR MODEL
+# ============================================================
+
 class Doctor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    phone = db.Column(db.String(15), unique=True)
-    password = db.Column(db.String(200), nullable=False)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    email = db.Column(
+        db.String(120),
+        unique=True,
+        nullable=False
+    )
+
+    phone = db.Column(
+        db.String(15),
+        unique=True
+    )
+
+    password = db.Column(
+        db.String(200),
+        nullable=False
+    )
 
 
+# ============================================================
 # APPOINTMENT MODEL
+# ============================================================
+
 class Appointment(db.Model):
     id = db.Column(
         db.Integer,
@@ -365,8 +585,16 @@ class Appointment(db.Model):
         default="Pending"
     )
 
+
+# ============================================================
+# AUDIT LOG MODEL
+# ============================================================
+
 class AuditLog(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     admin_user = db.Column(
         db.String(100),
@@ -374,7 +602,7 @@ class AuditLog(db.Model):
     )
 
     action = db.Column(
-        db.String(255),  # <-- Fixed: Added db.String(255)
+        db.String(255),
         nullable=False
     )
 
@@ -403,7 +631,22 @@ class AuditLog(db.Model):
     )
 
 
+# ============================================================
+# ANALYZER MODEL
+# ============================================================
+
 class Analyzer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    status = db.Column(db.String(50), nullable=False)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    name = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    status = db.Column(
+        db.String(50),
+        nullable=False
+    )
