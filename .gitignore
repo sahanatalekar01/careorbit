@@ -10,6 +10,11 @@ venv/
 # SQLite database
 careorbit.db
 
+# Backup files
+*.bak
+*.before_*
+*.final_*
+
 # VS Code settings
 .vscode/
 
