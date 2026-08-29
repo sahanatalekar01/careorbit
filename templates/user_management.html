@@ -339,13 +339,13 @@
             <ul class="nav flex-column gap-1">
 
                 <!-- Core Overview -->
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{{ url_for('admin_dashboard') }}">
-                        <i class="fa-solid fa-gauge-high me-2"></i>
-                        Core Overview
-                    </a>
-                </li>
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('home') }}">
+        <i class="fa-solid fa-gauge-high me-2"></i>
+        Core Overview
+    </a>
+</li>
 
                 <!-- User Access -->
                 <li class="nav-item">
@@ -366,18 +366,18 @@
                 </li>
 
                 <!-- System Nodes -->
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{{ url_for('system_nodes') }}">
-                        <i class="fa-solid fa-server me-2"></i>
-                        System Nodes
-                    </a>
-                </li>
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('user_management') }}">
+        <i class="fa-solid fa-server me-2"></i>
+        System Nodes
+    </a>
+</li>
 
                 <!-- Audit Logs -->
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="{{ url_for('audit_logs') }}">
+                       href="{{ url_for('user_management') }}">
                         <i class="fa-solid fa-shield-halved me-2"></i>
                         Audit Logs
                     </a>
